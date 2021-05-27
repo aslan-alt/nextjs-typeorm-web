@@ -20,6 +20,6 @@ createConnection().then(async connection => {
     c1.post = p1
     c1.content = '厉害了'
     await manager.save(c1)
-    console.log(u1.id)
+
     connection.close()
 }).catch(error => console.log(error));

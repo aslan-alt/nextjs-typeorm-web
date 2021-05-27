@@ -16,16 +16,15 @@ const index: NextPage<Props> = (props) => {
   const { browser, posts } = props;
   const [width, setWidth] = useState(0);
   const data: Post[] = JSON.parse(posts)
-  console.log('posts---------')
-  console.log(posts)
+
   useEffect(() => {
     const w = document.documentElement.clientWidth;
     setWidth(w);
   }, []);
   return (
     <div>
-      <h1>你的浏览器是 {browser.name}</h1>
-      <h2>你的浏览器窗口大小是 {width} 像素</h2>
+      <h1>你的浏览器是:ssss {browser.name}</h1>
+      <h2>你的浏览器窗口大小是: {width} 像素</h2>
       {data.map(item => {
         return (
           <div key={item.id}>

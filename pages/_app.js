@@ -3,6 +3,7 @@ import 'styles/global.scss'
 
 
 export default function App({ Component, pageProps }) {
+
   return <>
     <Head>
       <title>我的博客 - Frank</title>
