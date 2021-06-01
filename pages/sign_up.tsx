@@ -43,6 +43,7 @@ const SignUp: NextPage = () => {
                             setFormData(state => ({ ...state, username: e.target.value }))
                         }} />
                     </label>
+                    {errors.username?.length > 0 && errors.username.join(',')}
                 </div>
                 <div>
                     <label htmlFor="">密码
@@ -51,6 +52,7 @@ const SignUp: NextPage = () => {
                             setFormData(state => ({ ...state, password: e.target.value }))
                         }} />
                     </label>
+                    {errors.password?.length > 0 && errors.password.join(',')}
                 </div>
 
                 <div>

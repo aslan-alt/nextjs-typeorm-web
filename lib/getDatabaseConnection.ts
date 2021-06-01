@@ -11,7 +11,6 @@ const create = async () => {
 }
 
 const connection: Promise<Connection> = (async () => {
-    console.log('zhixingle')
     const manager = getConnectionManager()
     const current = manager.has('default') && manager.get('default')
     if (current) {

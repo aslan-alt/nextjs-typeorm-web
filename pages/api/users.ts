@@ -10,7 +10,6 @@ interface SignData {
 }
 
 const Posts: NextApiHandler = async (req, res,) => {
-    console.log(req.body)
     const { username, password, passwordConfirmation } = req.body as SignData
 
     const errors = { username: [] as string[], password: [] as string[], passwordConfirmation: [] as string[] }
@@ -35,6 +34,8 @@ const Posts: NextApiHandler = async (req, res,) => {
     }
     const hasErrors = Object.values(errors).find(v => v.length > 0)
     if (hasErrors) {
+        console.log('是这里----')
+        console.log(errors)
         res.status(422).json(errors)
     } else {
         const connect = await getDatabaseConnection()
