@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Post } from "./Post";
 import { Comment } from "./Comment";
-import { getDatabaseConnection } from "lib/getDatabaseConnection";
+import _ from 'lodash'
+import md5 from "md5";
 
 
 @Entity('users')
@@ -25,7 +26,6 @@ export class User {
     password: string
 
     async validate() {
-
         if (this.username.trim() === '') {
             this.errors.username.push('不能为空')
         }
@@ -38,10 +38,6 @@ export class User {
         if (this.username.trim().length <= 3) {
             this.errors.username.push('低于最小长度')
         }
-        const found = (await (await getDatabaseConnection()).manager.find(User, { username: this.username }))
-        if (found.length > 0) {
-            this.errors.username.push('用户名已存在')
-        }
         if (this.password === '') {
             this.errors.password.push('不能为空')
         }
@@ -52,6 +48,15 @@ export class User {
     hasErrors() {
         console.log('this.errors-----------')
         console.log(this.errors)
+
         return (!!Object.values(this.errors).find(v => v.length > 0))
+    }
+
+    @BeforeInsert()
+    generatePasswordDigest() {
+        this.passwordDigest = md5(this.password)
+    }
+    toJSON() {
+        return _.omit(this, ['password', 'errors', 'passwordDigest', 'passwordConfirmation'])
     }
 }
