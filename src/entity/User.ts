@@ -24,7 +24,6 @@ export class User {
     errors = { username: [] as string[], password: [] as string[], passwordConfirmation: [] as string[] }
     passwordConfirmation: string
     password: string
-
     async validate() {
         if (this.username.trim() === '') {
             this.errors.username.push('不能为空')

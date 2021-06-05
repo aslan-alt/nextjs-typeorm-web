@@ -8,7 +8,7 @@ interface SignData {
     password: string;
     passwordConfirmation: string;
 }
-const Posts: NextApiHandler = async (req, res,) => {
+const Users: NextApiHandler = async (req, res,) => {
     const { username, password, passwordConfirmation } = req.body as SignData
     const connect = await getDatabaseConnection()
     const user = new User()
@@ -28,4 +28,4 @@ const Posts: NextApiHandler = async (req, res,) => {
         res.status(200).json(user)
     }
 }
-export default Posts;
+export default Users;

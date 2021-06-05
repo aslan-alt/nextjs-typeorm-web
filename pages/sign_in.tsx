@@ -3,27 +3,26 @@ import axios, { AxiosResponse } from 'axios'
 import { NextPage } from 'next'
 
 
-const SignUp: NextPage = () => {
+const SignIn: NextPage = () => {
+    const defaultErrors = {
+        username: [] as string[],
+        password: [] as string[],
+    }
     const [fromData, setFormData] = useState({
         username: '',
-        password: '',
-        passwordConfirmation: ''
+        password: ''
     })
-    const [errors, setErrors] = useState({
-        username: [],
-        password: [],
-        passwordConfirmation: []
-    })
+    const [errors, setErrors] = useState<typeof defaultErrors>(defaultErrors)
     const onSubmit = () => {
-        axios.post('/api/users', fromData).then(res => {
-            console.log('res------')
+        setErrors(defaultErrors)
+        axios.post('/api/sessions', fromData).then(res => {
+            window.alert('success')
             console.log(res.data)
-
         }, (error) => {
             if (error.response) {
                 const response: AxiosResponse = error.response
                 if (response.status === 422) {
-                    setErrors({ ...errors, ...response.data })
+                    setErrors({ ...response.data })
                 }
             }
 
@@ -32,7 +31,7 @@ const SignUp: NextPage = () => {
     }
     return (
         <>
-            <h1> 注册</h1>
+            <h1> 登陆</h1>
 
             <div >
                 {JSON.stringify(fromData)}
@@ -55,19 +54,13 @@ const SignUp: NextPage = () => {
                     {errors.password?.length > 0 && errors.password.join(',')}
                 </div>
 
+
                 <div>
-                    <label htmlFor="">确认密码<input type="text" value={fromData.passwordConfirmation} onChange={(e) => {
-                        e.persist()
-                        setFormData(state => ({ ...state, passwordConfirmation: e.target.value }))
-                    }} /></label>
-                </div>
-                {errors.passwordConfirmation?.length > 0 && errors.passwordConfirmation.join(',')}
-                <div>
-                    <button onClick={onSubmit} >注册</button>
+                    <button onClick={onSubmit} >登陆</button>
                 </div>
 
             </div>
         </>
     )
 }
-export default SignUp
+export default SignIn
