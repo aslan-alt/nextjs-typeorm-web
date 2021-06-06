@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { NextPage } from 'next'
+import Form from 'components/Form'
 
 
 const SignUp: NextPage = () => {
@@ -9,11 +10,13 @@ const SignUp: NextPage = () => {
         password: '',
         passwordConfirmation: ''
     })
+    const { username, password, passwordConfirmation } = fromData
     const [errors, setErrors] = useState({
         username: [],
         password: [],
         passwordConfirmation: []
     })
+
     const onSubmit = () => {
         axios.post('/api/users', fromData).then(res => {
             console.log(res.data)
@@ -28,43 +31,43 @@ const SignUp: NextPage = () => {
         })
         return false
     }
+    const onChange = useCallback((e: ChangeEvent<HTMLInputElement>, key: 'password' | 'username' | 'passwordConfirmation') => {
+        e.persist()
+        setFormData(state => ({ ...state, [key]: e.target.value }))
+    }, [fromData])
+
     return (
         <>
             <h1> 注册</h1>
-
-            <div >
-                {JSON.stringify(fromData)}
-                <div>
-                    <label htmlFor="">用户名
-                        <input type="text" value={fromData.username} onChange={(e) => {
-                            e.persist()
-                            setFormData(state => ({ ...state, username: e.target.value }))
-                        }} />
-                    </label>
-                    {errors.username?.length > 0 && errors.username.join(',')}
-                </div>
-                <div>
-                    <label htmlFor="">密码
-                     <input type="text" value={fromData.password} onChange={(e) => {
-                            e.persist()
-                            setFormData(state => ({ ...state, password: e.target.value }))
-                        }} />
-                    </label>
-                    {errors.password?.length > 0 && errors.password.join(',')}
-                </div>
-
-                <div>
-                    <label htmlFor="">确认密码<input type="text" value={fromData.passwordConfirmation} onChange={(e) => {
-                        e.persist()
-                        setFormData(state => ({ ...state, passwordConfirmation: e.target.value }))
-                    }} /></label>
-                </div>
-                {errors.passwordConfirmation?.length > 0 && errors.passwordConfirmation.join(',')}
-                <div>
-                    <button onClick={onSubmit} >注册</button>
-                </div>
-
-            </div>
+            <Form
+                fields={
+                    [
+                        {
+                            label: '用户名',
+                            value: username,
+                            errors: errors.username,
+                            type: 'text',
+                            onChange: (e) => { onChange(e as ChangeEvent<HTMLInputElement>, 'username') }
+                        },
+                        {
+                            label: '密码',
+                            value: password,
+                            errors: errors.password,
+                            type: 'password',
+                            onChange: (e) => { onChange(e as ChangeEvent<HTMLInputElement>, 'password') }
+                        },
+                        {
+                            label: '确认密码',
+                            value: password,
+                            errors: errors.passwordConfirmation,
+                            type: 'password',
+                            onChange: (e) => { onChange(e as ChangeEvent<HTMLInputElement>, 'passwordConfirmation') }
+                        }
+                    ]
+                }
+                onSubmit={onSubmit}
+                text="注册"
+            />
         </>
     )
 }
