@@ -1,3 +1,4 @@
+import md5 from "md5";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { Comment } from "./entity/Comment";
@@ -8,7 +9,7 @@ createConnection().then(async connection => {
     const { manager } = connection
     const u1 = new User()
     u1.username = 'frank'
-    u1.passwordDigest = '123213123'
+    u1.passwordDigest = md5('123213123')
     await manager.save(u1)
     const p1 = new Post()
     p1.title = '我的第一篇博客'

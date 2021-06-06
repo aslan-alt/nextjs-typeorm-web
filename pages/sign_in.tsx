@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
-import { NextPage } from 'next'
+import { GetServerSideProps, NextPage } from 'next'
+import { withSession } from 'lib/withSession'
+import { User } from 'src/entity/User'
 
 
-const SignIn: NextPage = () => {
+const SignIn: NextPage<{ user: User }> = (props) => {
     const defaultErrors = {
         username: [] as string[],
         password: [] as string[],
@@ -31,6 +33,9 @@ const SignIn: NextPage = () => {
     }
     return (
         <>
+            {
+                props.user && <div>当前登陆用户:{props.user.username}</div>
+            }
             <h1> 登陆</h1>
 
             <div >
@@ -64,3 +69,13 @@ const SignIn: NextPage = () => {
     )
 }
 export default SignIn
+//@ts-ignore
+export const getServerSideProps: GetServerSideProps = withSession(async (context) => {
+    //@ts-ignore
+    const user = JSON.parse(JSON.stringify(context.req.session.get('currentUser') || null))
+    return {
+        props: {
+            user
+        }
+    }
+})

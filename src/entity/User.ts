@@ -5,6 +5,7 @@ import _ from 'lodash'
 import md5 from "md5";
 
 
+
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn('increment')
@@ -13,9 +14,9 @@ export class User {
     username: string;
     @Column('varchar')
     passwordDigest: string;
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamp', name: 'createdAt', nullable: false })
     createdAt: Date;
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamp', name: 'updatedAt' })
     updatedAt: Date;
     @OneToMany(type => Post, post => post.author)
     posts: Post[]
@@ -45,9 +46,6 @@ export class User {
         }
     }
     hasErrors() {
-        console.log('this.errors-----------')
-        console.log(this.errors)
-
         return (!!Object.values(this.errors).find(v => v.length > 0))
     }
 

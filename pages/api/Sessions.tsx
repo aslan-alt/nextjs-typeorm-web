@@ -1,15 +1,11 @@
-import { getDatabaseConnection } from 'lib/getDatabaseConnection'
-import md5 from 'md5';
+import { withSession } from 'lib/withSession';
 import { NextApiHandler } from 'next'
-import { User } from 'src/entity/User';
 import { SignIn } from 'src/model/SignIn';
 
 
 
 const Sessions: NextApiHandler = async (req, res) => {
-
     const { username, password } = req.body
-    const user = await (await getDatabaseConnection()).manager.findOne(User, { where: { username } })
     const signIn = new SignIn()
     signIn.password = password
     signIn.username = username
@@ -18,7 +14,9 @@ const Sessions: NextApiHandler = async (req, res) => {
         res.status(422).json(signIn.errors)
         return
     } else {
+        req.session.set('currentUser', signIn.user)
+        await req.session.save()
         res.status(200).json(signIn.user)
     }
 }
-export default Sessions
+export default withSession(Sessions)

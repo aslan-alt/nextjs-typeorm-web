@@ -16,9 +16,7 @@ const SignUp: NextPage = () => {
     })
     const onSubmit = () => {
         axios.post('/api/users', fromData).then(res => {
-            console.log('res------')
             console.log(res.data)
-
         }, (error) => {
             if (error.response) {
                 const response: AxiosResponse = error.response
