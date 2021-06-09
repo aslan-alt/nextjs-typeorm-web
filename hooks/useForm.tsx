@@ -1,5 +1,5 @@
-import Form from 'components/Form'
-import React, { ChangeEventHandler, useCallback, useState } from 'react'
+import { AxiosResponse } from 'axios'
+import React, { useCallback, useState } from 'react'
 
 type Field<T> = {
     label: string,
@@ -9,12 +9,15 @@ type Field<T> = {
 type UseFormOptions<T> = {
     initFormData: T,
     fields: Field<T>[],
-    onSubmit: (fd: T) => void,
-    text: string
+    text: string;
+    submit: {
+        request: (formData: T) => Promise<AxiosResponse<T>>;
+        message: string;
+    }
 }
 
 export function useForm<T>(props: UseFormOptions<T>) {
-    const { initFormData, fields, onSubmit, text } = props
+    const { initFormData, fields, submit, text } = props
     type Keys = keyof T
     const [fromData, setFormData] = useState(initFormData)
     const [errors, setErrors] = useState(() => {
@@ -25,26 +28,31 @@ export function useForm<T>(props: UseFormOptions<T>) {
         return e
     })
     const onChange = useCallback((key: Keys, value: string) => {
-        setFormData({ ...fromData, [key]: value })
+        setFormData(state => ({ ...state, [key]: value }))
     }, [])
 
     const _onSubmit = useCallback((e) => {
         e.preventDefault()
-        onSubmit(fromData)
-    }, [onSubmit, fromData])
+        submit.request(fromData).then(res => {
+            window.alert(submit.message)
+        }, (error) => {
+            const response: AxiosResponse = error.response
+            if (response.status === 422) {
+                setErrors({ ...response.data })
+            }
+        })
+    }, [submit, fromData])
 
     const form = (
         <div>
-
             {fields?.map((filed, index) => {
-
                 return (
                     <div key={index}>
                         {filed.label}
                         {filed.type === 'textarea' ?
-                            <textarea onChange={(e) => {
+                            <textarea defaultValue={fromData[filed.key].toString()} onChange={(e) => {
                                 onChange(filed.key, e.target.value)
-                            }}>{fromData[filed.key]}</textarea>
+                            }} />
                             :
                             <input type={filed.type}
                                 value={fromData[filed.key].toString()}
