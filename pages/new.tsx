@@ -9,7 +9,10 @@ const PostsNew: NextPage = () => {
         initFormData: { title: '', content: '' },
         submit: {
             request: (fromData) => axios.post('/api/v1/posts', fromData),
-            message: '提交成功'
+            success: (res) => {
+                console.log(res)
+                window.location.href = '/posts'
+            }
         },
         fields: [
             { label: '标题', key: 'title', type: 'text' },

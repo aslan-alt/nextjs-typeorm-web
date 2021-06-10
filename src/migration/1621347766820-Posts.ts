@@ -9,7 +9,7 @@ export class Posts1621347766820 implements MigrationInterface {
                 { name: 'id', type: 'int', isGenerated: true, isPrimary: true, generationStrategy: 'increment' },
                 { name: 'title', type: 'varchar' },
                 { name: 'content', type: 'text' },
-                { name: 'author_id', type: 'int' }
+                { name: 'author_id', type: 'int' },
             ]
         }))
     }

@@ -4,16 +4,17 @@ export class AddCreateAtAndUpdatedAtForUsers1621351124364 implements MigrationIn
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.addColumns('users', [
-            new TableColumn({ name: 'createdAt', type: 'time', isNullable: false, default: 'now()' }),
-            new TableColumn({ name: 'updatedAt', type: 'time', isNullable: false, default: 'now()' })
+            new TableColumn({ name: 'createdAt', type: 'timestamp', isNullable: false, default: 'now()' }),
+            new TableColumn({ name: 'updatedAt', type: 'timestamp', isNullable: false, default: 'now()' })
         ])
         await queryRunner.addColumns('posts', [
-            new TableColumn({ name: 'createdAt', type: 'time', isNullable: false, default: 'now()' }),
-            new TableColumn({ name: 'updatedAt', type: 'time', isNullable: false, default: 'now()' })
+            new TableColumn({ name: 'createdAt', type: 'timestamp', isNullable: false, default: 'now()' }),
+            new TableColumn({ name: 'updatedAt', type: 'timestamp', isNullable: false, default: 'now()' })
         ])
         await queryRunner.addColumns('comments', [
-            new TableColumn({ name: 'createdAt', type: 'time', isNullable: false, default: 'now()' }),
-            new TableColumn({ name: 'updatedAt', type: 'time', isNullable: false, default: 'now()' })
+            new TableColumn({ name: 'createdAt', type: 'timestamp', isNullable: false, default: 'now()' }),
+            new TableColumn({ name: 'updatedAt', type: 'timestamp', isNullable: false, default: 'now()' })
+
         ])
     }
 

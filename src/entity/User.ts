@@ -4,8 +4,6 @@ import { Comment } from "./Comment";
 import _ from 'lodash'
 import md5 from "md5";
 
-
-
 @Entity('users')
 export class User {
     @PrimaryGeneratedColumn('increment')
@@ -18,9 +16,9 @@ export class User {
     createdAt: Date;
     @UpdateDateColumn({ type: 'timestamp', name: 'updatedAt' })
     updatedAt: Date;
-    @OneToMany(type => Post, post => post.author)
+    @OneToMany('Post', 'author')
     posts: Post[]
-    @OneToMany(type => Comment, comment => comment.user)
+    @OneToMany('Comment', 'user')
     comments: Comment[]
     errors = { username: [] as string[], password: [] as string[], passwordConfirmation: [] as string[] }
     passwordConfirmation: string

@@ -8,7 +8,7 @@ const SignUp: NextPage = () => {
         initFormData: { username: '', password: '', passwordConfirmation: '' },
         submit: {
             request: (fromData) => axios.post('/api/users', fromData),
-            message: '注册成功'
+            success: (res) => { console.log(res) }
         },
         fields: [
             { label: '用户名', key: 'username', type: 'text' },
