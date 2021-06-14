@@ -35,7 +35,7 @@ export function useForm<T>(props: UseFormOptions<T>) {
         e.preventDefault()
         submit.request(fromData).then(res => {
             submit.success(res)
-            console.log(res)
+
         }, (error) => {
             const response: AxiosResponse = error.response
             if (response.status === 422) {

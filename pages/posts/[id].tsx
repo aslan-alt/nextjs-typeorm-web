@@ -14,6 +14,8 @@ const postsShow: NextPage<Props> = (props) => {
     <div>
       <h1>{data.title}</h1>
       <div>{data.content}</div>
+      <div>{data.author}</div>
+      <div>{data.createdAt}</div>
 
     </div >
   );

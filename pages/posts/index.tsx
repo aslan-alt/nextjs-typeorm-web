@@ -1,43 +1,60 @@
-import { NextPage } from 'next';
-import { getPosts } from '../../lib/posts';
+import { NextPage, GetServerSideProps } from 'next';
+import qs from 'querystring'
 import Link from 'next/link';
+import { getDatabaseConnection } from 'lib/getDatabaseConnection';
+import { Post } from 'src/entity/Post';
+import { UAParser } from 'ua-parser-js';
 
-type Post = {
-  id: string;
-  date: string;
-  title: string;
-  content: string;
-  htmlContent: string;
-}
+
 
 
 type Props = {
-  posts: Post[];
+  browser: {
+    name: string;
+    version: string;
+    major: string;
+  },
+  posts: string;
+  count: number
 }
-const PostsIndex: NextPage<Props> = (props) => {
-  const { posts } = props;
-
+const index: NextPage<Props> = (props) => {
+  const { posts, count } = props;
+  const data: Post[] = JSON.parse(posts)
   return (
-    <div>
-      <h1>文章列表</h1>
-      {posts.map(p => <div key={p.id}>
-        <Link href={`/posts/${p.id}`}>
-          <a>
-            {p.id}
-          </a>
-        </Link>
-      </div>)}
-    </div>
+    <ul>
+      文章列表 :{count}
+      {data.map(item => {
+        return (
+          <li>
+            <Link key={item.id} href={`/posts/${item.id}`}>
+              <a>{item.title}</a>
+            </Link>
+          </li>
+        )
+      })
+      }
+    </ul>
   );
 };
+export default index;
 
-export default PostsIndex;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const connect = await getDatabaseConnection()
+  const index = context.req.url.indexOf('?')
+  const search = context.req.url.substr(index + 1)
+  const pageNumber = parseInt(qs.parse(search).page.toString())
+  const perPage = 3
+  const [posts, count] = await connect.manager.findAndCount(Post, { skip: (pageNumber - 1) * perPage, take: perPage })
 
-export const getStaticProps = async () => {
-  const posts = await getPosts();
+
+  const ua = context.req.headers['user-agent'];
+  const result = new UAParser(ua).getResult();
   return {
     props: {
-      posts: JSON.parse(JSON.stringify(posts))
+      browser: result.browser,
+      posts: JSON.stringify(posts),
+      count
     }
   };
 };
+
