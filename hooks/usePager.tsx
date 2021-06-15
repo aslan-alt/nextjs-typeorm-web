@@ -10,6 +10,7 @@ interface Options {
 const defaultMakerUrl = (n: number) => {
     return `?page=${n}`
 }
+
 const usePager = (options: Options) => {
     const { pageNumber, totalPage, urlMaker = defaultMakerUrl } = options
     const numbers = []
@@ -27,7 +28,6 @@ const usePager = (options: Options) => {
             []
         )
     const pager = (
-
         <div className="wrapper">
             {pageNumber !== 1 &&
                 <Link href={urlMaker(pageNumber - 1)}>
@@ -36,9 +36,9 @@ const usePager = (options: Options) => {
             }
             {
                 pageNumbers.map(n => n === -1 ?
-                    <span>...</span>
+                    <span key={n}>...</span>
                     :
-                    <Link href={urlMaker(n)}>
+                    <Link key={n} href={urlMaker(n)}>
                         <a>{n}</a>
                     </Link>
                 )
@@ -53,8 +53,6 @@ const usePager = (options: Options) => {
                 `}
             </style>
         </div>
-
-
     )
     return { pager }
 }
