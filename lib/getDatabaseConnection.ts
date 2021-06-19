@@ -7,7 +7,12 @@ import { Comment } from "src/entity/Comment";
 
 const create = async () => {
     //@ts-ignore
-    return createConnection({ ...config, entities: [Post, User, Comment] })
+    return createConnection({
+        ...config,
+        host: process.env.NODE_ENV === 'production' ? 'host.docker.internal' : 'localhost',
+        database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'development_blog',
+        entities: [Post, User, Comment]
+    })
 }
 
 const connection: Promise<Connection> = (async () => {
