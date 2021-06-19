@@ -13,8 +13,7 @@ export class AddCreateAtAndUpdatedAtForUsers1621351124364 implements MigrationIn
         ])
         await queryRunner.addColumns('comments', [
             new TableColumn({ name: 'createdAt', type: 'timestamp', isNullable: false, default: 'now()' }),
-            new TableColumn({ name: 'updatedAt', type: 'timestamp7ceedad9caeb', isNullable: false, default: 'now()' })
-
+            new TableColumn({ name: 'updatedAt', type: 'timestamp', isNullable: false, default: 'now()' })
         ])
     }
 
