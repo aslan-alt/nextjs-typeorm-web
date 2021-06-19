@@ -9,6 +9,7 @@ const create = async () => {
     //@ts-ignore
     return createConnection({
         ...config,
+        host: process.env.NODE_ENV === 'production' ? 'localhost' : 'host.docker.internal',
         database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'development_blog',
         entities: [Post, User, Comment]
     })
