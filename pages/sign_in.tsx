@@ -9,7 +9,7 @@ const SignIn: NextPage<{ user: User }> = (props) => {
     const { form } = useForm({
         initFormData: { username: '', password: '' },
         submit: {
-            request: (fromData) => axios.post('/api/sessions', fromData),
+            request: (fromData) => axios.post('/api/sessions1', fromData),
             success: (res) => {
                 alert('登陆成功')
                 const query = qs.parse(window.location.search.substr(1))
