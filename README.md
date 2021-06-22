@@ -40,7 +40,6 @@ npm run dev
 ## 部署
 
 ```bash 
-yarn build
-yarn start
+ssh xiong@nextjs "sh /home/xiong/app/bin/deploy.sh"
 ```
 
