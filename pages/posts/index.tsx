@@ -1,4 +1,4 @@
-import { NextPage, GetServerSideProps } from 'next';
+import { NextPage, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import qs from 'querystring'
 import Link from 'next/link';
 import { getDatabaseConnection } from 'lib/getDatabaseConnection';
@@ -21,7 +21,7 @@ const index: NextPage<Props> = (props) => {
       {data.map(item => {
         return (
           <li key={item.id}>
-            <Link href={`/posts/${item.id}`}>
+            <Link href={`/posts/${item.id}`} as={`/posts/${item.id}`}>
               <a>{item.title}</a>
             </Link>
           </li>
@@ -36,7 +36,7 @@ const index: NextPage<Props> = (props) => {
 };
 export default index;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const connect = await getDatabaseConnection()
   const index = context.req.url.indexOf('?')
   const search = context.req.url.substr(index + 1)

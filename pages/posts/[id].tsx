@@ -1,5 +1,6 @@
 import React from 'react';
 import { NextPage, GetServerSideProps } from 'next';
+import Link from 'next/link';
 import { getDatabaseConnection } from 'lib/getDatabaseConnection';
 import { Post } from 'src/entity/Post';
 
@@ -15,7 +16,9 @@ const postsShow: NextPage<Props> = (props) => {
       <div>{data.content}</div>
       <div>{data.author}</div>
       <div>{data.createdAt}</div>
-
+      <Link href={`/posts/[id]/edit`} as={`/posts/${data.id}/edit`}>
+        <a>编辑</a>
+      </Link>
     </div >
   );
 };
