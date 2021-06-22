@@ -29,6 +29,7 @@ const index: NextPage<Props> = (props) => {
       })
       }
       <footer>
+        页脚
         {pager}
       </footer>
     </div>
@@ -47,7 +48,6 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   const totalPage = Math.ceil(count / perPage)
   return {
     props: {
-
       posts: JSON.stringify(posts),
       totalPage,
       perPage,
