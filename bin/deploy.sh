@@ -1,4 +1,4 @@
-cd /home/xiong/app/ &&
+cd app &&
 git pull &&
 yarn install --production=false &&
 yarn build &&
