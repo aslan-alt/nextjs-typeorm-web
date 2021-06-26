@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, SetStateAction, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 
 const CommandRowWrapper = styled.label`
@@ -56,10 +56,11 @@ interface Props {
     keyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     device: { vendor: string | null; model: string | null; type: string | null }
     onCommander: (e: ChangeEvent<HTMLInputElement>) => void;
+    setShowOptionsAndDisable: (value: SetStateAction<boolean>) => void
 }
 
 const CommandRow = (props: Props) => {
-    const { browser, os, onCommander, device, keyUp, disabled } = props
+    const { browser, os, onCommander, device, keyUp, disabled, setShowOptionsAndDisable } = props
     const [isDisabled, setIsDisabled] = useState(disabled)
     const [showCursor, setShowCursor] = useState(false)
     const [visible, setVisible] = useState(false)
@@ -102,7 +103,10 @@ const CommandRow = (props: Props) => {
                     disabled={isDisabled}
                 />
 
-                {showButton && <button onClick={() => { setVisible(true) }}>执行</button>}
+                {showButton && <button onClick={() => {
+                    setVisible(true)
+                    setShowOptionsAndDisable(true)
+                }}>执行</button>}
             </div>
         </CommandRowWrapper>
     )
