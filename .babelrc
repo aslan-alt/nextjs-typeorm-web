@@ -8,6 +8,9 @@
             {
                 "legacy": true
             }
+        ],
+        [
+            "babel-plugin-styled-components"
         ]
     ]
 }
