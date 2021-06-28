@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-const createKeyEventHash = (Icons: IconItem) => {
+const createKeyEventHash = (Icons: IconItem[]) => {
     const router = useRouter()
 
     return {
@@ -19,10 +19,10 @@ interface CreateIcon {
 }
 const createIconsList = ({ currentIndex, changeIndex }: CreateIcon) => {
     return [
-        { id: 0, name: 'game', href: '/games', alt: 'gameIcon', text: '玩游戏', height: 30, width: 48, currentIndex, changeIndex },
-        { id: 1, href: '/games', name: 'curriculumVitae', alt: 'gameIcon', text: '看简历', currentIndex, changeIndex },
-        { id: 2, href: '/games', name: 'messageBoard2', alt: 'gameIcon', text: '留言板', currentIndex, changeIndex },
-        { id: 3, href: '/games', alt: 'messageBoard', text: '退出', height: 30, width: 48, currentIndex, changeIndex }
+        { id: 0, name: 'game', href: '/games', text: '玩游戏', height: 30, width: 48, currentIndex, changeIndex },
+        { id: 1, name: 'curriculumVitae', href: '/curriculumVitae', text: '看简历', currentIndex, changeIndex },
+        { id: 2, name: 'messageBoard', href: '/messageBoard', text: '留言板', currentIndex, changeIndex },
+        { id: 3, href: '/esc', text: '退出', height: 30, width: 48, currentIndex, changeIndex }
     ]
 }
 

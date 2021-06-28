@@ -50,61 +50,61 @@ const CommandRowWrapper = styled.label`
     }
 `
 interface Props {
-    browser: { name: string; version: string; }
-    os: { name: string; },
-    disabled: boolean;
-    keyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-    device: { vendor: string | null; model: string | null; type: string | null }
-    onCommander: (e: ChangeEvent<HTMLInputElement>) => void;
+    userInfo: IUAParser.IResult,
+    showOptionsAndDisable: boolean;
+    value: string;
+    parentKeyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void,
+    onValueChange: (e: ChangeEvent<HTMLInputElement>) => void;
     setShowOptionsAndDisable: (value: SetStateAction<boolean>) => void
 }
 
 const CommandRow = (props: Props) => {
-    const { browser, os, onCommander, device, keyUp, disabled, setShowOptionsAndDisable } = props
-    const [isDisabled, setIsDisabled] = useState(disabled)
-    const [showCursor, setShowCursor] = useState(false)
-    const [visible, setVisible] = useState(false)
+    const { userInfo: { device, browser, os }, onValueChange, value, showOptionsAndDisable, setShowOptionsAndDisable, parentKeyUp } = props
 
-    const showButton = device?.model && visible
+    const [visibleButton, setVisibleButton] = useState(false)
+    const showButton = device?.model && visibleButton
     const inputRef = useRef<HTMLInputElement>(null);
 
     const focusTextInput = () => {
-        if (inputRef.current) {
-            inputRef.current.focus();
-            setShowCursor(true)
+        inputRef?.current?.focus();
+    }
+
+    const childrenKeyUp: typeof parentKeyUp = (e) => {
+        if (e.keyCode === 13) {
+            setVisibleButton(false)
         }
+        parentKeyUp(e)
     }
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         const onInput = !(e?.target?.value?.length > 0)
-        setShowCursor(onInput)
-        setVisible(!onInput)
-        onCommander(e)
+        setVisibleButton(!onInput)
+        onValueChange(e)
     }
 
     useEffect(() => {
         focusTextInput()
     }, [])
-    useEffect(() => {
-        setIsDisabled(disabled)
-    }, [disabled])
+
+
     return (
         <CommandRowWrapper className={"commander-row"} >
             <p>{`${browser?.name}/${browser.version}/${os.name} User$ `}</p>
             <div className="commander-end">
-                {showCursor && <div className="cursor"></div>}
+                {!(value.length > 0) && <div className="cursor"></div>}
 
                 <input
                     type="text"
                     placeholder="Please enter the command"
+                    value={value}
                     onChange={onChange}
+                    onKeyUp={childrenKeyUp}
                     ref={inputRef}
-                    onKeyUp={keyUp}
-                    disabled={isDisabled}
+                    disabled={showOptionsAndDisable}
                 />
 
                 {showButton && <button onClick={() => {
-                    setVisible(true)
+                    setVisibleButton(false)
                     setShowOptionsAndDisable(true)
                 }}>执行</button>}
             </div>

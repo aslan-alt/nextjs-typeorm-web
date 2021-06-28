@@ -14,18 +14,21 @@ type Props = {
 }
 
 const Index: NextPage<Props> = (props) => {
-  const { userInfo: { browser, os, device } } = props;
+  const { userInfo } = props;
 
   const [showOptionsAndDisable, setShowOptionsAndDisable] = useState(false)
   const [currentIndex, setCurrentIndex] = useState<number>(0)
+  const [value, setValue] = useState<string>('')
 
   const changeIndex = (newIndex: number) => { setCurrentIndex(newIndex) }
   const Icons = createIconsList({ changeIndex, currentIndex })
   const keyEventHash: KeyUpEventHash = createKeyEventHash(Icons)
   //目前没有用，将来可能会用到  可以拿到用户输入的指令
-  const onCommander = (e: ChangeEvent<HTMLInputElement>) => { }
+  const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value)
+  }
 
-  const keyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const parentKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
       setShowOptionsAndDisable(true)
     }
@@ -33,14 +36,20 @@ const Index: NextPage<Props> = (props) => {
 
   useEffect(() => {
     if (showOptionsAndDisable) {
+
       document.onkeyup = (e) => {
+
         keyEventHash[e.code] && setCurrentIndex(keyEventHash[e.code](currentIndex))
       }
     } else {
+
+
       //TODO
     }
 
   }, [showOptionsAndDisable, currentIndex])
+
+
 
   return (
     <Home>
@@ -48,7 +57,7 @@ const Index: NextPage<Props> = (props) => {
         <span className="head-front">TERMINAL</span>
         <span className="shell"><Square />bash</span>
       </h5>
-      <CommandRow {...{ browser, os, onCommander, device, keyUp, disabled: showOptionsAndDisable, setShowOptionsAndDisable }} />
+      <CommandRow {...{ userInfo, onValueChange, parentKeyUp, showOptionsAndDisable, setShowOptionsAndDisable, value }} />
       {
         showOptionsAndDisable &&
         <div className="select-list-mobile">
