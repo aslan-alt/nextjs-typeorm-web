@@ -2,7 +2,7 @@ type IconItem = {
     id: number;
     href: string;
     name?: string;
-    currentIndex: number;
+    selectIndex: number;
     text: string;
     width?: number;
     height?: number;

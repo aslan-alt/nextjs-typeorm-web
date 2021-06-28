@@ -1,13 +1,14 @@
 import { GetServerSideProps, NextPage } from 'next';
 import { UAParser } from 'ua-parser-js';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { createKeyEventHash, createIconsList } from 'lib/pageMethods'
 import depClone from '../lib/depClone';
 import Square from 'components/Square'
 import CommandRow from 'components/CommandRow'
 import OptionsItem from 'components/OptionsItem'
 import Home from 'styles/indexStyled'
-
+import { Context } from 'createStore'
+import reducer, { initialValue } from 'reducer'
 
 type Props = {
   userInfo: IUAParser.IResult
@@ -15,56 +16,54 @@ type Props = {
 
 const Index: NextPage<Props> = (props) => {
   const { userInfo } = props;
+  const [state, dispatch] = useReducer(reducer, initialValue)
+  const { showOptions, selectIndex, inputValue } = state
 
-  const [showOptionsAndDisable, setShowOptionsAndDisable] = useState(false)
-  const [currentIndex, setCurrentIndex] = useState<number>(0)
-  const [value, setValue] = useState<string>('')
+  const Icons = createIconsList({
+    selectIndex, changeIndex: () => {
+      dispatch({ type: 'setSelectIndex', payload: selectIndex })
+    }
+  })
 
-  const changeIndex = (newIndex: number) => { setCurrentIndex(newIndex) }
-  const Icons = createIconsList({ changeIndex, currentIndex })
   const keyEventHash: KeyUpEventHash = createKeyEventHash(Icons)
   //目前没有用，将来可能会用到  可以拿到用户输入的指令
-  const onValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value)
-  }
 
   const parentKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
-      setShowOptionsAndDisable(true)
+      dispatch({ type: 'setShowOptions', payload: true })
     }
   }
 
   useEffect(() => {
-    if (showOptionsAndDisable) {
-
+    if (showOptions) {
       document.onkeyup = (e) => {
-
-        keyEventHash[e.code] && setCurrentIndex(keyEventHash[e.code](currentIndex))
+        const x = keyEventHash[e.code] && keyEventHash[e.code](selectIndex)
+        console.log(x)
+        keyEventHash[e.code] && dispatch({ type: 'setSelectIndex', payload: x })
       }
     } else {
-
-
       //TODO
     }
 
-  }, [showOptionsAndDisable, currentIndex])
-
-
+  }, [showOptions, selectIndex])
 
   return (
-    <Home>
-      <h5 className="home-head">
-        <span className="head-front">TERMINAL</span>
-        <span className="shell"><Square />bash</span>
-      </h5>
-      <CommandRow {...{ userInfo, onValueChange, parentKeyUp, showOptionsAndDisable, setShowOptionsAndDisable, value }} />
-      {
-        showOptionsAndDisable &&
-        <div className="select-list-mobile">
-          <div>Welcome to my website, Have fun</div>
-          {Icons.map(iconProps => <OptionsItem {...iconProps} key={iconProps.id} />)}
-        </div>}
-    </Home>
+    <Context.Provider value={{ state, dispatch }}>
+      <Home>
+        <h5 className="home-head">
+          <span className="head-front">TERMINAL</span>
+          <span className="shell"><Square />bash</span>
+        </h5>
+        <CommandRow {...{ userInfo, parentKeyUp, inputValue }} />
+        {
+          showOptions &&
+          <div className="select-list-mobile">
+            <div>Welcome to my website, Have fun</div>
+            {Icons.map(iconProps => <OptionsItem {...iconProps} key={iconProps.id} />)}
+          </div>}
+      </Home>
+    </Context.Provider>
+
   );
 };
 export default Index;

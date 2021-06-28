@@ -19,11 +19,11 @@ const TabWrapper = styled.label`
 
 
 const OptionsItem = (props: IconItem) => {
-    const { name, width = 48, height = 22, href, text, currentIndex, id, changeIndex } = props
+    const { name, width = 48, height = 22, href, text, selectIndex, id, changeIndex } = props
     return (
         <TabWrapper onClick={() => { changeIndex(id) }}>
             <div className="index-icon">
-                {currentIndex === id && <Image {...{ src: `/index.svg`, alt: name, width: 20, height: 18 }} />}
+                {selectIndex === id && <Image {...{ src: `/index.svg`, alt: name, width: 20, height: 18 }} />}
             </div>
             <Link {...{ href }}><a className='block'>{text}</a></Link>
             {name && <Image {...{ src: `/${name}.svg`, alt: name, width, height }} />}
