@@ -1,5 +1,6 @@
-import { GetServerSideProps, NextPage } from 'next';
+import Image from 'next/image'
 import { UAParser } from 'ua-parser-js';
+import { GetServerSideProps, NextPage } from 'next';
 import { useEffect, useReducer, useRef } from 'react';
 import { createKeyEventHash, createIconsList } from 'lib/pageMethods'
 import depClone from '../lib/depClone';
@@ -57,7 +58,7 @@ const Index: NextPage<Props> = (props) => {
         {
           showOptions &&
           <div className="select-list-mobile">
-            <div>Welcome to my website, Have fun</div>
+            <div className="welcome">Welcome to my website, thanks<Image {...{ src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22 }} /></div>
             {Icons.map(iconProps => <OptionsItem {...iconProps} key={iconProps.id} />)}
           </div>}
       </Home>
@@ -70,7 +71,6 @@ export default Index;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const ua = context.req.headers['user-agent'];
   const result = new UAParser(ua).getResult();
-  console.log(result)
   depClone(result)
   return {
     props: {

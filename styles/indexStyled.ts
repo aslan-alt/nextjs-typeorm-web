@@ -20,6 +20,10 @@ const Home = styled.div`
   .select-list-mobile{
     color:#8BC264;
     padding-left:2px;
+    .welcome{
+      display: flex;
+      align-items: center;
+    }
   }
 `
 export default Home
