@@ -1,6 +1,5 @@
 import { Context } from 'createStore'
-
-import React, { ChangeEvent, useContext, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useRef, forwardRef, MutableRefObject } from 'react'
 import styled from 'styled-components'
 
 const CommandRowWrapper = styled.label`
@@ -52,28 +51,20 @@ const CommandRowWrapper = styled.label`
     }
 `
 interface Props {
-    userInfo: IUAParser.IResult,
-
-    parentKeyUp: (e: React.KeyboardEvent<HTMLInputElement>) => void,
-
+    userInfo: IUAParser.IResult
 }
 
-const CommandRow = (props: Props) => {
-    const { userInfo: { device, browser, os }, parentKeyUp } = props
+const CommandRow = (props: Props, ref: MutableRefObject<any>) => {
+    const { userInfo: { device, browser, os } } = props
     const { state: { showOptions, inputValue, showButton }, dispatch } = useContext(Context)
 
     const isVisibleButton = device?.model && showButton
-    const inputRef = useRef<HTMLInputElement>(null);
 
-    const focusTextInput = () => {
-        inputRef?.current?.focus();
-    }
-
-    const childrenKeyUp: typeof parentKeyUp = (e) => {
+    const KeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.keyCode === 13) {
             dispatch({ type: 'setShowButton', payload: false })
+            dispatch({ type: 'setShowOptions', payload: true })
         }
-        parentKeyUp(e)
     }
 
     const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -82,23 +73,19 @@ const CommandRow = (props: Props) => {
         dispatch({ type: 'setInputValue', payload: value })
     }
 
-    useEffect(() => {
-        focusTextInput()
-    }, [])
 
     return (
         <CommandRowWrapper className={"commander-row"} >
             <p>{`${browser?.name}/${browser.version}/${os.name} User$ `}</p>
             <div className="commander-end">
                 {!(inputValue.length > 0) && <div className="cursor"></div>}
-
                 <input
                     type="text"
                     placeholder="Please enter the command"
                     value={inputValue}
                     onChange={onChange}
-                    onKeyUp={childrenKeyUp}
-                    ref={inputRef}
+                    onKeyUp={KeyUp}
+                    ref={ref}
                     disabled={showOptions}
                 />
 
@@ -111,4 +98,4 @@ const CommandRow = (props: Props) => {
     )
 }
 
-export default CommandRow
+export default forwardRef(CommandRow)

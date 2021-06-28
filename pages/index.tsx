@@ -1,6 +1,6 @@
 import { GetServerSideProps, NextPage } from 'next';
 import { UAParser } from 'ua-parser-js';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useReducer, useRef } from 'react';
 import { createKeyEventHash, createIconsList } from 'lib/pageMethods'
 import depClone from '../lib/depClone';
 import Square from 'components/Square'
@@ -19,6 +19,9 @@ const Index: NextPage<Props> = (props) => {
   const [state, dispatch] = useReducer(reducer, initialValue)
   const { showOptions, selectIndex, inputValue } = state
 
+  const focusRef = useRef(null)
+  const focusTextInput = () => { focusRef?.current?.focus() }
+
   const Icons = createIconsList({
     selectIndex, changeIndex: () => {
       dispatch({ type: 'setSelectIndex', payload: selectIndex })
@@ -26,35 +29,31 @@ const Index: NextPage<Props> = (props) => {
   })
 
   const keyEventHash: KeyUpEventHash = createKeyEventHash(Icons)
-  //目前没有用，将来可能会用到  可以拿到用户输入的指令
+  //目前没有用，将来可能会用到  可以拿到用户输入的指
 
-  const parentKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.keyCode === 13) {
-      dispatch({ type: 'setShowOptions', payload: true })
-    }
-  }
+  useEffect(() => {
+    focusTextInput()
+  }, [])
 
   useEffect(() => {
     if (showOptions) {
       document.onkeyup = (e) => {
-        const x = keyEventHash[e.code] && keyEventHash[e.code](selectIndex)
-        console.log(x)
-        keyEventHash[e.code] && dispatch({ type: 'setSelectIndex', payload: x })
+        keyEventHash[e.code] && dispatch({ type: 'setSelectIndex', payload: keyEventHash[e.code](selectIndex) })
       }
-    } else {
-      //TODO
     }
-
+    return () => {
+      document.onkeyup = null
+    }
   }, [showOptions, selectIndex])
 
   return (
     <Context.Provider value={{ state, dispatch }}>
-      <Home>
+      <Home onClick={focusTextInput}>
         <h5 className="home-head">
           <span className="head-front">TERMINAL</span>
           <span className="shell"><Square />bash</span>
         </h5>
-        <CommandRow {...{ userInfo, parentKeyUp, inputValue }} />
+        <CommandRow {...{ userInfo, inputValue, ref: focusRef }} />
         {
           showOptions &&
           <div className="select-list-mobile">
@@ -62,7 +61,7 @@ const Index: NextPage<Props> = (props) => {
             {Icons.map(iconProps => <OptionsItem {...iconProps} key={iconProps.id} />)}
           </div>}
       </Home>
-    </Context.Provider>
+    </Context.Provider >
 
   );
 };

@@ -5,8 +5,8 @@ export interface ReducerState {
     showButton: boolean
 }
 export interface Actions {
-    type: 'setShowOptions' | 'setSelectIndex' | 'setInputValue' | 'setShowButton',
-    payload: any
+    type: 'setShowOptions' | 'setSelectIndex' | 'setInputValue' | 'setShowButton' | 'resetState',
+    payload?: any
 }
 export const initialValue = {
     showOptions: false,
@@ -21,10 +21,8 @@ const reducer = (state: ReducerState, action: Actions) => {
         setSelectIndex: { ...state, selectIndex: action.payload },
         setInputValue: { ...state, inputValue: action.payload },
         setShowButton: { ...state, showButton: action.payload },
+        resetState: initialValue
     }
-    const x = newStates[action.type]
-    console.log('new State -----x')
-    console.log(x)
-    return x
+    return newStates[action.type]
 }
 export default reducer
