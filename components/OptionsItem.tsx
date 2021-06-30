@@ -17,8 +17,8 @@ const TabWrapper = styled.label`
     }
 `
 
-
 const OptionsItem = (props: IconItem) => {
+
     const { name, width = 48, height = 22, href, text, selectIndex, id, changeIndex } = props
     return (
         <TabWrapper onClick={() => { changeIndex(id) }}>

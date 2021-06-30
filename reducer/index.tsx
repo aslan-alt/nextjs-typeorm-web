@@ -2,7 +2,7 @@ export interface ReducerState {
     showOptions: boolean;
     selectIndex: number;
     inputValue: string;
-    showButton: boolean
+    showButton: boolean;
 }
 export interface Actions {
     type: 'setShowOptions' | 'setSelectIndex' | 'setInputValue' | 'setShowButton' | 'resetState',

@@ -3,7 +3,7 @@ import { UAParser } from 'ua-parser-js';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect, useReducer, useRef } from 'react';
 import { createKeyEventHash, createIconsList } from 'lib/pageMethods'
-import depClone from '../lib/depClone';
+import depClone from '../lib/deepClone';
 import Square from 'components/Square'
 import CommandRow from 'components/CommandRow'
 import OptionsItem from 'components/OptionsItem'
@@ -30,7 +30,6 @@ const Index: NextPage<Props> = (props) => {
   })
 
   const keyEventHash: KeyUpEventHash = createKeyEventHash(Icons)
-  //目前没有用，将来可能会用到  可以拿到用户输入的指
 
   useEffect(() => {
     focusTextInput()

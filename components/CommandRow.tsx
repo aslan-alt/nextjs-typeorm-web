@@ -20,7 +20,7 @@ const CommandRowWrapper = styled.label`
       display: flex;
       color:#E6E7E6;
       font-size: 12px;
-      padding:6px 0 6px 6px;
+      padding:10px 0 0 6px;
     }
     .commander-end{
         display: flex;
@@ -42,7 +42,7 @@ const CommandRowWrapper = styled.label`
             background: transparent;
             outline:none;
             color:white;
-            padding:8px 0 6px 6px;
+            padding:6px 0 6px 6px;
         }
         button{
             padding: 0px 3px;
@@ -72,7 +72,6 @@ const CommandRow = (props: Props, ref: MutableRefObject<any>) => {
         dispatch({ type: 'setShowButton', payload: !!value.length })
         dispatch({ type: 'setInputValue', payload: value })
     }
-
 
     return (
         <CommandRowWrapper className={"commander-row"} >
