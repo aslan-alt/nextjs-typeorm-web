@@ -5,6 +5,7 @@ const GamesPage = styled.div`
     display: flex;
     justify-content: center;
     background: #9293FE;
+   
     @keyframes jump {
         from{
             bottom: 114px;
@@ -12,6 +13,14 @@ const GamesPage = styled.div`
         to{
             bottom: auto;
             top: calc(50% + 100px);
+        }
+    }
+    @keyframes jump2 {
+        from{
+            left: 10%;
+        }
+        to{
+            left: 20%;
         }
     }
     @keyframes shake { /* 水平抖动，核心代码 */
@@ -106,6 +115,99 @@ const GamesPage = styled.div`
             height: 100px;
             border-radius: 4px;
         }
-   }     
-`
+   } 
+   &.phone{
+   
+       .ground{
+            bottom: auto;
+            top: 0;
+            height: 100vh;
+            width: 20px;
+            background:#9A4900;
+            border-right:2px solid black;
+       }
+       .cloud1{
+            height: 80px;
+            transform: rotate(90deg);
+            left: 72%;
+            right: 0;
+            top: 12%;
+       }
+       .cloud2{
+            height: 100px;
+            transform: rotate(90deg);
+            top: 58%;
+            left: 52%;
+        }
+        .mountain{
+            height: 80px;
+            transform: rotate(90deg);
+            left: -55px;
+            
+            top: 8%;
+        }
+        .pipe{
+            transform: rotate(90deg);
+            width: 90px;
+            left: 3%;
+        }
+        .noun{
+            transform: rotate(90deg);
+            width: 50px;
+            left: 38%;
+            top:16%;
+        }
+        .noun2{
+            transform: rotate(90deg);
+            width: 50px;
+            left: 70%;
+            top: 35%;
+        }
+        .mario{
+            transform: rotate(90deg);
+            height: 60px;
+            top:34.5%;
+            left: 2%;
+            &.jump{
+                animation: jump2 .1s ease;
+            }
+        }
+        .game-wrapper{
+            transform: rotate(90deg);
+            height: 160px;
+            left: auto;
+            display: flex;
+            width: 200px;
+          
+            justify-content: space-around;
+            top:38%;
+            left: 5%;
+            .game-snack{
+                transform: rotate(360deg);
+                left: 0;
+                height: 45px;
+                border-radius: 4px;
+                &.jump{
+                    animation: shake .8s linear;
+                }
+            }
+            .wall{
+                transform: rotate(360deg);
+                left: 45px;
+                height: 45px;
+            }
+            .wall2{
+                transform: rotate(360deg);
+                left: 130px;
+                height: 45px;
+            }
+            .game-fruit{
+                transform: rotate(360deg);
+                left: 90px;
+                height: 45px;
+                border-radius: 4px;
+            }
+        }
+   }    
+`;
 export default GamesPage

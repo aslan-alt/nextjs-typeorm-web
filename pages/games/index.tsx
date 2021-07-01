@@ -1,24 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import GamesPageWrapper from './style'
-import { message } from 'antd';
+import { notification, message, Modal } from 'antd';
 import cs from 'classnames'
-import { GetServerSideProps } from 'next';
-import { UAParser } from 'ua-parser-js';
-import deepClone from 'lib/deepClone';
 import { inputSpaceToSnack } from './methods';
 
 
-type Props = {
-    userInfo: IUAParser.IResult
-}
-
-const Games = ({ userInfo }: Props) => {
-
+const Games = () => {
+    const router = useRouter()
     const [jump, setJump] = useState(false)
     const [isPhone, setIsPhone] = useState<'phone'>(null)
+    const [modal, contextHolder] = Modal.useModal();
 
-    const router = useRouter()
     const goToSnack = () => {
         setJump(!jump)
         setTimeout(() => {
@@ -27,16 +20,24 @@ const Games = ({ userInfo }: Props) => {
     }
 
     const goToOther = () => {
-        message.info('敬请期待，先玩玩贪吃蛇吧', 3);
+        if (isPhone) {
+            notification.open({
+                message: 'tips:',
+                style: { transform: `rotate(90deg)`, top: 110, left: 170 },
+                description: '敬请期待，先玩玩贪吃蛇吧',
+            });
+        } else {
+            message.info('敬请期待，先玩玩贪吃蛇吧', 3);
+        }
     }
     useEffect(() => {
-
         const w = document.documentElement.clientWidth;
         if (w < 750) {
-            setIsPhone('phone')
+            modal.confirm({ onOk: () => { setIsPhone('phone') }, title: '通知', content: '将为您切换到竖屏' })
+        } else {
+            message.info('点击图标，或者输入空格选择游戏哈!', 3);
         }
         const leaveCallback = inputSpaceToSnack(goToSnack)
-        message.info('点击图标，或者输入空格选择游戏哈!', 3);
         return leaveCallback
     }, [])
 
@@ -59,6 +60,7 @@ const Games = ({ userInfo }: Props) => {
             <img src="/mario.png" alt="mario" className={cs("mario", jump && 'jump')} onClick={goToSnack} />
 
             <div className="ground"></div>
+            {contextHolder}
         </GamesPageWrapper>
 
     );
