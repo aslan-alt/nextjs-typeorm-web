@@ -1,14 +1,10 @@
-import { useRouter } from 'next/router'
-
 const createKeyEventHash = (Icons: IconItem[]) => {
-    const router = useRouter()
-
     return {
         ArrowDown: (id: number) => { return id !== 3 ? id + 1 : 0 },
         ArrowUp: (id: number) => { return id !== 0 ? id - 1 : 3 },
         Enter: (id: number) => {
             const path = Icons.find(item => item.id === id)
-            path && router.push(path.href)
+            location.href = path.href
             return id
         }
     }
@@ -37,6 +33,7 @@ const disableF12 = () => {
         }
     }
 }
+
 
 export {
     createKeyEventHash,

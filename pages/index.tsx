@@ -2,8 +2,8 @@ import Image from 'next/image'
 import { UAParser } from 'ua-parser-js';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect, useReducer, useRef } from 'react';
-import { createKeyEventHash, createIconsList } from 'lib/pageMethods'
-import depClone from '../lib/deepClone';
+import { createKeyEventHash, createIconsList } from './methods'
+import deepClone from '../lib/deepClone';
 import Square from 'components/Square'
 import CommandRow from 'components/CommandRow'
 import OptionsItem from 'components/OptionsItem'
@@ -59,7 +59,8 @@ const Index: NextPage<Props> = (props) => {
           <div className="select-list-mobile">
             <div className="welcome">Welcome to my website, thanks<Image {...{ src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22 }} /></div>
             {Icons.map(iconProps => <OptionsItem {...iconProps} key={iconProps.id} />)}
-          </div>}
+          </div>
+        }
       </Home>
     </Context.Provider >
 
@@ -70,10 +71,10 @@ export default Index;
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const ua = context.req.headers['user-agent'];
   const result = new UAParser(ua).getResult();
-  depClone(result)
+  deepClone(result)
   return {
     props: {
-      userInfo: depClone(result)
+      userInfo: deepClone(result)
     }
   };
 };
