@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 const GamesPage = styled.div`
     height: 100vh;
+    width: 100vw;
     display: flex;
     justify-content: center;
     background: #9293FE;
@@ -117,7 +118,9 @@ const GamesPage = styled.div`
         }
    } 
    &.phone{
-   
+        position: fixed;
+        right:0;
+        top: 0;
        .ground{
             bottom: auto;
             top: 0;
@@ -129,8 +132,8 @@ const GamesPage = styled.div`
        .cloud1{
             height: 80px;
             transform: rotate(90deg);
-            left: 72%;
-            right: 0;
+            left: 68%;
+          
             top: 12%;
        }
        .cloud2{
@@ -210,4 +213,30 @@ const GamesPage = styled.div`
         }
    }    
 `;
-export default GamesPage
+const SnackWrapper = styled.div`
+    .map{
+        position:relative;
+        width: 100vw;
+        height: 100vh;
+        background: #ccc;
+    }
+    .body-item{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        border-radius: 50%;
+        background: red;
+        transition: all .3s ease-in-out;
+    }
+    .food{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        border-radius: 50%;
+        background: red;
+    }
+`;
+export {
+    GamesPage,
+    SnackWrapper
+}
