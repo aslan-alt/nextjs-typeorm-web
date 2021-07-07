@@ -1,9 +1,11 @@
+import { useRouter } from 'next/router';
+
 const createRuleHash = (currentDirection: Direction) => {
     return {
-        ArrowLeft: { key: 'x', value: -20, constraint: currentDirection !== 'ArrowRight' },
-        ArrowRight: { key: 'x', value: 20, constraint: currentDirection !== 'ArrowLeft' },
-        ArrowDown: { key: 'y', value: 20, constraint: currentDirection !== 'ArrowUp' },
-        ArrowUp: { key: 'y', value: -20, constraint: currentDirection !== 'ArrowDown' },
+        ArrowLeft: { key: 'x', value: -15, constraint: currentDirection !== 'ArrowRight' },
+        ArrowRight: { key: 'x', value: 15, constraint: currentDirection !== 'ArrowLeft' },
+        ArrowDown: { key: 'y', value: 15, constraint: currentDirection !== 'ArrowUp' },
+        ArrowUp: { key: 'y', value: -15, constraint: currentDirection !== 'ArrowDown' },
     }
 }
 const creatPlace = (options: CreatePlace) => {
@@ -12,34 +14,45 @@ const creatPlace = (options: CreatePlace) => {
     while (placeList.length !== number) {
         placeList.push({
             x: Math.floor(Math.random() * Math.floor((width - 20) / 100)) * 100,
-            y: Math.floor(Math.random() * Math.floor((height - 20) / 100)) * 100
+            y: Math.floor(Math.random() * Math.floor((height - 20) / 100)) * 100,
+            background: '#' + Math.floor(Math.random() * (2 << 23)).toString(16)
         })
     }
+
     return placeList
 }
 const getHeadAndBody = ({ width, height }: GetHeadAndBody) => {
     let headAndBody = {
-        initHead: { x: 40, y: 0 },
+        initHead: { x: 50, y: 20 },
         initBody: [
-            { x: 20, y: 0 },
-            { x: 0, y: 0 }
+            { x: 35, y: 20 },
+            { x: 20, y: 20 }
         ]
     }
     if (width <= 700) {
-        const phoneX = width - 20
+        const phoneX = Math.floor((width - 20) / 100) * 100
+
         headAndBody = {
             initHead: { x: phoneX, y: 40 },
             initBody: [
-                { x: phoneX, y: 20 },
-                { x: phoneX, y: 0 }
+                { x: phoneX, y: 25 },
+                { x: phoneX, y: 10 }
             ]
         }
     }
     return headAndBody
 }
+const getWidthAndHeightByRouter = () => {
+    const router = useRouter()
+    const { query } = router
+    const width = parseInt(query.width as string)
+    const height = parseInt(query.height as string)
+    return { width, height }
+}
 
 export {
     createRuleHash,
     creatPlace,
-    getHeadAndBody
+    getHeadAndBody,
+    getWidthAndHeightByRouter
 }

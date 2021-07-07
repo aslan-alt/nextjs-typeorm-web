@@ -218,7 +218,7 @@ const SnackWrapper = styled.div`
         position:relative;
         width: 100vw;
         height: 100vh;
-        background: #ccc;
+        background: #FEFFFE;
     }
     .body-item{
         width: 20px;
@@ -226,11 +226,61 @@ const SnackWrapper = styled.div`
         position: absolute;
         border-radius: 50%;
         background: red;
-        transition: all .3s ease-in-out;
+        transition: all .3s;
+        &.snack-head{
+            z-index: 10;
+            div{
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                background: white;
+                border-radius: 50%;
+                &::before{
+                    content: '';
+                    display: block;
+                    width: 2px;
+                    height: 2px;
+                    background: black;
+                    border-radius: 50%;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                }
+                &.eye-left{
+                    left: 50%;
+                    margin-left:-4px;
+                    bottom: -1px;
+                }
+                &.eye-right{
+                    top:-1px;
+                    right: 50%;
+                    margin-right:-4px;
+                }
+            }
+        }
+        &.snack-tail{
+            &::before{
+                content: '';
+                display: block;
+                width: 18px;
+                height: 2px;
+                background: red;
+                position: absolute;
+                left: 50%;
+                margin-left: -9px;
+                transform: rotate(90deg);
+            }
+        }
+        &.rotate{
+            transform: rotate(90deg);
+            transition: all .3s ease 3ms;
+           
+        }
+       
     }
     .food{
-        width: 20px;
-        height: 20px;
+        width: 10px;
+        height: 10px;
         position: absolute;
         border-radius: 50%;
         background: red;

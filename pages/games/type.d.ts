@@ -10,6 +10,7 @@ interface BodyItem {
 interface PlaceOptions {
     x: number;
     y: number;
+    background: string;
 }
 interface CreatePlace {
     number: number,
