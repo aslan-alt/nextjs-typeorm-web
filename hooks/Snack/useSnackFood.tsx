@@ -5,11 +5,7 @@ interface Props {
     width: number;
     height: number;
 }
-type FoodItem = {
-    x: number;
-    y: number;
-    background: string;
-}
+
 
 const useSnackFood = ({ width, height }: Props) => {
 

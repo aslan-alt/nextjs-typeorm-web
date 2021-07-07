@@ -8,4 +8,9 @@ type IconItem = {
     height?: number;
     changeIndex: (e: number) => void
 }
+type FoodItem = {
+    x: number;
+    y: number;
+    background: string;
+}
 type KeyUpEventHash = { [key: string]: (id: number) => number }

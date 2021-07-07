@@ -19,12 +19,11 @@ const useDirection = () => {
                 setIsRun(!isRun)
             }
             if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
-                console.log(e.code)
                 const newDirection = e.code as Direction
                 changeDirection(newDirection)
             }
         }
-    }, [])
+    }, [isRun])
 
     return { direction, changeDirection, rules, currentRule, isRun }
 }
