@@ -31,7 +31,7 @@ const useSnackBody = (props: Props) => {
         </>
     )
 
-    return { snackBodyView, changeSnackBody, snackBody }
+    return { snackBodyView, changeSnackBody, snackBody, setsNackBody }
 
 
 }

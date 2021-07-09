@@ -1,5 +1,6 @@
 import cs from 'classnames'
 import { sleep } from 'lib'
+import { Modal } from 'antd';
 import { useEffect, useState } from 'react'
 
 interface Props {
@@ -20,11 +21,13 @@ interface CheckStatus {
     snackBody: BodyItem[];
     width: number;
     height: number;
+    initHeadAndBody: () => void;
 }
 
 
 const useSnackHead = (props: Props) => {
     const { direction, isRun, speed, currentRule, initHead } = props
+    const [modal, contextHolder] = Modal.useModal();
     const [snackHead, setSnackHead] = useState(initHead)
     const [lastHead, setLastHead] = useState({ x: 0, y: 0 })
 
@@ -41,19 +44,29 @@ const useSnackHead = (props: Props) => {
     const findCurrentEatenFood = (foodList: FoodItem[]) => {
         const eatFood = foodList.find(food => {
             const d = Math.sqrt((snackHead.x - food.x) * (snackHead.x - food.x) + (snackHead.y - food.y) * (snackHead.y - food.y));
-            return d <= 15 && food
+            return d <= 16 && food
         })
         return eatFood
     }
+    const alertGameOver = (callBack: () => void, text: string) => {
+        modal.confirm({
+            title: text,
+            content: '再来一局？',
+            onOk: callBack,
+            onCancel: () => { location.href = '/' }
+        })
+    }
+
 
     const checkingStatusAndFeedback = (options: CheckStatus) => {
-        const { snackBody, width, height } = options
+        const { snackBody, width, height, initHeadAndBody } = options
+
         const biteYourself = snackBody.find(item => item.x === snackHead.x && item.y === snackHead.y)
         const outOfRange = (snackHead.x < 0 || snackHead.x > width - 10 || snackHead.y < 0 || snackHead.y > height - 10)
         if (biteYourself) {
-            alert('niteYourSelf')
+            alertGameOver(initHeadAndBody, '咬到自己啦')
         } else if (outOfRange) {
-            alert('outOfRange')
+            alertGameOver(initHeadAndBody, '撞墙啦')
         } else {
             changeSnackHead()
         }
@@ -67,6 +80,7 @@ const useSnackHead = (props: Props) => {
         <div className={headClass} style={{ left: snackHead.x, top: snackHead.y }}>
             <div className="eye-left"></div>
             <div className="eye-right"></div>
+            {contextHolder}
         </div>
     )
     return { snackHead, setSnackHead, snackHeadView, changeSnackHead, lastHead, findCurrentEatenFood, checkingStatusAndFeedback }

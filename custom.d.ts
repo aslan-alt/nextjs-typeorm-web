@@ -13,4 +13,8 @@ type FoodItem = {
     y: number;
     background: string;
 }
+type setDirectionOptions = {
+    oldDirection: Direction;
+    newDirection: Direction
+}
 type KeyUpEventHash = { [key: string]: (id: number) => number }

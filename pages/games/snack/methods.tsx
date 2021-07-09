@@ -30,13 +30,13 @@ const getHeadAndBody = ({ width, height }: GetHeadAndBody) => {
         ]
     }
     if (width <= 700) {
-        const phoneX = Math.floor((width - 20) / 100) * 100
+        // const phoneX = Math.floor((width - 20) / 100) * 100
 
         headAndBody = {
-            initHead: { x: phoneX, y: 40 },
+            initHead: { x: 50, y: 40 },
             initBody: [
-                { x: phoneX, y: 25 },
-                { x: phoneX, y: 10 }
+                { x: 50, y: 25 },
+                { x: 50, y: 10 }
             ]
         }
     }

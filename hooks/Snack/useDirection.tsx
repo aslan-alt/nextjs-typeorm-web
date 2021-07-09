@@ -1,30 +1,57 @@
+import { throttle } from "lib"
 import { createRuleHash } from "pages/games/snack/methods"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
+
+
+type ChangeDirection = (options: setDirectionOptions) => void;
 
 const useDirection = () => {
     const [isRun, setIsRun] = useState<boolean>(false)
     const [direction, setDirection] = useState<Direction>('ArrowDown')
-
+    const [speed, setSpeed] = useState<number>(200)
     const rules = createRuleHash(direction)
     const currentRule = rules[direction]
 
-    const changeDirection = (newDirection: Direction) => {
-        if (rules[direction].constraint) {
-            setDirection(newDirection)
+    const changeDirection: ChangeDirection = throttle((options: setDirectionOptions) => {
+        const { oldDirection, newDirection } = options
+        console.log('direction-----------')
+        console.log(oldDirection)
+        console.log(newDirection)
+        if (oldDirection !== newDirection) {
+            console.log('xxxx')
+            if (rules[newDirection].constraint) {
+                setDirection(newDirection)
+            }
         }
+    }, 300)
+
+
+    const changeSpeed = (speed: number) => {
+        setSpeed(speed)
     }
     useEffect(() => {
         document.body.onkeydown = e => {
+            if (e.code === 'KeyQ') {
+                setSpeed(80)
+            }
             if (e.code === 'Space') {
                 setIsRun(!isRun)
             }
             if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
+
                 const newDirection = e.code as Direction
-                changeDirection(newDirection)
+                console.log('newDirection-------')
+                console.log(newDirection)
+                changeDirection({ oldDirection: direction, newDirection })
             }
         }
-    }, [isRun])
+        document.body.onkeyup = e => {
+            if (e.code === 'KeyQ') {
+                setSpeed(200)
+            }
+        }
+    }, [isRun, direction])
 
-    return { direction, changeDirection, rules, currentRule, isRun }
+    return { direction, setIsRun, changeDirection, rules, currentRule, isRun, speed, changeSpeed }
 }
 export default useDirection

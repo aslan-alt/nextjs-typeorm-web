@@ -3,6 +3,7 @@ const Home = styled.div`
   background: #272C33;
   padding: 16px;
   height: 100vh;
+  width: 100vw;
   .home-head{
     padding-bottom: 10px;
     font-size: 16px;
