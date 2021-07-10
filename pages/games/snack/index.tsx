@@ -1,19 +1,21 @@
 import React, { useEffect, useRef } from 'react'
 import { Modal } from 'antd';
-import { SnackWrapper } from '../style'
+import { SnackWrapper } from '../../../styles/gameStyle'
 import useSnackFood from 'hooks/Snack/useSnackFood';
 import useSnackHead from 'hooks/Snack/useSnackHead';
 import useDirection from 'hooks/Snack/useDirection';
 import useSnackBody from 'hooks/Snack/useSnackBody';
-import { getHeadAndBody, getWidthAndHeightByRouter } from './methods';
+import { getHeadAndBody, getWidthAndHeightByRouter } from 'lib/game/snack';
 import Controller from 'components/Controller';
 import SpeedUp from 'components/SpeedUp';
+import useDialog from 'hooks/Snack/useDialog';
 
 
 
 const Snack = () => {
     let { current } = useRef({ count: 0 })
     const [modal, contextHolder] = Modal.useModal();
+    const { DialogNode, confirm } = useDialog()
     const { width, height } = getWidthAndHeightByRouter()
     const { initBody, initHead } = getHeadAndBody({ width, height })
     const { direction, currentRule, isRun, speed, changeDirection, setIsRun, changeSpeed } = useDirection()
@@ -21,13 +23,13 @@ const Snack = () => {
     const { foodList, foodsView, deleteEatenFoodAndCreateNewFood } = useSnackFood({ width, height })
 
 
-    const { snackHead, snackHeadView, lastHead, findCurrentEatenFood, checkingStatusAndFeedback, setSnackHead } = useSnackHead({ initHead, direction, isRun, speed, currentRule })
+    const { snackHead, snackHeadView, lastHead, findCurrentEatenFood, checkingStatusAndFeedback, setSnackHead } = useSnackHead({ initHead, direction, isRun, speed, currentRule, confirm })
     const { changeSnackBody, snackBody, snackBodyView, setsNackBody } = useSnackBody({ initBody })
 
     const initHeadAndBody = () => {
         setSnackHead(initHead)
         setsNackBody(initBody)
-        setIsRun(false)
+        setIsRun(true)
         changeDirection({ oldDirection: direction, newDirection: 'ArrowDown' })
     }
 
@@ -38,12 +40,15 @@ const Snack = () => {
                 content: (
                     <div>
                         <p>方向键：上 ｜ 下 ｜ 左 ｜ 右</p>
-                        <p>开始｜暂停：空格键</p>
+                        <p>开始：空格键</p>
+                        <p>暂停：空格键</p>
                         <p>加速键：Q</p>
                     </div>
                 ),
                 onOk: () => { },
             })
+        } else {
+            confirm({ title: '开始游戏', ok: () => { setIsRun(true) }, cancel: () => { location.href = '/' } })
         }
 
     }, [])
@@ -74,7 +79,7 @@ const Snack = () => {
                 {snackHeadView}
                 {snackBodyView}
                 {foodsView}
-                {contextHolder}
+
                 {
                     width < 650 &&
                     <>
@@ -82,6 +87,8 @@ const Snack = () => {
                         <SpeedUp  {...{ changeSpeed }} />
                     </>
                 }
+                {contextHolder}
+                {DialogNode}
             </div>
         </SnackWrapper>
     )

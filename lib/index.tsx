@@ -1,5 +1,4 @@
 function sleep(time: number) {
-
     return new Promise((resolve) => {
         let timerId = setTimeout(() => {
             resolve(time)
@@ -7,6 +6,7 @@ function sleep(time: number) {
         }, time)
     });
 }
+
 const debounce = (fn: Function, delay: number) => {
     let timerId: NodeJS.Timeout = null
     return function (...args: any[]) {
@@ -18,6 +18,7 @@ const debounce = (fn: Function, delay: number) => {
         }, delay)
     }
 }
+
 const throttle = (fn: Function, delay: number) => {
     let toggle = true
     return function (...args: any[]) {
@@ -31,6 +32,10 @@ const throttle = (fn: Function, delay: number) => {
         }
     }
 }
+
+
+
+
 
 export {
     sleep,

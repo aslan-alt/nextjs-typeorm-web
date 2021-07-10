@@ -1,7 +1,8 @@
 import cs from 'classnames'
 import { sleep } from 'lib'
 import { Modal } from 'antd';
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
+
 
 interface Props {
     direction: Direction;
@@ -16,6 +17,7 @@ interface Props {
         value: number;
         constraint: boolean;
     }
+    confirm: (options: DialogOptions) => void
 }
 interface CheckStatus {
     snackBody: BodyItem[];
@@ -26,8 +28,10 @@ interface CheckStatus {
 
 
 const useSnackHead = (props: Props) => {
-    const { direction, isRun, speed, currentRule, initHead } = props
+    const { direction, isRun, speed, currentRule, initHead, confirm } = props
     const [modal, contextHolder] = Modal.useModal();
+
+
     const [snackHead, setSnackHead] = useState(initHead)
     const [lastHead, setLastHead] = useState({ x: 0, y: 0 })
 
@@ -48,13 +52,17 @@ const useSnackHead = (props: Props) => {
         })
         return eatFood
     }
-    const alertGameOver = (callBack: () => void, text: string) => {
-        modal.confirm({
-            title: text,
-            content: '再来一局？',
-            onOk: callBack,
-            onCancel: () => { location.href = '/' }
-        })
+    const alertGameOver = (callBack: () => void, text: string, width: number) => {
+        if (width > 750) {
+            modal.confirm({
+                title: text,
+                content: '再来一局？',
+                onOk: callBack,
+                onCancel: () => { location.href = '/' }
+            })
+            return
+        }
+        confirm({ title: text + ',再来一局？', ok: callBack, cancel: () => { location.href = '/' } })
     }
 
 
@@ -64,9 +72,9 @@ const useSnackHead = (props: Props) => {
         const biteYourself = snackBody.find(item => item.x === snackHead.x && item.y === snackHead.y)
         const outOfRange = (snackHead.x < 0 || snackHead.x > width - 10 || snackHead.y < 0 || snackHead.y > height - 10)
         if (biteYourself) {
-            alertGameOver(initHeadAndBody, '咬到自己啦')
+            alertGameOver(initHeadAndBody, '咬到自己啦', width)
         } else if (outOfRange) {
-            alertGameOver(initHeadAndBody, '撞墙啦')
+            alertGameOver(initHeadAndBody, '撞墙啦', width)
         } else {
             changeSnackHead()
         }

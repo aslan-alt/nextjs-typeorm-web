@@ -17,4 +17,33 @@ type setDirectionOptions = {
     oldDirection: Direction;
     newDirection: Direction
 }
+interface DialogOptions {
+    title: string;
+    ok: () => void;
+    cancel: () => void;
+}
+type Direction = "ArrowUp" | "ArrowDown" | "ArrowLeft" | "ArrowRight"
+type ButtonItem = {
+    text: string;
+    direction: Direction;
+}
+interface BodyItem {
+    x: number;
+    y: number;
+}
+interface PlaceOptions {
+    x: number;
+    y: number;
+    background: string;
+}
+interface CreatePlace {
+    number: number,
+    width: number,
+    height: number
+}
+interface GetHeadAndBody {
+    width: number,
+    height: number;
+}
+
 type KeyUpEventHash = { [key: string]: (id: number) => number }

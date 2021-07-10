@@ -1,4 +1,4 @@
-import { creatPlace } from "pages/games/snack/methods"
+import { creatPlace } from "lib/game/snack"
 import { useState } from "react"
 
 interface Props {

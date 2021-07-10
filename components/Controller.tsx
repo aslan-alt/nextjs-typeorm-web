@@ -64,17 +64,15 @@ const Controller = (props: Props) => {
     }
     const onTouchMove = (e: E) => {
         const { clientX, clientY } = e.changedTouches[0]
-
         const distanceY = startPosition.y - clientY
         const distanceX = startPosition.x - clientX
-        if (Math.abs(distanceY) > Math.abs(distanceX)) {
 
+        if (Math.abs(distanceY) > Math.abs(distanceX)) {
             if (distanceY < 0) {
                 changeDirection({ oldDirection: direction, newDirection: 'ArrowDown' })
-            } else if (distanceY > 1) {
+            } else {
                 changeDirection({ oldDirection: direction, newDirection: 'ArrowUp' })
             }
-
         } else {
             if (distanceX > 0) {
                 changeDirection({ oldDirection: direction, newDirection: 'ArrowLeft' })

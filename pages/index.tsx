@@ -2,8 +2,8 @@ import Image from 'next/image'
 import { UAParser } from 'ua-parser-js';
 import { GetServerSideProps, NextPage } from 'next';
 import { useEffect, useReducer, useRef } from 'react';
-import { createKeyEventHash, createIconsList } from './methods'
-import deepClone from '../lib/deepClone';
+import { createKeyEventHash, createIconsList } from 'lib/game'
+import deepClone from 'lib/deepClone';
 import Square from 'components/Square'
 import CommandRow from 'components/CommandRow'
 import OptionsItem from 'components/OptionsItem'

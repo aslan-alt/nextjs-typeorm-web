@@ -1,6 +1,6 @@
 import { throttle } from "lib"
-import { createRuleHash } from "pages/games/snack/methods"
-import { useCallback, useEffect, useState } from "react"
+import { createRuleHash } from "lib/game/snack"
+import { useEffect, useState } from "react"
 
 
 type ChangeDirection = (options: setDirectionOptions) => void;
@@ -14,9 +14,7 @@ const useDirection = () => {
 
     const changeDirection: ChangeDirection = throttle((options: setDirectionOptions) => {
         const { oldDirection, newDirection } = options
-        console.log('direction-----------')
-        console.log(oldDirection)
-        console.log(newDirection)
+
         if (oldDirection !== newDirection) {
             console.log('xxxx')
             if (rules[newDirection].constraint) {
@@ -38,10 +36,7 @@ const useDirection = () => {
                 setIsRun(!isRun)
             }
             if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.code)) {
-
                 const newDirection = e.code as Direction
-                console.log('newDirection-------')
-                console.log(newDirection)
                 changeDirection({ oldDirection: direction, newDirection })
             }
         }

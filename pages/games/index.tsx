@@ -1,9 +1,9 @@
 import { Ref, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router'
-import { GamesPage } from './style'
 import { notification, message, Modal } from 'antd';
+import { alertByWidth, inputSpaceToSnack } from 'lib/game';
+import { GamesPage } from '../../styles/gameStyle'
 import cs from 'classnames'
-import { alertByWidth, inputSpaceToSnack } from './methods';
 
 
 const Games = () => {
@@ -20,12 +20,11 @@ const Games = () => {
         const { width, height } = getWidthAndHeight()
         setTimeout(() => {
             router.push({ pathname: '/games/snack', query: { width, height } });
-
         }, 1000)
     }
     const getWidthAndHeight = () => {
-        const width = ref.current.clientWidth;
-        const height = ref.current.clientHeight
+        const width = ref.current?.clientWidth;
+        const height = ref.current?.clientHeight
         return { width, height }
     }
 
@@ -54,6 +53,7 @@ const Games = () => {
     }, [])
 
     return (
+
         <GamesPage className={isPhone} ref={ref}>
             {imgList.map((imgName, index) => <img key={index} className={imgName} src={`/${imgName}.png`} />)}
             <img src="/noun.png" alt="noun" className="noun2" />
@@ -67,6 +67,7 @@ const Games = () => {
             <div className="ground"></div>
             {contextHolder}
         </GamesPage>
+
     );
 };
 export default Games;

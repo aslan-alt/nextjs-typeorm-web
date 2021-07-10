@@ -33,10 +33,10 @@ const getHeadAndBody = ({ width, height }: GetHeadAndBody) => {
         // const phoneX = Math.floor((width - 20) / 100) * 100
 
         headAndBody = {
-            initHead: { x: 50, y: 40 },
+            initHead: { x: 200, y: 40 },
             initBody: [
-                { x: 50, y: 25 },
-                { x: 50, y: 10 }
+                { x: 200, y: 25 },
+                { x: 200, y: 10 }
             ]
         }
     }
