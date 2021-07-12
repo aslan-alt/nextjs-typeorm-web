@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 import React, { useCallback, useState } from 'react'
+import FormWrapper from 'styles/formStyle'
 
 type Field<T> = {
     label: string,
@@ -48,11 +49,11 @@ export function useForm<T>(props: UseFormOptions<T>) {
     }, [submit, fromData])
 
     const form = (
-        <div>
+        <FormWrapper>
             {fields?.map((filed, index) => {
                 return (
-                    <div key={index}>
-                        {filed.label}
+                    <div key={index} className="xxxxx">
+                        <div className="title">{filed.label}</div>
                         {filed.type === 'textarea' ?
                             <textarea defaultValue={fromData[filed.key].toString()} onChange={(e) => {
                                 onChange(filed.key, e.target.value)
@@ -72,7 +73,7 @@ export function useForm<T>(props: UseFormOptions<T>) {
             <div>
                 <button onClick={_onSubmit} >{text}</button>
             </div>
-        </div>
+        </FormWrapper>
     )
 
     return { form, setErrors }

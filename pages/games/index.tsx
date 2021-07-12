@@ -1,4 +1,4 @@
-import { Ref, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router'
 import { notification, message, Modal } from 'antd';
 import { alertByWidth, inputSpaceToSnack } from 'lib/game';
@@ -48,12 +48,10 @@ const Games = () => {
             onOk: () => { setIsPhone('phone') },
             onCancel: () => { setImgList(['cloud1']) }
         })
-        const leaveCallback = inputSpaceToSnack(goToSnack)
-        return leaveCallback
+        return inputSpaceToSnack(goToSnack)
     }, [])
 
     return (
-
         <GamesPage className={isPhone} ref={ref}>
             {imgList.map((imgName, index) => <img key={index} className={imgName} src={`/${imgName}.png`} />)}
             <img src="/noun.png" alt="noun" className="noun2" />

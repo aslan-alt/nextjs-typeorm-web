@@ -5,7 +5,6 @@ import { SignIn } from 'src/model/SignIn';
 
 
 const Sessions: NextApiHandler = async (req, res) => {
-
     const { username, password } = req.body
     const signIn = new SignIn()
     signIn.password = password
