@@ -3,13 +3,14 @@ import styled from 'styled-components'
 
 const StartWrapper = styled.div`
     width: 100vw;
-    height: 100vw;
+    height: 100vh;
     background: radial-gradient(200% 100% at bottom center,#f7f7b6,#e96f92,#1b2947);
     background: radial-gradient(220% 105% at top center,#1b2947 10%,#75517d 40%,#e96f92 65%,#f7f7b6);
     background-attachment: fixed;
     overflow: hidden;
     display: flex;
     justify-content: center;
+    
     @keyframes rotate {
         0% {
             transform: perspective(400px) rotateZ(20deg) rotateX(-400deg) rotateY(0);
@@ -37,7 +38,7 @@ const StartWrapper = styled.div`
         left: 0;
         backface-visibility: hidden;
     }
-    
+    padding-top:150px ;
 `;
 
 
@@ -72,7 +73,7 @@ export default function Stars(props: Props) {
                     }
                 </div>
             }
-            {children}
+            <div className="children"> {children}</div>
         </StartWrapper>
     )
 }

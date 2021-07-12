@@ -6,7 +6,7 @@ import axios from 'axios';
 import Link from 'next/link';
 
 const MessageWrapper = styled.div`
-    border: 1px solid red;
+   
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -45,10 +45,10 @@ const messageBoard: NextPage<Props> = (props) => {
                 content: (
                     <Content>
                         <p>评论功能必须登陆哦</p>
-                        <Link href={'/sign_up'}><a className='go-to-sign-up'>立即注册</a></Link>
+                        <Link href={`/sign_up?returnTo=${encodeURIComponent(window.location.pathname)}`}><a className='go-to-sign-up'>立即注册</a></Link>
                     </Content>
                 ),
-                onOk: () => { location.href = '/sign_in' },
+                onOk: () => { location.href = `/sign_in?returnTo=${encodeURIComponent(window.location.pathname)}` },
                 okText: '立即登陆',
                 cancelText: '取消'
             })
