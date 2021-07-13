@@ -16,8 +16,8 @@ export class Comment {
     user: User
     @ManyToOne('Post', 'comment')
     post: Post
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'timestamp', name: 'createdAt', nullable: false })
     createdAt: Date;
-    @UpdateDateColumn()
+    @UpdateDateColumn({ type: 'timestamp', name: 'updatedAt' })
     updateAt: Date
 }

@@ -10,7 +10,10 @@ const StartWrapper = styled.div`
     overflow: hidden;
     display: flex;
     justify-content: center;
-    
+    padding-top:200px;
+    @media (max-width: 600px) {
+        padding-top:140px;
+    }
     @keyframes rotate {
         0% {
             transform: perspective(400px) rotateZ(20deg) rotateX(-400deg) rotateY(0);
@@ -38,7 +41,6 @@ const StartWrapper = styled.div`
         left: 0;
         backface-visibility: hidden;
     }
-    padding-top:150px ;
 `;
 
 

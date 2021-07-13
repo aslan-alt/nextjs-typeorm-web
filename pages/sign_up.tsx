@@ -1,15 +1,10 @@
 import axios from 'axios'
 import { NextPage } from 'next'
 import { useForm } from 'hooks/useForm'
-import styled from 'styled-components'
 import { Modal, message } from 'antd';
 import qs from 'querystring'
 import StarsLayout from 'components/StarsLayout'
 
-
-const SignInWrapper = styled.div`
-   
-`
 
 const SignUp: NextPage = () => {
     const [modal, contextHolder] = Modal.useModal();
@@ -32,8 +27,10 @@ const SignUp: NextPage = () => {
                         const { username, password } = commitData
                         axios.post('/api/sessions', { username, password }).then(res => {
                             const query = qs.parse(window.location.search.substr(1))
-                            location.href = query.returnTo.toString()
+                            location.href = query.returnTo?.toString() || '/'
                         }).catch(res => {
+                            console.log('-------fff')
+                            console.log(res)
                             message.error('登陆失败，请检查网络')
                         })
 
@@ -47,15 +44,15 @@ const SignUp: NextPage = () => {
             }
         },
         fields: [
-            { label: 'username', key: 'username', type: 'text' },
-            { label: 'password', key: 'password', type: 'text' },
-            { label: 'confirm password', key: 'passwordConfirmation', type: 'text' }
+            { label: '用户名', key: 'username', type: 'text' },
+            { label: '密码', key: 'password', type: 'text' },
+            { label: '确认密码', key: 'passwordConfirmation', type: 'text' }
         ],
-        buttonText: 'sign up'
+        buttonText: '注册'
     })
     return (
         <StarsLayout>
-            <div className="signIn">
+            <div>
                 {form}
                 {contextHolder}
             </div>

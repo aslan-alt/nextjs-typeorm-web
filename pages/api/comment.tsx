@@ -10,18 +10,25 @@ interface CommentData {
 }
 
 const Comments: NextApiHandler = async (req, res) => {
-    const { commentContent, useId } = req.body as CommentData
-    const comment = new Comment()
+    const { commentContent } = req.body as CommentData
     const user = req.session.get('currentUser')
+
+
+    const comment = new Comment()
+
     if (!user) {
         res.status(401).json({ message: '未登陆' });
         return
     }
-    res.status(200).json({ name: 'chenggong' });
-    // const connect = await getDatabaseConnection()
-    // comment.content = commentContent
-    // comment.userId = useId
-    // await connect.manager.save(comment)
-
+    const connect = await getDatabaseConnection()
+    comment.content = commentContent
+    comment.userId = user.id
+    comment.postId = 0
+    comment.user = user
+    comment.updateAt = new Date()
+    console.log('comment-------')
+    console.log(comment)
+    await connect.manager.save(comment)
+    res.status(200).json(comment);
 }
 export default withSession(Comments)

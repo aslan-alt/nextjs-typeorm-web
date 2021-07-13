@@ -1,5 +1,6 @@
 import { AxiosResponse } from 'axios'
 import Link from 'next/link';
+import { Button } from 'antd'
 import React, { useCallback, useState } from 'react'
 import FormWrapper from 'styles/formStyle'
 
@@ -21,6 +22,7 @@ type UseFormOptions<T> = {
 
 export function useForm<T>(props: UseFormOptions<T>) {
     const { initFormData, fields, submit, buttonText, goToSignIn } = props
+    const [loading, setLoading] = useState(false)
     type Keys = keyof T
     const [fromData, setFormData] = useState(initFormData)
     const [errors, setErrors] = useState(() => {
@@ -35,14 +37,17 @@ export function useForm<T>(props: UseFormOptions<T>) {
     }, [])
 
     const _onSubmit = useCallback((e) => {
+        setLoading(true)
         e.preventDefault()
         submit.request(fromData).then(res => {
             submit.success(res, fromData)
+            setLoading(false)
 
         }, (error) => {
             const response: AxiosResponse = error.response
             if (response.status === 422) {
                 setErrors({ ...response.data })
+                setLoading(false)
             }
             // else if (response.status === 401) {
             //     location.href = `/sign_in?returnTo=${encodeURIComponent(window.location.pathname)}`
@@ -81,7 +86,7 @@ export function useForm<T>(props: UseFormOptions<T>) {
                 )
             })}
             <div className="submit">
-                <button onClick={_onSubmit} >{buttonText}</button>
+                <Button onClick={_onSubmit} loading={loading}>{buttonText}</Button>
             </div>
             {
                 goToSignIn &&

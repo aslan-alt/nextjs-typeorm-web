@@ -12,6 +12,10 @@ const FormWrapper = styled.div`
     display: flex;
     flex-direction: column;
     color: white;
+    @media (max-width: 600px) {
+        width: 300px;
+        height: 300px;
+    }
    .form-item{
         display: flex;
         flex-direction: column;
@@ -20,7 +24,7 @@ const FormWrapper = styled.div`
             flex-grow: 1;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(255,255,255,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.4);
             outline:none;
             &::placeholder{
                 color:rgba(255,255,255,0.5);
@@ -40,11 +44,15 @@ const FormWrapper = styled.div`
         display: flex;
         margin-bottom:26px;
         button{
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: rgba(255,255,255,0.5);
             background: rgba(255,255,255,0.1);
             padding:8px 16px;
             flex-grow: 1;
             font-size: 16px;
+            height: 42px;
             border-radius: 4px;
             border: none;
             &:active{
