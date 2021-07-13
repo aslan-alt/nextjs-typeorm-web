@@ -1,10 +1,20 @@
 import styled from 'styled-components'
 
+
 const MessageWrapper = styled.div`
     width: 100vw;
     height: 100vh;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    
+    .message-list{
+        width: 40vw;
+        @media (max-width: 600px) {
+            width: 70vw;
+        }
+        
+    }
     .add-message{
         width: 40vw;
         @media (max-width: 600px) {
@@ -17,6 +27,7 @@ const MessageWrapper = styled.div`
             justify-content: flex-end;
         } 
     }
+
 `
 const Content = styled.div`
     .go-to-sign-up{

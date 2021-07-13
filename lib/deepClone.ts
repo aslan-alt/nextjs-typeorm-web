@@ -12,6 +12,8 @@ function deepClone(source: any) {
                 dist = function () {
                     return source.apply(this, arguments)
                 }
+            } else if (source instanceof Date) {
+                return source.toString()
             }
             else {
                 dist = {}

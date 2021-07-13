@@ -4,10 +4,10 @@ import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { Content, MessageWrapper } from 'styles/messageBoardStyle'
-import { UAParser } from 'ua-parser-js';
 import deepClone from 'lib/deepClone';
 import { getDatabaseConnection } from 'lib/getDatabaseConnection';
 import { Comment } from 'src/entity/Comment';
+import { friendlyDate } from 'lib';
 
 type CommentItem = {
     id: number;
@@ -18,13 +18,14 @@ type CommentItem = {
     post: string,
     createdAt: string;
     updateAt: string;
+    nickname: string;
 }
 type Props = {
-    userInfo: IUAParser.IResult
+    leaveMessageList: CommentItem[]
 }
 
 const messageBoard: NextPage<Props> = (props) => {
-
+    const { leaveMessageList } = props
     const [comment, setComment] = useState('')
     const [modal, contextHolder] = Modal.useModal();
 
@@ -55,6 +56,26 @@ const messageBoard: NextPage<Props> = (props) => {
     return (
         <MessageWrapper>
             {contextHolder}
+            <div className="message-list">
+                {
+                    leaveMessageList.map(item => {
+                        return (
+                            <div key={item.id} className="message-item">
+                                <div>
+                                    {item.nickname}
+                                    <span>
+                                        {friendlyDate(item.createdAt)}
+                                    </span>
+                                </div>
+                                <div>
+                                    {item.content}
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+            </div>
+
             <div className="add-message">
                 <Input.TextArea placeholder="随便说点什么吧。。。"
                     value={comment}
@@ -75,17 +96,15 @@ export default messageBoard;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const connect = await getDatabaseConnection()
-    let found: Comment[]
+    let found: Comment[] = []
     try {
         found = await connect.manager.find(Comment)
     } catch (e) {
 
     }
-    console.log('------found')
-    console.log(found)
     return {
         props: {
-            userInfo: []
+            leaveMessageList: deepClone(found)
         }
     };
 };

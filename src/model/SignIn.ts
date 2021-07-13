@@ -8,7 +8,6 @@ export class SignIn {
     user: User;
     errors = { username: [] as string[], password: [] as string[] }
     async validate() {
-
         if (this.username.trim() === '') {
             this.errors.username.push('')
         }

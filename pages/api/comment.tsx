@@ -1,6 +1,5 @@
 import { withSession } from 'lib/withSession';
 import { NextApiHandler } from 'next'
-
 import { Comment } from 'src/entity/Comment';
 import { getDatabaseConnection } from 'lib/getDatabaseConnection';
 
@@ -21,13 +20,17 @@ const Comments: NextApiHandler = async (req, res) => {
         return
     }
     const connect = await getDatabaseConnection()
+    const now = new Date()
     comment.content = commentContent
     comment.userId = user.id
     comment.postId = 0
     comment.user = user
-    comment.updateAt = new Date()
+
     console.log('comment-------')
     console.log(comment)
+    comment.createdAt = now
+    comment.updateAt = now
+    comment.nickname = user.username
     await connect.manager.save(comment)
     res.status(200).json(comment);
 }

@@ -8,6 +8,8 @@ export class Comment {
     id: number;
     @Column('int')
     userId: number;
+    @Column('varchar')
+    nickname: string;
     @Column('int')
     postId: number
     @Column('text')
