@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
 const StartWrapper = styled.div`
@@ -45,9 +45,17 @@ const StartWrapper = styled.div`
 
 
 const createStart = () => {
-    const startList = []
+    const startList: StarList = []
+
     for (let i = 0; i < 800; i++) {
-        startList.push(i)
+        const speed = 0.2 + Math.random() * 1;
+        var thisDistance = 800 + Math.random() * 300;
+        const style = {
+            id: i,
+            transformOrigin: `0 0 ${thisDistance}px`,
+            transform: `translate3d(0,0,-${thisDistance}px) rotateY(${Math.random() * 360}deg) rotateX(${Math.random() * -50}deg) scale(${speed},${speed})`
+        }
+        startList.push(style)
     }
     return startList
 }
@@ -56,6 +64,7 @@ interface Props {
 }
 
 export default function Stars(props: Props) {
+    const [startList] = useState<StarList>(createStart())
     const { children } = props
     return (
         <StartWrapper>
@@ -63,14 +72,9 @@ export default function Stars(props: Props) {
                 <div className="stars">
                     <div className="start"></div>
                     {
-                        createStart().map(item => {
-                            const speed = 0.2 + Math.random() * 1;
-                            var thisDistance = 800 + Math.random() * 300;
-                            const style = {
-                                transformOrigin: `0 0 ${thisDistance}px`,
-                                transform: `translate3d(0,0,-${thisDistance}px) rotateY(${Math.random() * 360}deg) rotateX(${Math.random() * -50}deg) scale(${speed},${speed})`
-                            }
-                            return <div className="star" key={item} style={style}></div>
+                        startList.map(item => {
+                            const { transform, transformOrigin } = item
+                            return <div className="star" key={item.id} style={{ transform, transformOrigin }}></div>
                         })
                     }
                 </div>

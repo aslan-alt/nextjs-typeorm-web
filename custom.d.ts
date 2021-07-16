@@ -45,5 +45,20 @@ interface GetHeadAndBody {
     width: number,
     height: number;
 }
-
+type StarList = {
+    id: number;
+    transformOrigin: string;
+    transform: string;
+}[]
+type CommentItem = {
+    id: number;
+    userId: number;
+    postId: number;
+    content: string;
+    user: string;
+    post: string,
+    createdAt: string;
+    updateAt: string;
+    nickname: string;
+}
 type KeyUpEventHash = { [key: string]: (id: number) => number }

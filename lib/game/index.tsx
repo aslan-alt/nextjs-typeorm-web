@@ -50,7 +50,7 @@ interface CreateIcon {
 const createIconsList = ({ selectIndex, changeIndex }: CreateIcon) => {
     return [
         { id: 0, name: 'game', href: '/games', text: '玩游戏', height: 30, width: 48, selectIndex, changeIndex },
-        { id: 1, name: 'curriculumVitae', href: '/curriculumVitae', text: '看简历', selectIndex, changeIndex },
+        { id: 1, name: 'curriculumVitae', href: 'http://xiong-jingsong.gitee.io/cv-website', text: '看简历', selectIndex, changeIndex },
         { id: 2, name: 'messageBoard', href: '/messageBoard', text: '留言板', selectIndex, changeIndex },
         { id: 3, href: '/esc', text: '退出', height: 30, width: 48, selectIndex, changeIndex }
     ]

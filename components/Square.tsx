@@ -7,12 +7,15 @@ const SquareBox = styled.div`
     }
     width: 14px;
     height: 14px;
-    top:-12px;
     left:-26px;
+    top:-12px;
     position: absolute;
     margin: 14px auto 0;
     transform-style: preserve-3d;
     animation: flash 4s linear infinite;
+    @media (min-width: 1600px) {
+        left:100% !important;
+    }
     &:hover{
         div{
             background: #046D02;
@@ -36,16 +39,38 @@ const SquareBox = styled.div`
     div:nth-of-type(6){  transform: translateZ(7px);  }
   
 `
+const SquareWrapper = styled.div`
+    .go-to-home{
+        position: absolute;
+        width: 30px;
+        color: white;
+        @media (min-width: 1600px) {
+            left:99% !important;
+        }
+    }
+`;
 
-export default function Square() {
+interface Props {
+    top?: number;
+    left?: number;
+}
+export default function Square({ top, left }: Props) {
+    const goHome = left ? () => {
+        location.href = '/'
+    } : null
+    const style = left ? { top, left: `${left}%` } : null
+
     return (
-        <SquareBox>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-        </SquareBox>
+        <SquareWrapper >
+            <SquareBox style={style} onClick={goHome}>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </SquareBox>
+            {left && <div onClick={goHome} className="go-to-home" style={{ top: top + 35, left: `${left - 3}%` }}>首页</div>}
+        </SquareWrapper>
     )
 }

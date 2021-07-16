@@ -1,94 +1,30 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { Input, Button, Modal, message } from 'antd'
-import { useState } from 'react';
-import axios from 'axios';
-import Link from 'next/link';
-import { Content, MessageWrapper } from 'styles/messageBoardStyle'
+import { Modal } from 'antd'
 import deepClone from 'lib/deepClone';
-import { getDatabaseConnection } from 'lib/getDatabaseConnection';
+import Square from 'components/Square'
 import { Comment } from 'src/entity/Comment';
-import { friendlyDate } from 'lib';
+import { MessageWrapper } from 'styles/messageBoardStyle'
+import { getDatabaseConnection } from 'lib/getDatabaseConnection';
+import MessageList from 'components/MessageBard/MessageList';
+import AddMessage from 'components/MessageBard/AddMessage';
 
-type CommentItem = {
-    id: number;
-    userId: number;
-    postId: number;
-    content: string;
-    user: string;
-    post: string,
-    createdAt: string;
-    updateAt: string;
-    nickname: string;
-}
 type Props = {
     leaveMessageList: CommentItem[]
 }
 
 const messageBoard: NextPage<Props> = (props) => {
     const { leaveMessageList } = props
-    const [comment, setComment] = useState('')
     const [modal, contextHolder] = Modal.useModal();
-
-    const prompt = (title: string) => {
-        modal.confirm({
-            title,
-            content: (
-                <Content>
-                    <p>评论功能必须登陆哦</p>
-                    <Link href={`/sign_up?returnTo=${encodeURIComponent(window.location.pathname)}`}><a className='go-to-sign-up'>立即注册</a></Link>
-                </Content>
-            ),
-            onOk: () => { location.href = `/sign_in?returnTo=${encodeURIComponent(window.location.pathname)}` },
-            okText: '立即登陆',
-            cancelText: '取消'
-        })
-    }
-
-
-    const commitMessage = () => {
-        axios.post('/api/comment', { commentContent: comment, useId: 'visitor' }).then(res => {
-            message.success('提交成功')
-        }).catch((e) => {
-            prompt(e?.response?.data?.message)
-        })
-    }
 
     return (
         <MessageWrapper>
             {contextHolder}
+            <img className="background-img" src="/ying.jpg" alt="" />
             <div className="message-list">
-                {
-                    leaveMessageList.map(item => {
-                        return (
-                            <div key={item.id} className="message-item">
-                                <div>
-                                    {item.nickname}
-                                    <span>
-                                        {friendlyDate(item.createdAt)}
-                                    </span>
-                                </div>
-                                <div>
-                                    {item.content}
-                                </div>
-                            </div>
-                        )
-                    })
-                }
+                <Square {...{ top: 5, left: 105 }} />
+                <MessageList {...{ leaveMessageList }} />
             </div>
-
-            <div className="add-message">
-                <Input.TextArea placeholder="随便说点什么吧。。。"
-                    value={comment}
-                    rows={4}
-                    onChange={e => { setComment(e.target.value) }}
-                    showCount={
-                        { formatter: (a) => a.count === 0 ? '留言不能为空' : `已输入:${a.count}字` }
-                    } />
-                <div className="button-wrapper"></div>
-                <div className="button-wrapper">
-                    <Button type="primary" onClick={commitMessage} disabled={comment.length <= 0}>发表</Button>
-                </div>
-            </div>
+            <AddMessage {...{ modal }} />
         </MessageWrapper>
     );
 };
@@ -98,9 +34,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const connect = await getDatabaseConnection()
     let found: Comment[] = []
     try {
-        found = await connect.manager.find(Comment)
+        found = (await connect.manager.find(Comment)).sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1 })
     } catch (e) {
-
     }
     return {
         props: {
