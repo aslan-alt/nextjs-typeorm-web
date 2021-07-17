@@ -13,9 +13,7 @@ const SquareBox = styled.div`
     margin: 14px auto 0;
     transform-style: preserve-3d;
     animation: flash 4s linear infinite;
-    @media (min-width: 1600px) {
-        left:100% !important;
-    }
+    
     &:hover{
         div{
             background: #046D02;
