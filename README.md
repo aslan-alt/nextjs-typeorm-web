@@ -39,6 +39,10 @@ npm run dev
 
 ## 部署
 
+```
+docker 
+```
+
 ```bash 
 ssh xiong@nextjs "sh /home/xiong/app/bin/deploy.sh"
 ```

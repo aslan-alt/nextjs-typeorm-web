@@ -71,7 +71,13 @@ const Snack = () => {
     useEffect(() => {
         checkingStatusAndFeedback({ snackBody, width, height, initHeadAndBody })
     }, [isRun, snackHead])
-
+    useEffect(() => {
+        window.onload = () => {
+            setTimeout(() => {
+                window.scrollTo(0, 1000)
+            })
+        }
+    }, [])
 
     return (
         <SnackWrapper>
