@@ -214,14 +214,13 @@ const GamesPage = styled.div`
    }    
 `;
 const SnackWrapper = styled.div`
+
     .map{
         position:relative;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
         background: #FEFFFE;
     }
-    
-    
     .body-item{
         width: 20px;
         height: 20px;

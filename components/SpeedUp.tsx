@@ -20,6 +20,10 @@ const SpeedUpWrapper = styled.div`
    &:active{
        background: rgba(123,124,123);
    }
+   -moz-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   -khtml-user-select: none;
 `;
 
 interface Props {
@@ -30,14 +34,10 @@ const SpeedUp = ({ changeSpeed }: Props) => {
 
     return (
         <SpeedUpWrapper
-            onTouchStart={() => {
-                changeSpeed(100)
-            }}
-            onTouchEnd={() => {
-                changeSpeed(200)
-            }}
+            onTouchStart={(e) => { changeSpeed(100) }}
+            onTouchEnd={(e) => { changeSpeed(200) }}
         >
-            <Image {...{ src: `/speedUp.svg`, alt: '', width: 38, height: 78 }} />
+            加速
         </SpeedUpWrapper>
     )
 }

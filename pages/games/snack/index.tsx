@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Modal } from 'antd';
 import { SnackWrapper } from '../../../styles/gameStyle'
 import useSnackFood from 'hooks/Snack/useSnackFood';
@@ -14,11 +14,13 @@ import useDialog from 'hooks/Snack/useDialog';
 
 const Snack = () => {
     let { current } = useRef({ count: 0 })
+    const ref2 = useRef<HTMLDivElement>(null)
+
     const [modal, contextHolder] = Modal.useModal();
     const { DialogNode, confirm } = useDialog()
     const { width, height } = getWidthAndHeightByRouter()
     const { initBody, initHead } = getHeadAndBody({ width, height })
-    const { direction, currentRule, isRun, speed, changeDirection, setIsRun, changeSpeed } = useDirection()
+    const { direction, currentRule, isRun, speed, setDirection, changeDirection, setIsRun, changeSpeed } = useDirection()
 
     const { foodList, foodsView, deleteEatenFoodAndCreateNewFood } = useSnackFood({ width, height })
 
@@ -27,10 +29,9 @@ const Snack = () => {
     const { changeSnackBody, snackBody, snackBodyView, setsNackBody } = useSnackBody({ initBody })
 
     const initHeadAndBody = () => {
-        setSnackHead(initHead)
         setsNackBody(initBody)
-        setIsRun(true)
-        changeDirection({ oldDirection: direction, newDirection: 'ArrowDown' })
+        setSnackHead(initHead)
+        setDirection('ArrowDown')
     }
 
     useEffect(() => {
@@ -50,7 +51,6 @@ const Snack = () => {
         } else {
             confirm({ title: '开始游戏', ok: () => { setIsRun(true) }, cancel: () => { location.href = '/' } })
         }
-
     }, [])
 
     useEffect(() => {
@@ -69,19 +69,18 @@ const Snack = () => {
 
 
     useEffect(() => {
-        checkingStatusAndFeedback({ snackBody, width, height, initHeadAndBody })
+        checkingStatusAndFeedback({ snackBody, width, height, initHeadAndBody, setIsRun })
     }, [isRun, snackHead])
+
     useEffect(() => {
-        window.onload = () => {
-            setTimeout(() => {
-                window.scrollTo(0, 1000)
-            })
-        }
+        setTimeout(() => {
+            ref2.current.scrollTo(0, 1000)
+        })
     }, [])
 
     return (
-        <SnackWrapper>
-            <div className="map">
+        <SnackWrapper style={{ height, width }}>
+            <div className="map" ref={ref2}>
                 {snackHeadView}
                 {snackBodyView}
                 {foodsView}

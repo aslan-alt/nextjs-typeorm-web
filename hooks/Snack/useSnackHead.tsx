@@ -23,7 +23,9 @@ interface CheckStatus {
     snackBody: BodyItem[];
     width: number;
     height: number;
+    setIsRun: (v: boolean) => void;
     initHeadAndBody: () => void;
+
 }
 
 
@@ -67,13 +69,15 @@ const useSnackHead = (props: Props) => {
 
 
     const checkingStatusAndFeedback = (options: CheckStatus) => {
-        const { snackBody, width, height, initHeadAndBody } = options
+        const { snackBody, width, height, initHeadAndBody, setIsRun } = options
 
         const biteYourself = snackBody.find(item => item.x === snackHead.x && item.y === snackHead.y)
         const outOfRange = (snackHead.x < 0 || snackHead.x > width - 10 || snackHead.y < 0 || snackHead.y > height - 10)
         if (biteYourself) {
+
             alertGameOver(initHeadAndBody, '咬到自己啦', width)
         } else if (outOfRange) {
+
             alertGameOver(initHeadAndBody, '撞墙啦', width)
         } else {
             changeSnackHead()

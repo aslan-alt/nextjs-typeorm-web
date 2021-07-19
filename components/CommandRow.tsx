@@ -45,8 +45,14 @@ const CommandRowWrapper = styled.label`
             padding:6px 0 6px 6px;
         }
         button{
-            padding: 0px 3px;
+            padding: 2px 6px;
+            border: none;
+            border-radius:4px;
             font-size: 12px;
+            &:active{
+                background:gray ;
+                color: white;
+            }
         }
     }
 `

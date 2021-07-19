@@ -23,7 +23,10 @@ const alertByWidth = (options: AlertByWidth) => {
     if (width < 750) {
         modal.confirm({
             title: '通知',
-            content: '将为您切换到竖屏',
+            content: <div>
+                <p>将为您切换到竖屏</p>
+                <p>点击您要玩的游戏或者马里奥，都可以开始哦</p>
+            </div>,
             onOk,
             onCancel
         })

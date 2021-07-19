@@ -34,6 +34,7 @@ export default function AddMessage({ modal }: Props) {
         }
         axios.post('/api/comment', { commentContent: comment, useId: 'visitor' }).then(res => {
             message.success('提交成功')
+            window.location.href = '/messageBoard'
         }).catch((e) => {
             prompt(e?.response?.data?.message)
         })
