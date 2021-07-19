@@ -1,4 +1,4 @@
-cd app &&
+cd app/nextjs-typeorm-web/ &&
 git pull &&
 yarn install --production=false &&
 yarn build &&
