@@ -24,7 +24,8 @@ const Index: NextPage<Props> = (props) => {
   const focusTextInput = () => { focusRef?.current?.focus() }
 
   const Icons = createIconsList({
-    selectIndex, changeIndex: () => {
+    selectIndex,
+    changeIndex: () => {
       dispatch({ type: 'setSelectIndex', payload: selectIndex })
     }
   })

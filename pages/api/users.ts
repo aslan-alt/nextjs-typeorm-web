@@ -21,18 +21,15 @@ const Users: NextApiHandler = async (req, res,) => {
     } catch (e) {
         // console.log(e)
     }
-    console.log('found-------')
-    console.log(found)
+
     if (found?.length > 0) {
         user.errors.username.push('用户名已存在')
     }
-    console.log()
+
     await user.validate()
     if (user.hasErrors()) {
         res.status(422).json(user.errors)
     } else {
-        console.log('user-------')
-        console.log(user)
         await connect.manager.save(user)
         res.status(200).json(user)
     }

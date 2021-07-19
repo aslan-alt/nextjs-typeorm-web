@@ -11,5 +11,8 @@ declare module 'next' {
   interface NextApiRequest {
     session: Session
   }
+  interface IncomingMessage {
+    session?: Session
+  }
 }
 

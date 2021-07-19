@@ -50,7 +50,7 @@ const CommandRowWrapper = styled.label`
             border-radius:4px;
             font-size: 12px;
             &:active{
-                background:gray ;
+                background:gray;
                 color: white;
             }
         }

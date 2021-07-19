@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { message } from 'antd'
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import { GetServerSideProps, GetServerSidePropsContext, IncomingMessage, NextPage } from 'next'
 import { withSession } from 'lib/withSession'
 import { User } from 'src/entity/User'
 import { useForm } from 'hooks/useForm'
@@ -11,7 +11,6 @@ import StarsLayout from 'components/StarsLayout'
 
 
 const SignIn: NextPage<{ user: User }> = (props) => {
-
     const { form } = useForm({
         initFormData: { username: '', password: '' },
         submit: {
@@ -40,8 +39,7 @@ const SignIn: NextPage<{ user: User }> = (props) => {
 export default SignIn
 
 export const getServerSideProps: GetServerSideProps = withSession(async (context: GetServerSidePropsContext) => {
-    //@ts-ignore
-    const user = JSON.parse(JSON.stringify(context.req.session.get('currentUser') || null))
+    const user = JSON.parse(JSON.stringify((context.req as IncomingMessage).session.get('currentUser') || null))
     return {
         props: {
             user

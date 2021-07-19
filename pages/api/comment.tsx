@@ -25,9 +25,6 @@ const Comments: NextApiHandler = async (req, res) => {
     comment.userId = user.id
     comment.postId = 0
     comment.user = user
-
-    console.log('comment-------')
-    console.log(comment)
     comment.createdAt = now
     comment.updateAt = now
     comment.nickname = user.username

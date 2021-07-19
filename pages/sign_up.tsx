@@ -29,8 +29,6 @@ const SignUp: NextPage = () => {
                             const query = qs.parse(window.location.search.substr(1))
                             location.href = query.returnTo?.toString() || '/'
                         }).catch(res => {
-                            console.log('-------fff')
-                            console.log(res)
                             message.error('登陆失败，请检查网络')
                         })
 

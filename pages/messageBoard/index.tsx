@@ -17,13 +17,13 @@ type Props = {
 const messageBoard: NextPage<Props> = (props) => {
     const { leaveMessageList, result } = props
     const [modal, contextHolder] = Modal.useModal();
-    const left = result?.device?.model ? 105 : 100
+    const isPhone = !!result?.device?.model
     return (
         <MessageWrapper>
             {contextHolder}
             <img className="background-img" src="/ying.jpg" alt="" />
             <div className="message-list">
-                <Square {...{ top: 5, left }} />
+                <Square {...{ top: 5, isPhone }} />
                 <MessageList {...{ leaveMessageList }} />
             </div>
             <AddMessage {...{ modal }} />
