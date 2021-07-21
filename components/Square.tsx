@@ -46,18 +46,17 @@ const SquareWrapper = styled.div`
 
 interface Props {
     top?: number;
-    isPhone?: boolean;
+
+    left?: number;
 }
-export default function Square({ top, isPhone }: Props) {
-    const goHome = isPhone ? () => {
+export default function Square({ top, left }: Props) {
+    const goHome = left ? () => {
         location.href = '/'
     } : null
 
-    const left = isPhone ? 106 : 95
-
     return (
         <SquareWrapper >
-            <SquareBox style={left ? { top, left: `${left}%` } : null} onClick={goHome}>
+            <SquareBox style={{ top, left: left ? `${left}%` : null }} onClick={goHome}>
                 <div></div>
                 <div></div>
                 <div></div>
@@ -70,7 +69,7 @@ export default function Square({ top, isPhone }: Props) {
                 <div
                     onClick={goHome}
                     className="go-to-home"
-                    style={{ top: top + 35, left: isPhone ? `${left - 3}%` : `${left - 1.6}%` }}
+                    style={{ top: top + 35, left: left === 95 ? `${left - 1.6}%` : `${left - 3}%` }}
                 >home</div>
             }
         </SquareWrapper>
