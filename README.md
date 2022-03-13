@@ -9,9 +9,11 @@ docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES
 docker run -v "blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
 ```
 ### 进入数据库
+```
 docker exec -it 容器id bash
 psql -U blog 登陆psql
 \l \c \dt
+```
 
 ### 清空之前的开发环境
 ```
