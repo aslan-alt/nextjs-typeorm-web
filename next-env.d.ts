@@ -1,18 +1,5 @@
 /// <reference types="next" />
-/// <reference types="next/types/global" />
-import { Session } from 'next-iron-session'
-import * as next from 'next'
+/// <reference types="next/image-types/global" />
 
-declare module "*.png" {
-  const value: string;
-  export default value;
-}
-declare module 'next' {
-  interface NextApiRequest {
-    session: Session
-  }
-  interface IncomingMessage {
-    session?: Session
-  }
-}
-
+// NOTE: This file should not be edited
+// see https://nextjs.org/docs/basic-features/typescript for more information.

@@ -1,31 +1,23 @@
-import { createConnection, Connection, getConnectionManager } from "typeorm";
+import { createConnection, getConnectionManager } from "typeorm";
 import 'reflect-metadata'
 import { Post } from "src/entity/Post";
 import config from '../ormconfig.json'
 import { User } from "src/entity/User";
 import { Comment } from "src/entity/Comment";
 
-const create = async () => {
-    //@ts-ignore
-    return createConnection({
-        ...config,
-        host: process.env.NODE_ENV === 'production' ? 'localhost' : 'localhost',
-        database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'development_blog',
-        entities: [Post, User, Comment]
-    })
-}
-
-const connection: Promise<Connection> = (async () => {
+export const getDatabaseConnection =  async () => {
     const manager = getConnectionManager()
     const current = manager.has('default') && manager.get('default')
     if (current) {
         await current.close()
     }
-    return create()
-})()
-
-export const getDatabaseConnection = () => {
-    return connection
+    //@ts-ignore
+    return  createConnection({
+        ...config,
+        host: process.env.NODE_ENV === 'production' ? 'localhost' : 'localhost',
+        database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'test_1',
+        entities: [Post, User, Comment]
+    })
 }
 
 

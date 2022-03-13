@@ -1,21 +1,23 @@
 import axios from 'axios'
 import { message } from 'antd'
-import { GetServerSideProps, GetServerSidePropsContext, IncomingMessage, NextPage } from 'next'
-import { withSession } from 'lib/withSession'
+import { withIronSessionSsr } from "iron-session/next";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import { User } from 'src/entity/User'
 import { useForm } from 'hooks/useForm'
 import qs from 'querystring'
 import StarsLayout from 'components/StarsLayout'
+import {ironOptions} from "../lib/withSession";
 
 
 
 
-const SignIn: NextPage<{ user: User }> = (props) => {
+const SignIn: NextPage<{ user: User }> = () => {
+
     const { form } = useForm({
         initFormData: { username: '', password: '' },
         submit: {
             request: (fromData) => axios.post('/api/sessions', fromData),
-            success: (res) => {
+            success: () => {
                 message.success('登陆成功')
                 const query = qs.parse(window.location.search.substr(1))
                 location.href = query.returnTo.toString()
@@ -38,11 +40,11 @@ const SignIn: NextPage<{ user: User }> = (props) => {
 }
 export default SignIn
 
-export const getServerSideProps: GetServerSideProps = withSession(async (context: GetServerSidePropsContext) => {
-    const user = JSON.parse(JSON.stringify((context.req as IncomingMessage).session.get('currentUser') || null))
+export const getServerSideProps: GetServerSideProps = withIronSessionSsr(async (context: GetServerSidePropsContext) => {
+    const user = JSON.parse(JSON.stringify((context.req.session as any).user || null))
     return {
         props: {
             user
         }
     }
-})
+},ironOptions)

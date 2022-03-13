@@ -42,7 +42,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         found = (await connect.manager.find(Comment)).sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1 })
     } catch (e) {
+        console.log('e---------')
+        console.log(e)
     }
+
     return {
         props: {
             leaveMessageList: deepClone(found),

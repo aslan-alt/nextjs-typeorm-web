@@ -1,7 +1,9 @@
-import { withSession } from 'lib/withSession';
 import { NextApiHandler } from 'next'
 import { SignIn } from 'src/model/SignIn';
-
+import { withIronSessionApiRoute } from "iron-session/next";
+import {ironOptions} from "../../lib/withSession";
+import {getDatabaseConnection} from "../../lib/getDatabaseConnection";
+import {User} from "../../src/entity/User";
 
 
 const Sessions: NextApiHandler = async (req, res) => {
@@ -9,14 +11,15 @@ const Sessions: NextApiHandler = async (req, res) => {
     const signIn = new SignIn()
     signIn.password = password
     signIn.username = username
+    const connection = await getDatabaseConnection();
     await signIn.validate()
     if (signIn.hasErrors()) {
         res.status(422).json(signIn.errors)
         return
     } else {
-        req.session.set('currentUser', signIn.user)
+        (req.session as any).user = await connection.manager.findOne(User, { where: { username} })
         await req.session.save()
         res.status(200).json(signIn.user)
     }
 }
-export default withSession(Sessions)
+export default withIronSessionApiRoute(Sessions,ironOptions)

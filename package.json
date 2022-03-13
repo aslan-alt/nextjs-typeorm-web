@@ -21,6 +21,7 @@
     "axios": "^0.26.1",
     "classnames": "^2.3.1",
     "gray-matter": "^4.0.3",
+    "iron-session": "^6.0.5",
     "lodash": "^4.17.21",
     "marked": "^4.0.12",
     "md5": "^2.3.0",

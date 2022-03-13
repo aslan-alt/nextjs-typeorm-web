@@ -1,24 +1,23 @@
-import { withSession } from 'lib/withSession';
-import { NextApiHandler } from 'next'
+import { withIronSessionApiRoute } from "iron-session/next";
 import { Comment } from 'src/entity/Comment';
 import { getDatabaseConnection } from 'lib/getDatabaseConnection';
+import {ironOptions} from "../../lib/withSession";
 
 interface CommentData {
     commentContent: string;
     useId: number | string;
 }
-
-const Comments: NextApiHandler = async (req, res) => {
+export default withIronSessionApiRoute(async (req, res) => {
     const { commentContent } = req.body as CommentData
-    const user = req.session.get('currentUser')
-
-
+    const user = (req.session as any).user;
+    (req.session as any).user = (req.session as any).user || null;
     const comment = new Comment()
 
     if (!user) {
         res.status(401).json({ message: '未登陆' });
         return
     }
+
     const connect = await getDatabaseConnection()
     const now = new Date()
     comment.content = commentContent
@@ -28,7 +27,7 @@ const Comments: NextApiHandler = async (req, res) => {
     comment.createdAt = now
     comment.updateAt = now
     comment.nickname = user.username
+    await req.session.save()
     await connect.manager.save(comment)
     res.status(200).json(comment);
-}
-export default withSession(Comments)
+}, ironOptions);

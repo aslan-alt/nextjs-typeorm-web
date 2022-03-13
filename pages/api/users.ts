@@ -1,14 +1,16 @@
-import { NextApiHandler } from 'next';
 import { User } from 'src/entity/User';
 import { getDatabaseConnection } from 'lib/getDatabaseConnection';
-
+import { withIronSessionApiRoute } from "iron-session/next";
+import {ironOptions} from "../../lib/withSession";
 
 interface SignData {
     username: string;
     password: string;
     passwordConfirmation: string;
 }
-const Users: NextApiHandler = async (req, res,) => {
+
+
+export default withIronSessionApiRoute(async (req, res,) => {
     const { username, password, passwordConfirmation } = req.body as SignData
     const connect = await getDatabaseConnection()
     const user = new User()
@@ -30,8 +32,9 @@ const Users: NextApiHandler = async (req, res,) => {
     if (user.hasErrors()) {
         res.status(422).json(user.errors)
     } else {
+        (req.session as any).user = user
+        await req.session.save()
         await connect.manager.save(user)
         res.status(200).json(user)
     }
-}
-export default Users;
+},ironOptions);
