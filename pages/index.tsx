@@ -12,7 +12,7 @@ import { Context } from 'createStore'
 import reducer, { initialValue } from 'reducer'
 
 type Props = {
-  userInfo: IUAParser.IResult
+  userInfo: UAParser.IResult
 }
 
 const Index: NextPage<Props> = (props) => {

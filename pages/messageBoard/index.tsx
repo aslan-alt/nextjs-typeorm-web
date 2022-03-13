@@ -11,7 +11,7 @@ import { UAParser } from 'ua-parser-js';
 
 type Props = {
     leaveMessageList: CommentItem[],
-    result: IUAParser.IResult
+    result: UAParser.IResult
 }
 
 const messageBoard: NextPage<Props> = (props) => {

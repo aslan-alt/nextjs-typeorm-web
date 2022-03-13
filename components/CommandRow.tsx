@@ -1,5 +1,5 @@
 import { Context } from 'createStore'
-import React, { ChangeEvent, useContext, useEffect, useRef, forwardRef, MutableRefObject } from 'react'
+import React, { ChangeEvent, useContext, forwardRef, MutableRefObject } from 'react'
 import styled from 'styled-components'
 
 const CommandRowWrapper = styled.label`
@@ -57,7 +57,7 @@ const CommandRowWrapper = styled.label`
     }
 `
 interface Props {
-    userInfo: IUAParser.IResult
+    userInfo: UAParser.IResult
 }
 
 const CommandRow = (props: Props, ref: MutableRefObject<any>) => {
