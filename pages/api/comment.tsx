@@ -12,7 +12,7 @@ export default withIronSessionApiRoute(async (req, res) => {
     const user = (req.session as any).user;
     (req.session as any).user = (req.session as any).user || null;
     const comment = new Comment()
-
+    console.log("xxx");
     if (!user) {
         res.status(401).json({ message: '未登陆' });
         return
