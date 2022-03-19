@@ -30,11 +30,11 @@ export default withIronSessionApiRoute(async (req, res,) => {
 
     await user.validate()
     if (user.hasErrors()) {
-        res.status(422).json(user.errors)
+        await res.status(422).send(user.errors)
     } else {
         (req.session as any).user = user
         await req.session.save()
         await connect.manager.save(user)
-        res.status(200).json(user)
+        await res.status(200).send(user)
     }
 },ironOptions);

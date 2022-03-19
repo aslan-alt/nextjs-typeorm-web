@@ -1,31 +1,35 @@
-import { GetServerSideProps, NextPage } from 'next';
+import { NextPage } from 'next';
 import { Modal } from 'antd'
-import deepClone from 'lib/deepClone';
+import {  useState,useEffect } from 'react';
 import Square from 'components/Square'
-import { Comment } from 'src/entity/Comment';
+import axios from 'axios'
 import { MessageWrapper } from 'styles/messageBoardStyle'
-import { getDatabaseConnection } from 'lib/getDatabaseConnection';
 import MessageList from 'components/MessageBard/MessageList';
 import AddMessage from 'components/MessageBard/AddMessage';
 import { UAParser } from 'ua-parser-js';
 
-type Props = {
-    leaveMessageList: CommentItem[],
+type Data = {
+    Comments?: CommentItem[],
     result: UAParser.IResult
 }
 
-const messageBoard: NextPage<Props> = (props) => {
-    const { leaveMessageList, result } = props
+const messageBoard: NextPage = () => {
+    const [data,setData] = useState<Data|undefined>()
+
     const [modal, contextHolder] = Modal.useModal();
 
-    const left = !!result?.device?.model ? 106 : 95
+    useEffect(()=>{
+        axios.get<Data>('/api/getAllComment').then((res)=>{setData(res.data)})
+    },[])
+
+    const left = !!data?.result?.device?.model ? 106 : 95
     return (
         <MessageWrapper>
             {contextHolder}
             <img className="background-img" src="/ying.jpg" alt="" />
             <div className="message-list">
                 <Square {...{ top: 5, left }} />
-                <MessageList {...{ leaveMessageList }} />
+                <MessageList {...data} />
             </div>
             <AddMessage {...{ modal }} />
         </MessageWrapper>
@@ -33,24 +37,4 @@ const messageBoard: NextPage<Props> = (props) => {
 };
 export default messageBoard;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const ua = context.req.headers['user-agent'];
-    const result = new UAParser(ua).getResult();
-
-    const connect = await getDatabaseConnection()
-    let found: Comment[] = []
-    try {
-        found = (await connect.manager.find(Comment)).sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1 })
-    } catch (e) {
-        console.log('e---------')
-        console.log(e)
-    }
-
-    return {
-        props: {
-            leaveMessageList: deepClone(found),
-            result: deepClone(result)
-        }
-    };
-};
 

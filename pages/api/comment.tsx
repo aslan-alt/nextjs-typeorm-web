@@ -29,5 +29,5 @@ export default withIronSessionApiRoute(async (req, res) => {
     comment.nickname = user.username
     await req.session.save()
     await connect.manager.save(comment)
-    res.status(200).json(comment);
+    await res.status(200).send(comment);
 }, ironOptions);

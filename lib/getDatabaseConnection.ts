@@ -1,24 +1,39 @@
-import { createConnection, getConnectionManager } from "typeorm";
-import 'reflect-metadata'
+import 'reflect-metadata';
+import { getConnection, createConnection, Connection } from 'typeorm';
 import { Post } from "src/entity/Post";
 import config from '../ormconfig.json'
 import { User } from "src/entity/User";
 import { Comment } from "src/entity/Comment";
 
-export const getDatabaseConnection =  async () => {
-    const manager = getConnectionManager()
-    const current = manager.has('default') && manager.get('default')
-    if (current) {
-        await current.close()
-    }
-    //@ts-ignore
-    return  createConnection({
-        ...config,
-        host: process.env.NODE_ENV === 'production' ? 'localhost' : 'localhost',
-        database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'test_1',
-        entities: [Post, User, Comment]
-    })
-}
+// const host = process.env.DATABASE_HOST || '';
+// const port = Number(process.env.DATABASE_PORT) || 3306;
+// const username = process.env.DATABASE_USERNAME || '';
+// const password = process.env.DATABASE_PASSWORD || '';
+// const database = process.env.DATABASE_NAME || '';
 
+let connectionReadyPromise: Promise<Connection> | null = null;
+
+export const getDatabaseConnection = () => {
+    if (!connectionReadyPromise) {
+        connectionReadyPromise = (async () => {
+            // clean up old connection that references outdated hot-reload classes
+            try {
+                const staleConnection = getConnection();
+                await staleConnection.close();
+            } catch (error) {
+                // no stale connection to clean up
+            }
+            //@ts-ignore
+            return await createConnection({
+                ...config,
+                host: process.env.NODE_ENV === 'production' ? 'localhost' : 'localhost',
+                database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'test_1',
+                entities: [Post, User, Comment]
+            });
+        })();
+    }
+
+    return connectionReadyPromise;
+};
 
 
