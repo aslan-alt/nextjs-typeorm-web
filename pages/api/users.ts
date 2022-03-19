@@ -19,7 +19,7 @@ export default withIronSessionApiRoute(async (req, res,) => {
     user.passwordConfirmation = passwordConfirmation
     let found
     try {
-        found = await connect.manager.find(User, { username })
+        found = await connect.manager.find(User)
     } catch (e) {
         // console.log(e)
     }
