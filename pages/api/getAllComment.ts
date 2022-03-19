@@ -15,8 +15,9 @@ const GetAllComments: NextApiHandler = async (req, res) => {
         found = (await connection.manager.find(Comment)).sort(function (a, b) { return a.createdAt < b.createdAt ? 1 : -1 })
     } catch (e) {
     }
+
     await res.status(200).send({
-        leaveMessageList: deepClone(found),
+        comments: deepClone(found),
         result: deepClone(result)
     })
 }

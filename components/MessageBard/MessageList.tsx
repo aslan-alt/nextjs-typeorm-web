@@ -3,15 +3,17 @@ import { friendlyDate } from 'lib';
 
 
 interface Props {
-    Comments?: CommentItem[]
+    comments?: CommentItem[]
 }
 
 export default function MessageList(props: Props) {
-    const { Comments } = props
+    const { comments } = props
+    console.log('found-----');
+    console.log(comments);
     return (
         <>
             {
-                Comments?.map(item => {
+                comments?.map(item => {
                     return (
                         <div key={item.id} className="message-item">
                             <div className="title-time-wrapper">

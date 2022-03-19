@@ -9,7 +9,7 @@ import AddMessage from 'components/MessageBard/AddMessage';
 import { UAParser } from 'ua-parser-js';
 
 type Data = {
-    Comments?: CommentItem[],
+    comments?: CommentItem[],
     result: UAParser.IResult
 }
 
