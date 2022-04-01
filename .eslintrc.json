@@ -2,12 +2,11 @@
   "extends": [
     "next",
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:cypress/recommended",
     "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint", "import", "react-hooks"],
+  "plugins": ["@typescript-eslint", "import"],
   "env": {
     "node": true,
     "browser": true,
@@ -23,6 +22,7 @@
     }
   },
   "rules": {
+    "no-undef": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-non-null-assertion": "warn",
@@ -61,7 +61,8 @@
       }
     ],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error", // If the react hooks dependency is missing, an error will be reported.
-    "no-console": "error"
+    "react-hooks/exhaustive-deps": "off", // If the react hooks dependency is missing, an error will be reported.
+    "no-console": "error",
+    "no-sparse-arrays": "off"
   }
 }

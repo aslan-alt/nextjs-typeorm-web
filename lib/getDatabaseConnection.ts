@@ -1,9 +1,9 @@
 import 'reflect-metadata';
-import { getConnection, createConnection, Connection } from 'typeorm';
-import { Post } from "src/entity/Post";
-import config from '../ormconfig.json'
-import { User } from "src/entity/User";
-import { Comment } from "src/entity/Comment";
+import {getConnection, createConnection, Connection} from 'typeorm';
+import {Comment} from 'src/entity/Comment';
+import {Post} from 'src/entity/Post';
+import {User} from 'src/entity/User';
+import config from '../ormconfig.json';
 
 // const host = process.env.DATABASE_HOST || '';
 // const port = Number(process.env.DATABASE_PORT) || 3306;
@@ -14,26 +14,24 @@ import { Comment } from "src/entity/Comment";
 let connectionReadyPromise: Promise<Connection> | null = null;
 
 export const getDatabaseConnection = () => {
-    if (!connectionReadyPromise) {
-        connectionReadyPromise = (async () => {
-            // clean up old connection that references outdated hot-reload classes
-            try {
-                const staleConnection = getConnection();
-                await staleConnection.close();
-            } catch (error) {
-                // no stale connection to clean up
-            }
-            //@ts-ignore
-            return await createConnection({
-                ...config,
-                host: process.env.NODE_ENV === 'production' ? 'localhost' : 'localhost',
-                database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'test_1',
-                entities: [Post, User, Comment]
-            });
-        })();
-    }
+  if (!connectionReadyPromise) {
+    connectionReadyPromise = (async () => {
+      // clean up old connection that references outdated hot-reload classes
+      try {
+        const staleConnection = getConnection();
+        await staleConnection.close();
+      } catch (error) {
+        // no stale connection to clean up
+      }
+      //@ts-ignore
+      return await createConnection({
+        ...config,
+        host: process.env.NODE_ENV === 'production' ? 'localhost' : 'localhost',
+        database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'test_1',
+        entities: [Post, User, Comment],
+      });
+    })();
+  }
 
-    return connectionReadyPromise;
+  return connectionReadyPromise;
 };
-
-
