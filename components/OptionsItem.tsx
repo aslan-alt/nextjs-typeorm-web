@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -26,12 +25,12 @@ const OptionsItem = (props: IconItem) => {
       }}
     >
       <div className="index-icon">
-        {selectIndex === id && <Image {...{src: `/index.svg`, alt: name, width: 20, height: 18}} />}
+        {selectIndex === id && <img src="/index.svg" width={20} height={18} alt={name} />}
       </div>
-      <Link {...{href}}>
+      <Link {...{href}} legacyBehavior>
         <a className="block">{text}</a>
       </Link>
-      {name && <Image {...{src: `/${name}.svg`, alt: name, width, height}} />}
+      {name && <img src="/${name}.svg" alt={name} width={width} height={height} />}
     </TabWrapper>
   );
 };

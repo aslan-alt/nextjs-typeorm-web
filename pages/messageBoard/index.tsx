@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react';
 import {Modal} from 'antd';
 import axios from 'axios';
 import {NextPage} from 'next';
-import Image from 'next/image';
 import {UAParser} from 'ua-parser-js';
 import AddMessage from 'components/MessageBard/AddMessage';
 import MessageList from 'components/MessageBard/MessageList';
@@ -29,7 +28,7 @@ const MessageBoard: NextPage = () => {
   return (
     <MessageWrapper>
       {contextHolder}
-      <Image className="background-img" src="/ying.jpg" alt="" />
+      <img className="background-img" src="/ying.jpg" alt="" />
       <div className="message-list">
         <Square {...{top: 5, left}} />
         <MessageList {...data} />

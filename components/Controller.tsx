@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import styled from 'styled-components';
 
 const ControllerWrapper = styled.div`
@@ -40,7 +39,7 @@ const Controller = (props: Props) => {
           changeDirection('ArrowUp');
         }}
       >
-        <Image {...{src: `/up.svg`, alt: '', width: 18, height: 38}} />
+        <img {...{src: `/up.svg`, alt: '', width: 18, height: 38}} />
       </div>
       <div></div>
       <div
@@ -49,7 +48,7 @@ const Controller = (props: Props) => {
           changeDirection('ArrowLeft');
         }}
       >
-        <Image {...{src: `/left.svg`, alt: '', width: 18, height: 38}} />
+        <img {...{src: `/left.svg`, alt: '', width: 18, height: 38}} />
       </div>
       <div className="direction"></div>
       <div
@@ -58,7 +57,7 @@ const Controller = (props: Props) => {
           changeDirection('ArrowRight');
         }}
       >
-        <Image {...{src: `/right.svg`, alt: '', width: 18, height: 38}} />
+        <img {...{src: `/right.svg`, alt: '', width: 18, height: 38}} />
       </div>
       <div></div>
       <div
@@ -67,7 +66,7 @@ const Controller = (props: Props) => {
           changeDirection('ArrowDown');
         }}
       >
-        <Image {...{src: `/down.svg`, alt: '', width: 18, height: 38}} />
+        <img {...{src: `/down.svg`, alt: '', width: 18, height: 38}} />
       </div>
       <div></div>
     </ControllerWrapper>

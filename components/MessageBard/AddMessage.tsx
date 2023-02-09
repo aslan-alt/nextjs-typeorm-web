@@ -18,7 +18,10 @@ export default function AddMessage({modal}: Props) {
       content: (
         <Content>
           <p>评论功能必须登陆哦</p>
-          <Link href={`/sign_up?returnTo=${encodeURIComponent(window.location.pathname)}`}>
+          <Link
+            href={`/sign_up?returnTo=${encodeURIComponent(window.location.pathname)}`}
+            legacyBehavior
+          >
             <a className="go-to-sign-up">立即注册</a>
           </Link>
         </Content>

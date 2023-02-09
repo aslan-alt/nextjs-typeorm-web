@@ -20,7 +20,7 @@ const Index: NextPage<Props> = ({posts, totalPage, pageNumber}) => {
       {data.map((item) => {
         return (
           <li key={item.id}>
-            <Link href={`/posts/${item.id}`} as={`/posts/${item.id}`}>
+            <Link href={`/posts/${item.id}`} as={`/posts/${item.id}`} legacyBehavior>
               <a>{item.title}</a>
             </Link>
           </li>

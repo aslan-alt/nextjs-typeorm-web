@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from 'react';
 import {notification, message, Modal} from 'antd';
 import cs from 'classnames';
-import Image from 'next/image';
 import {useRouter} from 'next/router';
 import {alertByWidth, inputSpaceToSnack} from 'lib/game';
 import {GamesPage} from '../../styles/gameStyle';
@@ -65,21 +64,21 @@ const Games = () => {
   return (
     <GamesPage className={isPhone} ref={ref}>
       {imgList.map((imgName, index) => (
-        <Image key={index} className={imgName} src={`/${imgName}.png`} alt={imgName} />
+        <img key={index} className={imgName} src={`/${imgName}.png`} alt={imgName} />
       ))}
-      <Image src="/noun.png" alt="noun" className="noun2" />
+      <img src="/noun.png" alt="noun" className="noun2" />
       <div className="game-wrapper">
-        <Image
+        <img
           className={cs('game-snack', jump && 'jump')}
           src="/snack.png"
           alt="snack"
           onClick={goToSnack}
         />
-        <Image src="/wall.png" alt="wall" className="wall" />
-        <Image className="game-fruit" src="/fruit.jpg" alt="fruit" onClick={goToOther} />
-        <Image src="/wall.png" alt="wall" className="wall2" />
+        <img src="/wall.png" alt="wall" className="wall" />
+        <img className="game-fruit" src="/fruit.jpg" alt="fruit" onClick={goToOther} />
+        <img src="/wall.png" alt="wall" className="wall2" />
       </div>
-      <Image
+      <img
         src="/mario.png"
         alt="mario"
         className={cs('mario', jump && 'jump')}

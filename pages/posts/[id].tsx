@@ -16,7 +16,7 @@ const postsShow: NextPage<Props> = (props) => {
       <div>{data.content}</div>
       <div>{data.author}</div>
       <div>{data.createdAt}</div>
-      <Link href={`/posts/[id]/edit`} as={`/posts/${data.id}/edit`}>
+      <Link href={`/posts/[id]/edit`} as={`/posts/${data.id}/edit`} legacyBehavior>
         <a>编辑</a>
       </Link>
     </div>

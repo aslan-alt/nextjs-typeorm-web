@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import {friendlyDate} from 'lib';
 
 interface Props {
@@ -14,7 +13,7 @@ export default function MessageList(props: Props) {
         return (
           <div key={item.id} className="message-item">
             <div className="title-time-wrapper">
-              <Image src="/avatars.jpg" alt="avatars" />
+              <img src="/avatars.jpg" alt="avatars" />
               <div className="nickname">{item.nickname}</div>
             </div>
             <div className="content-wrapper">

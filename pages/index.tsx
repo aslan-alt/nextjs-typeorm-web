@@ -1,6 +1,5 @@
 import {useEffect, useReducer, useRef} from 'react';
 import {GetServerSideProps, NextPage} from 'next';
-import Image from 'next/image';
 import {UAParser} from 'ua-parser-js';
 import CommandRow from 'components/CommandRow';
 import OptionsItem from 'components/OptionsItem';
@@ -65,7 +64,7 @@ const Index: NextPage<Props> = (props) => {
           <div className="select-list-mobile">
             <div className="welcome">
               Welcome to my website, thanks
-              <Image {...{src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22}} />
+              <img {...{src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22}} />
             </div>
             {Icons.map((iconProps) => (
               <OptionsItem {...iconProps} key={iconProps.id} />
