@@ -36,18 +36,13 @@ const alertByWidth = (options: AlertByWidth) => {
   }
 };
 
-const createKeyEventHash = (Icons: IconItem[]) => {
+const arrowDownOrArrowUp = () => {
   return {
     ArrowDown: (id: number) => {
       return id !== 3 ? id + 1 : 0;
     },
     ArrowUp: (id: number) => {
       return id !== 0 ? id - 1 : 3;
-    },
-    Enter: (id: number) => {
-      const path = Icons.find((item) => item.id === id);
-      location.href = path.href;
-      return id;
     },
   };
 };
@@ -95,4 +90,4 @@ const disableF12 = () => {
       };
 };
 
-export {createKeyEventHash, createIconsList, disableF12, inputSpaceToSnack, alertByWidth};
+export {arrowDownOrArrowUp, createIconsList, disableF12, inputSpaceToSnack, alertByWidth};

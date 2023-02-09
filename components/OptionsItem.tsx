@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 
@@ -30,7 +31,7 @@ const OptionsItem = (props: IconItem) => {
       <Link {...{href}} legacyBehavior>
         <a className="block">{text}</a>
       </Link>
-      {name && <img src="/${name}.svg" alt={name} width={width} height={height} />}
+      {name && <Image src={`/${name}.svg`} alt={name} width={width} height={height} />}
     </TabWrapper>
   );
 };

@@ -6,7 +6,7 @@ import OptionsItem from 'components/OptionsItem';
 import Square from 'components/Square';
 import {Context} from 'createStore';
 import deepClone from 'lib/deepClone';
-import {createKeyEventHash, createIconsList} from 'lib/game';
+import {arrowDownOrArrowUp, createIconsList} from 'lib/game';
 import reducer, {initialValue} from 'reducer';
 import Home from 'styles/indexStyled';
 
@@ -14,10 +14,10 @@ type Props = {
   userInfo: UAParser.IResult;
 };
 
+const keyEventHash: KeyUpEventHash = arrowDownOrArrowUp();
 const Index: NextPage<Props> = (props) => {
   const {userInfo} = props;
   const [state, dispatch] = useReducer(reducer, initialValue);
-  const {showOptions, selectIndex, inputValue} = state;
 
   const focusRef = useRef(null);
   const focusTextInput = () => {
@@ -25,29 +25,35 @@ const Index: NextPage<Props> = (props) => {
   };
 
   const Icons = createIconsList({
-    selectIndex,
+    selectIndex: state?.selectIndex,
     changeIndex: () => {
-      dispatch({type: 'setSelectIndex', payload: selectIndex});
+      dispatch({type: 'setSelectIndex', payload: state?.selectIndex});
     },
   });
-
-  const keyEventHash: KeyUpEventHash = createKeyEventHash(Icons);
 
   useEffect(() => {
     focusTextInput();
   }, []);
 
   useEffect(() => {
-    if (showOptions) {
+    if (state.showOptions) {
       document.onkeyup = (e) => {
+        if (e.code === 'Enter') {
+          if (state.enterTimes === 1) {
+            dispatch({type: 'setEnterTimes', payload: 2});
+          } else {
+            const path = Icons.find((item) => item.id === state.selectIndex);
+            location.href = path.href;
+          }
+        }
         keyEventHash[e.code] &&
-          dispatch({type: 'setSelectIndex', payload: keyEventHash[e.code](selectIndex)});
+          dispatch({type: 'setSelectIndex', payload: keyEventHash[e.code](state.selectIndex)});
       };
     }
     return () => {
       document.onkeyup = null;
     };
-  }, [showOptions, selectIndex]);
+  }, [state.showOptions, state.selectIndex, state.enterTimes]);
 
   return (
     <Context.Provider value={{state, dispatch}}>
@@ -59,8 +65,8 @@ const Index: NextPage<Props> = (props) => {
             bash
           </span>
         </h5>
-        <CommandRow {...{userInfo, inputValue, ref: focusRef}} />
-        {showOptions && (
+        <CommandRow {...{userInfo, inputValue: state.inputValue, ref: focusRef}} />
+        {state.showOptions && (
           <div className="select-list-mobile">
             <div className="welcome">
               Welcome to my website, thanks
