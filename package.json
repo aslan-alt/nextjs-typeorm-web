@@ -6,7 +6,7 @@
     "lint": "next lint --fix",
     "dev": "next dev",
     "build": "next build",
-    "start": "next build && next start",
+    "start": "next start",
     "reboot": "rm -rf node_modules && yarn",
     "typeorm:build": "babel ./src --out-dir dist --extensions .ts,.tsx",
     "migration:create": "typeorm migration:create",
