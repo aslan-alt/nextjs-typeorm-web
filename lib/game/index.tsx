@@ -32,7 +32,7 @@ const alertByWidth = (options: AlertByWidth) => {
       onCancel,
     });
   } else {
-    message.info('点击图标，或者输入空格选择游戏哈!', 3);
+    message.info('点击图标，或者输入空格选择游戏哈!', 10);
   }
 };
 
