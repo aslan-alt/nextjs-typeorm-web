@@ -2,9 +2,9 @@ FROM node:14.17.0
 # Create app directory
 
 WORKDIR /usr/src/app
-COPY . .
+COPY package.json ./
+COPY yarn.lock ./
 RUN yarn install
-RUN yarn build
 COPY . .
 
 EXPOSE 3000
