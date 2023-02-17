@@ -38,12 +38,14 @@ export default function AddMessage(props: Props) {
     if (comment.length < 1) {
       return message.error('留言不能为空啦');
     }
-    await axios.post('/api/comment', {commentContent: comment, useId: 'visitor'}).catch((e) => {
+    try {
+      await axios.post('/api/comment', {commentContent: comment, useId: 'visitor'});
+      props.updateMessage();
+      setComment('');
+      message.success('提交成功');
+    } catch (e) {
       prompt(e?.response?.data?.message);
-    });
-    props.updateMessage();
-    setComment('');
-    message.success('提交成功');
+    }
   };
 
   return (
