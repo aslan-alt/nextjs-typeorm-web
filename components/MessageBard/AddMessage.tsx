@@ -3,7 +3,7 @@ import {Input, Button, message} from 'antd';
 import {ModalStaticFunctions} from 'antd/lib/modal/confirm';
 import axios from 'axios';
 import Link from 'next/link';
-import {Content} from 'styles/messageBoardStyle';
+import styled from 'styled-components';
 
 interface Props {
   modal: Omit<ModalStaticFunctions, 'warn'>;
@@ -69,3 +69,9 @@ export default function AddMessage({modal}: Props) {
     </div>
   );
 }
+
+const Content = styled.div`
+  .go-to-sign-up {
+    color: #1790fe;
+  }
+`;

@@ -18,12 +18,12 @@ export default withIronSessionApiRoute(async (req, res) => {
   user.passwordConfirmation = passwordConfirmation;
   let found;
   try {
-    found = await connect.manager.find(User);
+    found = await connect.manager.findOne(User, {username});
   } catch (e) {
     // console.log(e)
   }
 
-  if (found?.length > 0) {
+  if (found) {
     user.errors.username.push('用户名已存在');
   }
 

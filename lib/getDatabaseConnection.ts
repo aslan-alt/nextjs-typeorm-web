@@ -27,7 +27,7 @@ export const getDatabaseConnection = () => {
       return await createConnection({
         ...config,
         host: process.env.NODE_ENV === 'production' ? 'localhost' : 'localhost',
-        database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'test_1',
+        database: process.env.NODE_ENV === 'production' ? 'production_blog' : 'test',
         entities: [Post, User, Comment],
       });
     })();

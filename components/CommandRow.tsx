@@ -95,7 +95,8 @@ const Container = styled.label`
     display: flex;
     color: #e6e7e6;
     font-size: 12px;
-    padding: 10px 0 0 6px;
+    padding: 0 0 0 6px;
+    margin: 0;
   }
 `;
 
