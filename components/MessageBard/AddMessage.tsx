@@ -7,13 +7,13 @@ import styled from 'styled-components';
 
 interface Props {
   modal: Omit<ModalStaticFunctions, 'warn'>;
+  updateMessage: () => void;
 }
 
-export default function AddMessage({modal}: Props) {
+export default function AddMessage(props: Props) {
   const [comment, setComment] = useState('');
-
   const prompt = (title: string) => {
-    modal.confirm({
+    props.modal.confirm({
       title,
       content: (
         <Content>
@@ -34,23 +34,20 @@ export default function AddMessage({modal}: Props) {
     });
   };
 
-  const commitMessage = () => {
+  const commitMessage = async () => {
     if (comment.length < 1) {
       return message.error('留言不能为空啦');
     }
-    axios
-      .post('/api/comment', {commentContent: comment, useId: 'visitor'})
-      .then(() => {
-        message.success('提交成功');
-        window.location.href = '/messageBoard';
-      })
-      .catch((e) => {
-        prompt(e?.response?.data?.message);
-      });
+    await axios.post('/api/comment', {commentContent: comment, useId: 'visitor'}).catch((e) => {
+      prompt(e?.response?.data?.message);
+    });
+    props.updateMessage();
+    setComment('');
+    message.success('提交成功');
   };
 
   return (
-    <div className="add-message">
+    <Container>
       <Input.TextArea
         placeholder="随便说点什么吧。。。"
         value={comment}
@@ -66,12 +63,44 @@ export default function AddMessage({modal}: Props) {
           发表
         </Button>
       </div>
-    </div>
+    </Container>
   );
 }
 
 const Content = styled.div`
   .go-to-sign-up {
     color: #1790fe;
+  }
+`;
+
+const Container = styled.div`
+  width: 35vw;
+  margin-bottom: 100px;
+  @media (max-width: 600px) {
+    width: 70vw;
+  }
+  textarea {
+    background: rgba(66, 178, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(66, 178, 255);
+    ::placeholder {
+      color: white;
+    }
+  }
+  .ant-input-textarea-show-count::after {
+    color: white;
+  }
+  .ant-input-textarea-show-count::after {
+    color: white;
+  }
+  .button-wrapper {
+    display: flex;
+    min-height: 30px;
+    justify-content: flex-end;
+    button {
+      background: rgba(66, 178, 255, 0.1);
+      border: 1px solid rgba(66, 178, 255);
+      color: white;
+    }
   }
 `;
