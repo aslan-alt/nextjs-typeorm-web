@@ -73,6 +73,7 @@ const MessageText = styled.div`
   color: white;
   min-width: 100px;
   border-radius: 10px;
+  white-space: pre-wrap;
 `;
 
 const CreateTime = styled.span`

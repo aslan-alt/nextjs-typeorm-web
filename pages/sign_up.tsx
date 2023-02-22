@@ -1,4 +1,3 @@
-import qs from 'querystring';
 import {Modal, message} from 'antd';
 import axios from 'axios';
 import {NextPage} from 'next';
@@ -16,7 +15,7 @@ const SignUp: NextPage = () => {
           title: '注册成功',
           content: (
             <div>
-              <p>恭喜您成为第{res?.data?.id}位用户！！！</p>
+              <p>恭喜您成为第{res?.data?.id + 100}位用户！！！</p>
               <p>点击确定返回留言页面</p>
               <p>点击取消返回首页</p>
             </div>
@@ -26,8 +25,7 @@ const SignUp: NextPage = () => {
             axios
               .post('/api/sessions', {username, password})
               .then(() => {
-                const query = qs.parse(window.location.search.substr(1));
-                location.href = query.returnTo?.toString() || '/';
+                location.href = '/messageBoard';
               })
               .catch(() => {
                 message.error('登陆失败，请检查网络');
@@ -42,9 +40,9 @@ const SignUp: NextPage = () => {
       },
     },
     fields: [
-      {label: '用户名', key: 'username', type: 'text'},
-      {label: '密码', key: 'password', type: 'text'},
-      {label: '确认密码', key: 'passwordConfirmation', type: 'text'},
+      {label: '用户名', key: 'username', type: 'email'},
+      {label: '密码', key: 'password', type: 'password'},
+      {label: '确认密码', key: 'passwordConfirmation', type: 'password'},
     ],
     buttonText: '注册',
   });

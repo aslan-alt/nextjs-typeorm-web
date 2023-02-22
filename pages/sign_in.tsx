@@ -20,8 +20,8 @@ const SignIn: NextPage<{user: User}> = () => {
       },
     },
     fields: [
-      {label: '用户名', key: 'username', type: 'text'},
-      {label: '密码', key: 'password', type: 'text'},
+      {label: '用户名', key: 'username', type: 'email'},
+      {label: '密码', key: 'password', type: 'password'},
     ],
     buttonText: '登陆',
     goToSignIn: true,

@@ -51,7 +51,7 @@ ssh xiong@nextjs "sh /home/xiong/app/bin/deploy.sh"
 
 #### nginx
 ```bash
-docker run --name nginxNextjs --network=host -v /home/xiong/app/nginx.conf:/etc/nginx/conf.d/default.conf -v /home/xiong/app/.next/static:/usr/share/nginx/html/_next/static -d nginx:1.19.1
+docker run --name nginxNextjs --network=host -v /home/jingsong/app/nextjs-typeorm-web/nginx.conf:/etc/nginx/conf.d/default.conf -v /home/jingsong/app/nextjs-typeorm-web/.next/static:/usr/share/nginx/html/_next/static -d nginx:1.19.1
 ```
 
 
