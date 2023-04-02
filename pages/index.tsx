@@ -1,5 +1,6 @@
 import {useEffect, useReducer, useRef} from 'react';
 import {GetServerSideProps, NextPage} from 'next';
+import styled from 'styled-components';
 import {UAParser} from 'ua-parser-js';
 import CommandRow from 'components/CommandRow';
 import OptionsItem from 'components/OptionsItem';
@@ -8,7 +9,6 @@ import {Context} from 'createStore';
 import deepClone from 'lib/deepClone';
 import {arrowDownOrArrowUp, createIconsList} from 'lib/game';
 import reducer, {initialValue} from 'reducer';
-import Home from 'styles/indexStyled';
 
 type Props = {
   userInfo: UAParser.IResult;
@@ -65,23 +65,68 @@ const Index: NextPage<Props> = (props) => {
             bash
           </span>
         </h5>
-        <CommandRow {...{userInfo, inputValue: state.inputValue, ref: focusRef}} />
-        {state.showOptions && (
-          <div className="select-list-mobile">
-            <div className="welcome">
-              Welcome to my website, thanks
-              <img {...{src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22}} />
+        <Content>
+          <CommandRow {...{userInfo, inputValue: state.inputValue, ref: focusRef}} />
+          {state.showOptions && (
+            <div className="select-list-mobile">
+              <div className="welcome">
+                Welcome to my website, thanks
+                <img {...{src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22}} />
+              </div>
+              {Icons.map((iconProps) => (
+                <OptionsItem {...iconProps} key={iconProps.id} />
+              ))}
             </div>
-            {Icons.map((iconProps) => (
-              <OptionsItem {...iconProps} key={iconProps.id} />
-            ))}
-          </div>
-        )}
+          )}
+        </Content>
+        <Footer>
+          <a href="https://beian.miit.gov.cn/">陕ICP备2023001571号-1</a>
+        </Footer>
       </Home>
     </Context.Provider>
   );
 };
 export default Index;
+const Footer = styled.div`
+  color: white;
+  text-align: center;
+`;
+
+const Content = styled.div`
+  flex-grow: 1;
+  background: transparent;
+`;
+
+const Home = styled.div`
+  background: #272c33;
+  padding: 16px;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  .home-head {
+    padding-bottom: 10px;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #e6e7e6;
+    .head-front {
+      border-bottom: 1px solid #e6e7e6;
+    }
+    .shell {
+      position: relative;
+    }
+  }
+  .select-list-mobile {
+    color: #8bc264;
+    padding-left: 2px;
+    .welcome {
+      display: flex;
+      align-items: center;
+    }
+  }
+`;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const ua = context.req.headers['user-agent'];
