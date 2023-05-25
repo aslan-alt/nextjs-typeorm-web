@@ -15,7 +15,7 @@ const CommandRow = (props: Props, ref: MutableRefObject<any>) => {
     dispatch,
   } = useContext(Context);
 
-  const isVisibleButton = device?.model && showButton;
+  const isVisibleButton = device?.type === 'mobile' && showButton;
 
   const keyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter') {
