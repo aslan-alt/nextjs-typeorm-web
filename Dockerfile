@@ -5,7 +5,7 @@ WORKDIR /usr/src/app
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 RUN npm install -g pnpm
-COPY node_modules ./
+COPY node_modules ./node_modules
 COPY . .
 
 EXPOSE 3000
