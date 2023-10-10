@@ -27,9 +27,9 @@ docker volume rm blog-data
 
 
 #### 创建数据库
-create database development_blog
+create database development_blog;
 #### 删除数据库
-drop database development_blog
+drop database development_blog;
 
 ## 开发
 

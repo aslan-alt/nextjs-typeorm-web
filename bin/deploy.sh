@@ -1,9 +1,9 @@
 cd app &&
 git pull &&
-yarn install --production=false &&
-yarn build &&
-yarn typeorm:build &&
-yarn migration:run && 
+pnpm install --production=false &&
+pnpm build &&
+pnpm typeorm:build &&
+pnpm migration:run &&
 docker build -t aslanxiong/node-web-app . &&
 docker kill app &&
 docker rm app &&
