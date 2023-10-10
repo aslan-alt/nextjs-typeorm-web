@@ -1,7 +1,7 @@
 FROM node:18.16.0
 # Create app directory
 
-WORKDIR /home/ubuntu/nextjs-typeorm-web
+WORKDIR .
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 RUN npm install -g pnpm
