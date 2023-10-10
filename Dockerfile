@@ -1,7 +1,7 @@
 FROM node:18.16.0
 # Create app directory
 
-WORKDIR .
+WORKDIR /usr/src/app
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 RUN npm install -g pnpm
