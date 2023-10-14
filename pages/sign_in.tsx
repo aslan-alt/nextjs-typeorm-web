@@ -1,12 +1,12 @@
 import qs from 'querystring';
+import {User} from '@database/entity/User';
+import {ironOptions} from '@lib/withSession';
 import {message} from 'antd';
 import axios from 'axios';
 import {withIronSessionSsr} from 'iron-session/next';
 import {GetServerSideProps, GetServerSidePropsContext, NextPage} from 'next';
 import StarsLayout from 'components/StarsLayout';
 import {useForm} from 'hooks/useForm';
-import {User} from 'src/entity/User';
-import {ironOptions} from '../lib/withSession';
 
 const SignIn: NextPage<{user: User}> = () => {
   const {form} = useForm({
@@ -16,7 +16,7 @@ const SignIn: NextPage<{user: User}> = () => {
       success: () => {
         message.success('登陆成功');
         const query = qs.parse(window.location.search.substr(1));
-        location.href = query.returnTo.toString();
+        location.href = query?.returnTo?.toString() || '/';
       },
     },
     fields: [

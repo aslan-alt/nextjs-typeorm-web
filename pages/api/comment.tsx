@@ -1,12 +1,13 @@
+import {Comment} from '@database/entity/Comment';
+import {getConnection} from '@database/getConnection';
+import {ironOptions} from '@lib/withSession';
 import {withIronSessionApiRoute} from 'iron-session/next';
-import {getDatabaseConnection} from 'lib/getDatabaseConnection';
-import {Comment} from 'src/entity/Comment';
-import {ironOptions} from '../../lib/withSession';
 
 interface CommentData {
   commentContent: string;
   useId: number | string;
 }
+
 export default withIronSessionApiRoute(async (req, res) => {
   const {commentContent} = req.body as CommentData;
   const user = (req.session as any).user;
@@ -17,7 +18,7 @@ export default withIronSessionApiRoute(async (req, res) => {
     return;
   }
 
-  const connect = await getDatabaseConnection();
+  const connect = await getConnection();
   const now = new Date();
   comment.content = commentContent;
   comment.userId = user.id;

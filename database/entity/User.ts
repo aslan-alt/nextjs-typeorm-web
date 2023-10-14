@@ -66,7 +66,7 @@ export class User {
 
   @BeforeInsert()
   generatePasswordDigest() {
-    this.passwordDigest = md5(this.password);
+    this.passwordDigest = md5(this.password) as string;
   }
   toJSON() {
     return _.omit(this, ['password', 'errors', 'passwordDigest', 'passwordConfirmation']);

@@ -1,7 +1,7 @@
+import {Post} from '@database/entity/Post';
+import {getConnection} from '@database/getConnection';
+import {ironOptions} from '@lib/withSession';
 import {withIronSessionApiRoute} from 'iron-session/next';
-import {getDatabaseConnection} from 'lib/getDatabaseConnection';
-import {Post} from 'src/entity/Post';
-import {ironOptions} from '../../../lib/withSession';
 
 export default withIronSessionApiRoute(async (req, res) => {
   if (req.method === 'POST') {
@@ -15,7 +15,7 @@ export default withIronSessionApiRoute(async (req, res) => {
       return;
     }
     post.author = user;
-    const connect = await getDatabaseConnection();
+    const connect = await getConnection();
     await connect.manager.save(post);
     res.status(200).json(post);
   }

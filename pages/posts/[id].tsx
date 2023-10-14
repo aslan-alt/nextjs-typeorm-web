@@ -1,13 +1,13 @@
 import React from 'react';
+import {Post} from '@database/entity/Post';
+import {getConnection} from '@database/getConnection';
 import {NextPage, GetServerSideProps} from 'next';
 import Link from 'next/link';
-import {getDatabaseConnection} from 'lib/getDatabaseConnection';
-import {Post} from 'src/entity/Post';
 
 type Props = {
   post: string;
 };
-const postsShow: NextPage<Props> = (props) => {
+const PostsShow: NextPage<Props> = (props) => {
   const {post} = props;
   const data: Post = JSON.parse(post);
   return (
@@ -23,13 +23,13 @@ const postsShow: NextPage<Props> = (props) => {
   );
 };
 
-export default postsShow;
+export default PostsShow;
 
 export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (context) => {
   const id = context.params?.id;
 
-  const connection = await getDatabaseConnection();
-  const post = await connection.manager.findOne(Post, id);
+  const connection = await getConnection();
+  const post = await connection.manager.findOne(Post, {where: {id}});
 
   return {
     props: {

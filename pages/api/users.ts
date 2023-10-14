@@ -1,7 +1,7 @@
+import {User} from '@database/entity/User';
+import {getConnection} from '@database/getConnection';
+import {ironOptions} from '@lib/withSession';
 import {withIronSessionApiRoute} from 'iron-session/next';
-import {getDatabaseConnection} from 'lib/getDatabaseConnection';
-import {User} from 'src/entity/User';
-import {ironOptions} from '../../lib/withSession';
 
 interface SignData {
   username: string;
@@ -11,14 +11,14 @@ interface SignData {
 
 export default withIronSessionApiRoute(async (req, res) => {
   const {username, password, passwordConfirmation} = req.body as SignData;
-  const connect = await getDatabaseConnection();
+  const connect = await getConnection();
   const user = new User();
   user.username = username;
   user.password = password;
   user.passwordConfirmation = passwordConfirmation;
   let found;
   try {
-    found = await connect.manager.findOne(User, {username});
+    found = await connect.manager.findOneBy(User, {username});
   } catch (e) {
     // console.log(e)
   }

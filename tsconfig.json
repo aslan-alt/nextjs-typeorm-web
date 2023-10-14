@@ -2,6 +2,20 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "baseUrl": ".",
+    "paths": {
+      "@components/*": [
+        "components/*"
+      ],
+      "@constants/*": [
+        "constants/*"
+      ],
+      "@database/*": [
+        "database/*"
+      ],
+      "@lib/*": [
+        "lib/*"
+      ]
+    },
     "target": "es5",
     "module": "esnext",
     "strict": false,
