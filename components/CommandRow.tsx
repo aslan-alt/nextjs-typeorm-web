@@ -1,34 +1,34 @@
-import React, {ChangeEvent, useContext, forwardRef, MutableRefObject} from 'react';
+import React, {forwardRef, MutableRefObject} from 'react';
 import styled from 'styled-components';
-import {Context} from 'createStore';
 
 interface Props {
-  userInfo: UAParser.IResult;
+    userInfo: UAParser.IResult;
+    showButton: boolean;
+    onCommandInputChange: (value?: string) => void;
+    inputValue?: string;
+    showOptions: boolean;
+    hideButtonShowOptions: () => void;
+    setEnterTimes: (times: number) => void;
 }
 
-const CommandRow = (props: Props, ref: MutableRefObject<any>) => {
-  const {
-    userInfo: {device, browser, os},
-  } = props;
-  const {
-    state: {showOptions, inputValue, showButton},
-    dispatch,
-  } = useContext(Context);
+const CommandInput = (props: Props, ref: MutableRefObject<any>) => {
+    const {
+        userInfo: {device, browser, os},
+        showButton,
+        inputValue,
+        onCommandInputChange,
+        showOptions,
+        hideButtonShowOptions,
+        setEnterTimes,
+    } = props;
 
   const isVisibleButton = device?.type === 'mobile' && showButton;
 
   const keyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter') {
-      dispatch({type: 'setShowButton', payload: false});
-      dispatch({type: 'setShowOptions', payload: true});
-      dispatch({type: 'setEnterTimes', payload: 1});
+        hideButtonShowOptions();
+        setEnterTimes(1);
     }
-  };
-
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e?.target?.value;
-    dispatch({type: 'setShowButton', payload: !!value.length});
-    dispatch({type: 'setInputValue', payload: value});
   };
 
   return (
@@ -36,26 +36,19 @@ const CommandRow = (props: Props, ref: MutableRefObject<any>) => {
       <p>{`${browser?.name}/${browser.version}/${os.name} User$ `}</p>
       <CommanderInputAndButton>
         {!(inputValue.length > 0) && <div className="cursor"></div>}
-        <CommandInput
-          type="text"
-          placeholder="Please enter the command"
-          value={inputValue}
-          onChange={onChange}
-          onKeyUp={keyUp}
-          ref={ref}
-          disabled={showOptions}
-        />
+          <CommandInputStyled
+              type="text"
+              placeholder="Please enter the command"
+              value={inputValue}
+              onChange={(e) => {
+                  onCommandInputChange(e.target?.value);
+              }}
+              onKeyUp={keyUp}
+              ref={ref}
+              disabled={showOptions}
+          />
 
-        {isVisibleButton && (
-          <button
-            onClick={() => {
-              dispatch({type: 'setShowButton', payload: false});
-              dispatch({type: 'setShowOptions', payload: true});
-            }}
-          >
-            执行
-          </button>
-        )}
+          {isVisibleButton && <button onClick={hideButtonShowOptions}>执行</button>}
       </CommanderInputAndButton>
     </Container>
   );
@@ -125,7 +118,7 @@ const CommanderInputAndButton = styled.div`
   }
 `;
 
-const CommandInput = styled.input`
+const CommandInputStyled = styled.input`
   flex-grow: 1;
   border: none;
   min-width: 170px;
@@ -136,4 +129,4 @@ const CommandInput = styled.input`
   padding: 6px 0 6px 6px;
 `;
 
-export default forwardRef(CommandRow);
+export default forwardRef(CommandInput);

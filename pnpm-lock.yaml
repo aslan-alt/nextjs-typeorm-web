@@ -26,6 +26,7 @@ specifiers:
   eslint-plugin-cypress: ^2.15.1
   eslint-plugin-prettier: ^5.0.1
   gray-matter: ^4.0.3
+  gsap: ^3.12.2
   iron-session: ^6.3.1
   lodash: ^4.17.21
   marked: ^9.1.2
@@ -47,11 +48,12 @@ dependencies:
   '@babel/cli': 7.23.0_@babel+core@7.23.2
   '@types/md5': 2.3.3
   '@typescript-eslint/eslint-plugin': 6.7.5_srhnpoqmhm6ulnern6fnsuapfi
-  antd: 5.10.0_biqbaboplfbrettd7655fr4n2y
+  antd: 5.10.1_biqbaboplfbrettd7655fr4n2y
   axios: 1.5.1
   classnames: 2.3.2
   dotenv: 16.3.1
   gray-matter: 4.0.3
+  gsap: 3.12.2
   iron-session: 6.3.1_next@13.5.4
   lodash: 4.17.21
   marked: 9.1.2
@@ -1189,8 +1191,8 @@ packages:
     dependencies:
       color-convert: 2.0.1
 
-  /antd/5.10.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: { integrity: sha512-qeyfMhcDK2QeuKaC/OCjNCPrJb+3vrBHvVK2swRHsxJvKFSpRerMCShOn/I3CXogrVJazPMluGhy0FQlcHQ4pw== }
+  /antd/5.10.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: { integrity: sha512-alcBmeH4oAdmEdBs6EORH3onRFRjGYRkWtVjPyJxlTIfLILb/+S5Y+ZqisV3AobC8mlj6T3RV8aKG9ic6PgtzQ== }
     peerDependencies:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
@@ -1215,7 +1217,7 @@ packages:
       rc-dialog: 9.3.3_biqbaboplfbrettd7655fr4n2y
       rc-drawer: 6.5.2_biqbaboplfbrettd7655fr4n2y
       rc-dropdown: 4.1.0_biqbaboplfbrettd7655fr4n2y
-      rc-field-form: 1.38.2_biqbaboplfbrettd7655fr4n2y
+      rc-field-form: 1.39.0_biqbaboplfbrettd7655fr4n2y
       rc-image: 7.3.1_biqbaboplfbrettd7655fr4n2y
       rc-input: 1.2.1_biqbaboplfbrettd7655fr4n2y
       rc-input-number: 8.1.0_biqbaboplfbrettd7655fr4n2y
@@ -1844,7 +1846,7 @@ packages:
       is-string: 1.0.7
       is-typed-array: 1.1.12
       is-weakref: 1.0.2
-      object-inspect: 1.12.3
+      object-inspect: 1.13.0
       object-keys: 1.1.1
       object.assign: 4.1.4
       regexp.prototype.flags: 1.5.1
@@ -2523,13 +2525,17 @@ packages:
       strip-bom-string: 1.0.0
     dev: false
 
+  /gsap/3.12.2:
+    resolution: { integrity: sha512-EkYnpG8qHgYBFAwsgsGEqvT1WUidX0tt/ijepx7z8EUJHElykg91RvW1XbkT59T0gZzzszOpjQv7SE41XuIXyQ== }
+    dev: false
+
   /has-bigints/1.0.2:
-    resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
+    resolution: { integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ== }
     dev: true
 
   /has-flag/3.0.0:
-    resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==}
-    engines: {node: '>=4'}
+    resolution: { integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw== }
+    engines: { node: '>=4' }
 
   /has-flag/4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
@@ -3181,13 +3187,13 @@ packages:
     resolution: { integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg== }
     engines: { node: '>=0.10.0' }
 
-  /object-inspect/1.12.3:
-    resolution: { integrity: sha512-geUvdk7c+eizMNUDkRpW1wJwgfOiOeHbxBR/hLXK1aT6zmVSO0jsQcs7fj6MGw89jC/cjGfLcNOrtMYtGqm81g== }
+  /object-inspect/1.13.0:
+    resolution: { integrity: sha512-HQ4J+ic8hKrgIt3mqk6cVOVrW2ozL4KdvHlqpBv9vDYWx9ysAgENAdvy4FoGF+KFdhR7nQTNm5J0ctAeOwn+3g== }
     dev: true
 
   /object-keys/1.1.1:
-    resolution: {integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==}
-    engines: {node: '>= 0.4'}
+    resolution: { integrity: sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA== }
+    engines: { node: '>= 0.4' }
     dev: true
 
   /object.assign/4.1.4:
@@ -3609,8 +3615,8 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /rc-field-form/1.38.2_biqbaboplfbrettd7655fr4n2y:
-    resolution: { integrity: sha512-O83Oi1qPyEv31Sg+Jwvsj6pXc8uQI2BtIAkURr5lvEYHVggXJhdU/nynK8wY1gbw0qR48k731sN5ON4egRCROA== }
+  /rc-field-form/1.39.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: { integrity: sha512-V7Wk7uji1jBsUGGgP788H9rpFy55HLiD4lywTlktUGjK7EgW5dt+mq1MPbtCpPRMzs83vZBW4SOChOmCACz4WA== }
     engines: { node: '>=8.x' }
     peerDependencies:
       react: '>=16.9.0'
@@ -4258,7 +4264,7 @@ packages:
     dependencies:
       call-bind: 1.0.2
       get-intrinsic: 1.2.1
-      object-inspect: 1.12.3
+      object-inspect: 1.13.0
     dev: true
 
   /signal-exit/3.0.7:
