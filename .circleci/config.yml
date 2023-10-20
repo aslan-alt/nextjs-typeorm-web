@@ -16,7 +16,7 @@ jobs:
             pnpm install
       - run:
           name: Unit test
-          command: yarn test
+          command: pnpm test
 
 workflows:
   version: 2
