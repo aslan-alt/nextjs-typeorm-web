@@ -23,7 +23,7 @@ type OptionsItem = {
   width?: number;
 };
 
-const menus: OptionsItem[] = [
+const allPages: OptionsItem[] = [
   {
     id: 0,
     name: 'game',
@@ -66,14 +66,14 @@ const Index: NextPage<Props> = (props) => {
   const [showButton, setShowButton] = useState(false);
   const [enterTimes, setEnterTimes] = useState(0);
 
-  const focusRef = useRef(null);
+  const focusRef = useRef<HTMLInputElement>(null);
   const focusTextInput = () => {
     focusRef?.current?.focus();
   };
 
   // const Icons = createIconsList({
   const onCommandInputChange = (value?: string) => {
-    setInputValue(value);
+    setInputValue(value ?? '');
     setShowButton(true);
   };
 
@@ -93,8 +93,10 @@ const Index: NextPage<Props> = (props) => {
           if (enterTimes === 1) {
             setEnterTimes(2);
           } else {
-            const path = menus.find((item) => item.id === selectIndex);
-            location.href = path.href;
+            const selectedPage = allPages.find((item) => item.id === selectIndex);
+            if (selectedPage) {
+              location.href = selectedPage.href;
+            }
           }
         }
         keyEventHash[e.code] && setSelectIndex(keyEventHash[e.code](selectIndex));
@@ -130,9 +132,9 @@ const Index: NextPage<Props> = (props) => {
             <SelectListMobile>
               <Welcome>
                 Welcome to my website, thanks
-                <img {...{src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22}} />
+                <Image width={48} height={22} src="/grimace.svg" alt="grimace" />
               </Welcome>
-              {menus.map((item) => (
+              {allPages.map((item) => (
                 <SelectorWrapper
                   key={item.id}
                   onClick={() => {
@@ -141,7 +143,7 @@ const Index: NextPage<Props> = (props) => {
                 >
                   <IconContainer>
                     {selectIndex === item.id && (
-                      <img src="/index.svg" width={20} height={18} alt={item?.name ?? ''} />
+                      <Image src="/index.svg" width={20} height={18} alt={item?.name ?? ''} />
                     )}
                   </IconContainer>
                   <Link href={item.href} legacyBehavior>
