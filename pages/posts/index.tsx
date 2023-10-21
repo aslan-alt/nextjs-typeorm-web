@@ -42,7 +42,7 @@ export const getServerSideProps: GetServerSideProps = async (
   const index = context.req?.url?.indexOf('?') ?? 0;
   const search = context.req?.url?.substr(index + 1);
 
-  const pageNumber = parseInt(qs?.parse(search)?.page?.toString()) || 1;
+  const pageNumber = parseInt(qs.parse(search ?? '').page?.toString() ?? '1');
   const perPage = 3;
 
   const [posts, count] = await connect.manager.findAndCount(Post, {

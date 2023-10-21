@@ -2,18 +2,18 @@ import React, {FC} from 'react';
 import styled from 'styled-components';
 
 type Props = {
-    height?: string;
+  height?: string;
 
-    width?: string;
-    background?: string;
-    image?: string;
-    children?: React.ReactNode;
+  width?: string;
+  background?: string;
+  image?: string;
+  children?: React.ReactNode;
 };
 
 export const BasicBackground: FC<Props> = ({children, ...rest}) => {
-    return <Container {...rest}>{children}</Container>;
+  return <Container {...rest}>{children}</Container>;
 };
-const Container = styled.div`
+const Container = styled.div<Props>`
   ${({height, width, background, image}) => {
     return `
     ${height ? `height:${height}` : ''};
@@ -21,5 +21,5 @@ const Container = styled.div`
       ${background ? `background:${background}` : ''};
        ${image ? `background-image: url(${image});background-size: cover;` : ''};
     `;
-}};
+  }};
 `;

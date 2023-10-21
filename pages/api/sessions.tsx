@@ -1,9 +1,9 @@
+import {withIronSessionApiRoute} from 'iron-session/next';
+import {NextApiHandler} from 'next';
 import {User} from '@database/entity/User';
 import {getConnection} from '@database/getConnection';
 import {SignIn} from '@database/model/SignIn';
 import {ironOptions} from '@lib/withSession';
-import {withIronSessionApiRoute} from 'iron-session/next';
-import {NextApiHandler} from 'next';
 
 const Sessions: NextApiHandler = async (req, res) => {
   const {username, password} = req.body;

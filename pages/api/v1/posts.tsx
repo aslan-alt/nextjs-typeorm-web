@@ -1,7 +1,7 @@
+import {withIronSessionApiRoute} from 'iron-session/next';
 import {Post} from '@database/entity/Post';
 import {getConnection} from '@database/getConnection';
 import {ironOptions} from '@lib/withSession';
-import {withIronSessionApiRoute} from 'iron-session/next';
 
 export default withIronSessionApiRoute(async (req, res) => {
   if (req.method === 'POST') {

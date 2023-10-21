@@ -30,7 +30,8 @@ export function useForm<T>(props: UseFormOptions<T>) {
 
   const createEmptyError = () => {
     const e: {[k in Keys]?: string[]} = {};
-    Object.keys(initFormData).forEach((key) => {
+
+    Object.keys(initFormData!).forEach((key) => {
       e[key as Keys] = [];
     });
     return e;
@@ -42,28 +43,6 @@ export function useForm<T>(props: UseFormOptions<T>) {
     setFormData((state) => ({...state, [key]: value}));
   }, []);
 
-  const _onSubmit = useCallback(
-    (e) => {
-      setErrors(createEmptyError());
-      setLoading(true);
-      e.preventDefault();
-      submit.request(fromData).then(
-        (res) => {
-          submit.success(res, fromData);
-          setLoading(false);
-        },
-        (error) => {
-          const response: AxiosResponse = error.response;
-          if (response.status === 422) {
-            setErrors({...response.data});
-            setLoading(false);
-          }
-        }
-      );
-    },
-    [submit, fromData]
-  );
-
   const form = (
     <FormWrapper>
       {fields?.map((filed, index) => {
@@ -73,7 +52,7 @@ export function useForm<T>(props: UseFormOptions<T>) {
               <textarea
                 className="form-item-input"
                 placeholder={filed.label}
-                defaultValue={fromData[filed.key].toString()}
+                defaultValue={fromData[filed.key]?.toString()}
                 onChange={(e) => {
                   onChange(filed.key, e.target.value);
                 }}
@@ -84,21 +63,39 @@ export function useForm<T>(props: UseFormOptions<T>) {
                 type={filed.type}
                 className="form-item-input"
                 placeholder={filed.label}
-                value={fromData[filed.key].toString()}
+                value={fromData[filed.key]?.toString()}
                 onChange={(e) => {
                   onChange(filed.key, e.target.value);
                 }}
               />
             )}
 
-            <div className="error">
-              {errors[filed.key].length > 0 && errors[filed.key].join(',')}
-            </div>
+            <div className="error">{errors[filed.key]?.join(',')}</div>
           </FormItem>
         );
       })}
       <div className="submit">
-        <Button onClick={_onSubmit} loading={loading}>
+        <Button
+          onClick={(e) => {
+            setErrors(createEmptyError());
+            setLoading(true);
+            e.preventDefault();
+            submit.request(fromData).then(
+              (res) => {
+                submit.success(res, fromData);
+                setLoading(false);
+              },
+              (error) => {
+                const response: AxiosResponse = error.response;
+                if (response.status === 422) {
+                  setErrors({...response.data});
+                  setLoading(false);
+                }
+              }
+            );
+          }}
+          loading={loading}
+        >
           {buttonText}
         </Button>
       </div>

@@ -21,8 +21,8 @@ const creatPlace = (options: CreatePlace) => {
 
   return placeList;
 };
-const getHeadAndBody = () => {
-  return window.innerWidth <= 700
+const getHeadAndBody = (isPhone: boolean) => {
+  return isPhone
     ? {
         initHead: {x: 200, y: 40},
         initBody: [

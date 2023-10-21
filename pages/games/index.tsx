@@ -1,18 +1,18 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef} from 'react';
 import {notification, message, Modal} from 'antd';
 import gsap from 'gsap';
+import {GetServerSideProps} from 'next';
 import {useRouter} from 'next/router';
 import styled from 'styled-components';
+import {UAParser} from 'ua-parser-js';
 import {BasicBackground} from '@components/BasicBackground';
 import {getImageFullUrl} from '@lib/index';
 import {withMobile} from '@styles/styleHelper';
-import {alertByWidth, inputSpaceToSnack} from 'lib/game';
+import {inputSpaceToSnack} from 'lib/game';
 
-const Games = () => {
+const Games = ({isPhone}: {isPhone: boolean}) => {
   const router = useRouter();
-  const ref = useRef<HTMLDivElement>();
-
-  const [isPhone, setIsPhone] = useState<'phone'>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -66,22 +66,24 @@ const Games = () => {
   };
 
   useEffect(() => {
-    const {width} = getWidthAndHeight();
-    alertByWidth({
-      width,
-      modal,
-      onOk: () => {
-        setIsPhone('phone');
-      },
-      onCancel: () => {
-        // setImgList(['cloud1']);
-      },
-    });
+    if (isPhone) {
+      modal.confirm({
+        title: '通知',
+        content: (
+          <div>
+            <p>将为您切换到竖屏</p>
+            <p>点击您要玩的游戏或者马里奥，都可以开始哦</p>
+          </div>
+        ),
+      });
+    } else {
+      message.info('点击图标，或者输入空格选择游戏哈!', 10);
+    }
     return inputSpaceToSnack(goToSnack);
   }, []);
 
   return (
-    <GamesPage className={isPhone} ref={ref}>
+    <GamesPage ref={ref}>
       <Cloud1 src={getImageFullUrl('cloud1')} alt="cloud1" />
       <Cloud2 src={getImageFullUrl('cloud2')} alt="cloud2" />
       <Noun src={getImageFullUrl('noun')} alt="noun" />
@@ -274,4 +276,32 @@ const GamesPage = styled.div`
     top: 0;
   `)};
 `;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const userAgentString = context.req.headers['user-agent'];
+  const result = new UAParser(userAgentString).getResult();
+  const deviceType = result.device.type;
+  const osName = result.os.name;
+  const browserName = result.browser.name;
+
+  // 判断设备类型
+  const isPhone = (() => {
+    const notIsPC = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgentString ?? ''
+    );
+    return (
+      deviceType === 'mobile' ||
+      notIsPC ||
+      osName === 'iOS' ||
+      (osName === 'Android' && browserName === 'Chrome Mobile')
+    );
+  })();
+
+  // 进一步根据操作系统和浏览器信息判断
+
+  return {
+    props: {
+      isPhone,
+    },
+  };
+};
 export default Games;

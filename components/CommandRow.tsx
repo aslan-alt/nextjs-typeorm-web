@@ -37,7 +37,7 @@ const CommandInput = (props: Props, ref: ForwardedRef<any>) => {
     <Container>
       <p>{`${browser?.name}/${browser.version}/${os.name} User$ `}</p>
       <CommanderInputAndButton>
-        {inputValue?.length && <div className="cursor"></div>}
+        {!inputValue && <div className="cursor"></div>}
         <CommandInputStyled
           type="text"
           placeholder="Please enter the command"

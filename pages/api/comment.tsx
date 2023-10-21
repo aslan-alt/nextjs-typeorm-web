@@ -1,7 +1,7 @@
+import {withIronSessionApiRoute} from 'iron-session/next';
 import {Comment} from '@database/entity/Comment';
 import {getConnection} from '@database/getConnection';
 import {ironOptions} from '@lib/withSession';
-import {withIronSessionApiRoute} from 'iron-session/next';
 
 interface CommentData {
   commentContent: string;

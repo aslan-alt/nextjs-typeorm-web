@@ -9,31 +9,6 @@ export function sleep(time: number) {
   });
 }
 
-export const debounce = (fn: Function, delay: number) => {
-  let timerId = null;
-  return function (...args: any[]) {
-    if (timerId) {
-      return window.clearTimeout(timerId);
-    }
-    timerId = setTimeout(() => {
-      fn.call(undefined, ...args);
-    }, delay);
-  };
-};
-
-export const throttle = (fn: Function, delay: number) => {
-  let toggle = true;
-  return function (...args: any[]) {
-    if (toggle) {
-      toggle = false;
-      fn.call(undefined, ...args);
-      const timerId = setTimeout(() => {
-        window.clearTimeout(timerId);
-        toggle = true;
-      }, delay);
-    }
-  };
-};
 export function friendlyDate(dateStr: string) {
   let dateObj = typeof dateStr === 'object' ? dateStr : new Date(dateStr);
   let space = Date.now() - dateObj.getTime();

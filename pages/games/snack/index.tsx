@@ -1,6 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 import {Modal} from 'antd';
+import {GetServerSideProps} from 'next';
 import styled from 'styled-components';
+import {UAParser} from 'ua-parser-js';
 import Controller from 'components/Controller';
 import SpeedUp from 'components/SpeedUp';
 import useDialog from 'hooks/Snack/useDialog';
@@ -10,7 +12,7 @@ import useSnackFood from 'hooks/Snack/useSnackFood';
 import useSnackHead from 'hooks/Snack/useSnackHead';
 import {getHeadAndBody} from 'lib/game/snack';
 
-const Snack = () => {
+const Snack = ({isPhone}: {isPhone: boolean}) => {
   const {current} = useRef({count: 0});
 
   const ref2 = useRef<HTMLDivElement>(null);
@@ -18,7 +20,8 @@ const Snack = () => {
   const [modal, contextHolder] = Modal.useModal();
   const {DialogNode, confirm} = useDialog();
 
-  const {initBody, initHead} = getHeadAndBody();
+  const {initBody, initHead} = getHeadAndBody(isPhone);
+
   const {
     direction,
     currentRule,
@@ -182,6 +185,7 @@ const SnackWrapper = styled.div`
       transition: all 0.3s ease 3ms;
     }
   }
+
   .food {
     width: 10px;
     height: 10px;
@@ -190,5 +194,33 @@ const SnackWrapper = styled.div`
     background: red;
   }
 `;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const userAgentString = context.req.headers['user-agent'];
+  const result = new UAParser(userAgentString).getResult();
+  const deviceType = result.device.type;
+  const osName = result.os.name;
+  const browserName = result.browser.name;
+
+  // 判断设备类型
+  const isPhone = (() => {
+    const notIsPC = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      userAgentString ?? ''
+    );
+    return (
+      deviceType === 'mobile' ||
+      notIsPC ||
+      osName === 'iOS' ||
+      (osName === 'Android' && browserName === 'Chrome Mobile')
+    );
+  })();
+
+  // 进一步根据操作系统和浏览器信息判断
+
+  return {
+    props: {
+      isPhone,
+    },
+  };
+};
 
 export default Snack;

@@ -71,7 +71,6 @@ const Index: NextPage<Props> = (props) => {
     focusRef?.current?.focus();
   };
 
-  // const Icons = createIconsList({
   const onCommandInputChange = (value?: string) => {
     setInputValue(value ?? '');
     setShowButton(true);

@@ -1,4 +1,5 @@
 import React from 'react';
+import {isNumber} from 'lodash';
 import {NextPage, GetServerSideProps} from 'next';
 import Link from 'next/link';
 import {Post} from '@database/entity/Post';
@@ -14,8 +15,7 @@ const PostsShow: NextPage<Props> = (props) => {
     <div>
       <h1>{data.title}</h1>
       <div>{data.content}</div>
-      <div>{data.author}</div>
-      <div>{data?.createdAt}</div>
+
       <Link href={`/posts/[id]/edit`} as={`/posts/${data.id}/edit`} legacyBehavior>
         <a>编辑</a>
       </Link>
@@ -29,11 +29,10 @@ export const getServerSideProps: GetServerSideProps<any, {id: string}> = async (
   const id = context.params?.id;
 
   const connection = await getConnection();
-  const post = await connection.manager.findOne(Post, {where: {id}});
 
   return {
     props: {
-      post: JSON.stringify(post || {}),
+      post: isNumber(id) ? await connection.manager.findOne(Post, {where: {id}}) : {},
     },
   };
 };

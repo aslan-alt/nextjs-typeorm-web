@@ -1,10 +1,10 @@
+import {withIronSessionApiRoute} from 'iron-session/next';
+import {NextApiHandler} from 'next';
+import {UAParser} from 'ua-parser-js';
 import {Comment} from '@database/entity/Comment';
 import {getConnection} from '@database/getConnection';
 import deepClone from '@lib/deepClone';
 import {ironOptions} from '@lib/withSession';
-import {withIronSessionApiRoute} from 'iron-session/next';
-import {NextApiHandler} from 'next';
-import {UAParser} from 'ua-parser-js';
 
 const GetAllComments: NextApiHandler = async (req, res) => {
   const ua = req.headers['user-agent'];

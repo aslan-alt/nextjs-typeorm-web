@@ -44,6 +44,7 @@ export default function AddMessage(props: Props) {
       setComment('');
       message.success('提交成功');
     } catch (e) {
+      // @ts-ignore
       prompt(e?.response?.data?.message);
     }
   };

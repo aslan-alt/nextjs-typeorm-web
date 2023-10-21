@@ -20,7 +20,7 @@ const MessageBoard: NextPage = () => {
 
   const updateMessage = () => {
     axios.get<Data>('/api/getAllComment').then((res) => {
-      if (res.data.comments.length > 0) {
+      if (res.data?.comments?.length) {
         setComments(res.data.comments.sort((a, b) => (b.createdAt < a.createdAt ? 1 : -1)));
       }
     });

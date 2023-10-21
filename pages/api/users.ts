@@ -1,7 +1,7 @@
+import {withIronSessionApiRoute} from 'iron-session/next';
 import {User} from '@database/entity/User';
 import {getConnection} from '@database/getConnection';
 import {ironOptions} from '@lib/withSession';
-import {withIronSessionApiRoute} from 'iron-session/next';
 
 interface SignData {
   username: string;
