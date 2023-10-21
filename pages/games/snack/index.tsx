@@ -8,16 +8,17 @@ import useDirection from 'hooks/Snack/useDirection';
 import useSnackBody from 'hooks/Snack/useSnackBody';
 import useSnackFood from 'hooks/Snack/useSnackFood';
 import useSnackHead from 'hooks/Snack/useSnackHead';
-import {getHeadAndBody, useWidthAndHeightByRouter} from 'lib/game/snack';
+import {getHeadAndBody} from 'lib/game/snack';
 
 const Snack = () => {
-  let {current} = useRef({count: 0});
+  const {current} = useRef({count: 0});
+
   const ref2 = useRef<HTMLDivElement>(null);
 
   const [modal, contextHolder] = Modal.useModal();
   const {DialogNode, confirm} = useDialog();
-  const {width, height} = useWidthAndHeightByRouter();
-  const {initBody, initHead} = getHeadAndBody({width, height});
+
+  const {initBody, initHead} = getHeadAndBody();
   const {
     direction,
     currentRule,
@@ -29,7 +30,7 @@ const Snack = () => {
     changeSpeed,
   } = useDirection();
 
-  const {foodList, foodsView, deleteEatenFoodAndCreateNewFood} = useSnackFood({width, height});
+  const {foodList, foodsView, deleteEatenFoodAndCreateNewFood} = useSnackFood();
 
   const {
     snackHead,
@@ -48,7 +49,7 @@ const Snack = () => {
   };
 
   useEffect(() => {
-    if (width >= 750) {
+    if (window.innerWidth >= 750) {
       modal.confirm({
         title: 'PC端按键提示',
         content: (
@@ -89,23 +90,23 @@ const Snack = () => {
   }, [lastHead, foodList]);
 
   useEffect(() => {
-    checkingStatusAndFeedback({snackBody, width, height, initHeadAndBody, setIsRun});
+    checkingStatusAndFeedback({snackBody, initHeadAndBody});
   }, [isRun, snackHead]);
 
   useEffect(() => {
     setTimeout(() => {
-      ref2.current.scrollTo(0, 1000);
+      ref2.current?.scrollTo(0, 1000);
     });
   }, []);
 
   return (
-    <SnackWrapper style={{height, width}}>
+    <SnackWrapper>
       <div className="map" ref={ref2}>
         {snackHeadView}
         {snackBodyView}
         {foodsView}
 
-        {width < 650 && (
+        {650 < 650 && (
           <>
             <Controller {...{changeDirection, direction}} />
             <SpeedUp {...{changeSpeed}} />

@@ -38,8 +38,6 @@ interface PlaceOptions {
 }
 interface CreatePlace {
   number: number;
-  width: number;
-  height: number;
 }
 interface GetHeadAndBody {
   width: number;
