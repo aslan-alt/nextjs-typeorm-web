@@ -108,13 +108,13 @@ const Index: NextPage<Props> = (props) => {
   return (
     <>
       <Home onClick={focusTextInput}>
-        <h5 className="home-head">
-          <span className="head-front">TERMINAL</span>
-          <span className="shell">
+        <HomeHead>
+          <HeadFront>TERMINAL</HeadFront>
+          <Shell>
             <Square />
             bash
-          </span>
-        </h5>
+          </Shell>
+        </HomeHead>
         <Content>
           <CommandInput
             ref={focusRef}
@@ -127,25 +127,25 @@ const Index: NextPage<Props> = (props) => {
             setEnterTimes={setEnterTimes}
           />
           {showOptions && (
-            <div className="select-list-mobile">
-              <div className="welcome">
+            <SelectListMobile>
+              <Welcome>
                 Welcome to my website, thanks
                 <img {...{src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22}} />
-              </div>
+              </Welcome>
               {menus.map((item) => (
-                <TabWrapper
+                <SelectorWrapper
                   key={item.id}
                   onClick={() => {
                     setSelectIndex(item.id);
                   }}
                 >
-                  <div className="index-icon">
+                  <IconContainer>
                     {selectIndex === item.id && (
                       <img src="/index.svg" width={20} height={18} alt={item?.name ?? ''} />
                     )}
-                  </div>
+                  </IconContainer>
                   <Link href={item.href} legacyBehavior>
-                    <a className="block">{item.text}</a>
+                    <a>{item.text}</a>
                   </Link>
                   {item.name && (
                     <Image
@@ -155,9 +155,9 @@ const Index: NextPage<Props> = (props) => {
                       height={item?.height ?? 0}
                     />
                   )}
-                </TabWrapper>
+                </SelectorWrapper>
               ))}
-            </div>
+            </SelectListMobile>
           )}
         </Content>
         <Footer>
@@ -168,6 +168,7 @@ const Index: NextPage<Props> = (props) => {
   );
 };
 export default Index;
+
 const Footer = styled.div`
   color: white;
   text-align: center;
@@ -178,6 +179,33 @@ const Content = styled.div`
   background: transparent;
 `;
 
+const HomeHead = styled.h5`
+  padding-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #e6e7e6;
+`;
+
+const HeadFront = styled.span`
+  border-bottom: 1px solid #e6e7e6;
+`;
+
+const Shell = styled.span`
+  position: relative;
+`;
+
+const Welcome = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SelectListMobile = styled.div`
+  color: #8bc264;
+  padding-left: 2px;
+`;
+
 const Home = styled.div`
   background: #272c33;
   padding: 16px;
@@ -185,28 +213,6 @@ const Home = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  .home-head {
-    padding-bottom: 10px;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #e6e7e6;
-    .head-front {
-      border-bottom: 1px solid #e6e7e6;
-    }
-    .shell {
-      position: relative;
-    }
-  }
-  .select-list-mobile {
-    color: #8bc264;
-    padding-left: 2px;
-    .welcome {
-      display: flex;
-      align-items: center;
-    }
-  }
 `;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -220,20 +226,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-const TabWrapper = styled.label`
+const SelectorWrapper = styled.label`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
 
   a {
     border-bottom: 1px solid #8bc264;
-  }
-
-  .block {
     margin-left: 5px;
   }
+`;
 
-  .index-icon {
-    width: 28px;
-  }
+const IconContainer = styled.div`
+  width: 28px;
 `;
