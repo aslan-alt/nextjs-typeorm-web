@@ -1,7 +1,8 @@
 import {useState} from 'react';
 import {Modal} from 'antd';
-import cs from 'classnames';
+import styled from 'styled-components';
 import {sleep} from 'lib';
+import {SnackBodyItem} from './useSnackBody';
 
 interface Props {
   direction: Direction;
@@ -88,18 +89,21 @@ const useSnackHead = (props: Props) => {
     }
   };
 
-  const headClass = cs(
-    'body-item',
-    'snack-head',
-    ['ArrowDown', 'ArrowUp'].includes(direction) && 'rotate'
-  );
-
   const snackHeadView = (
-    <div className={headClass} style={{left: snackHead.x, top: snackHead.y}}>
-      <div className="eye-left"></div>
-      <div className="eye-right"></div>
+    <SnackHead
+      style={{
+        left: snackHead.x,
+        top: snackHead.y,
+        ...(['ArrowDown', 'ArrowUp'].includes(direction) && {
+          transform: 'rotate(90deg)',
+          transition: 'all 0.3s ease 3ms',
+        }),
+      }}
+    >
+      <LeftEye />
+      <RightEye />
       {contextHolder}
-    </div>
+    </SnackHead>
   );
   return {
     snackHead,
@@ -111,4 +115,48 @@ const useSnackHead = (props: Props) => {
     checkingStatusAndFeedback,
   };
 };
+
+const SnackHead = styled(SnackBodyItem)`
+  z-index: 10;
+`;
+
+const EyeBasicStyle = `
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  &::before {
+    content: '';
+    display: block;
+    width: 2px;
+    height: 2px;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  }
+`;
+
+const LeftEye = styled.div`
+  ${EyeBasicStyle};
+  left: 50%;
+  margin-left: -4px;
+  bottom: -1px;
+
+  &.eye-right {
+    top: -1px;
+    right: 50%;
+    margin-right: -4px;
+  }
+`;
+
+const RightEye = styled.div`
+  ${EyeBasicStyle};
+  top: -1px;
+  right: 50%;
+  margin-right: -4px;
+`;
+
 export default useSnackHead;

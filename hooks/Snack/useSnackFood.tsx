@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import styled from 'styled-components';
 import {creatPlace} from 'lib/game/snack';
 
 const useSnackFood = () => {
@@ -12,14 +13,18 @@ const useSnackFood = () => {
   }, []);
 
   const foodsView = foodList.map((food, index) => (
-    <div
-      key={index}
-      className="food"
-      style={{left: food.x, top: food.y, background: food.background}}
-    ></div>
+    <FoodNode key={index} style={{left: food.x, top: food.y, background: food.background}} />
   ));
 
   return {foodsView, foodList, setFoodList, deleteEatenFoodAndCreateNewFood};
 };
+
+const FoodNode = styled.div`
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+  background: red;
+`;
 
 export default useSnackFood;

@@ -1,8 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Modal} from 'antd';
-import {GetServerSideProps} from 'next';
 import styled from 'styled-components';
-import {UAParser} from 'ua-parser-js';
+import {getDeviceByContext} from '@lib/getDeviceByContext';
 import Controller from 'components/Controller';
 import SpeedUp from 'components/SpeedUp';
 import useDialog from 'hooks/Snack/useDialog';
@@ -97,91 +96,22 @@ const Snack = ({isPhone}: {isPhone: boolean}) => {
   }, [isRun, snackHead]);
 
   return (
-    <SnackWrapper>
-      <Map>
-        {snackHeadView}
-        {snackBodyView}
-        {foodsView}
+    <Map>
+      {snackHeadView}
+      {snackBodyView}
+      {foodsView}
 
-        {isPhone && (
-          <>
-            <Controller {...{changeDirection, direction}} />
-            <SpeedUp {...{changeSpeed}} />
-          </>
-        )}
-        {contextHolder}
-        {DialogNode}
-      </Map>
-    </SnackWrapper>
+      {isPhone && (
+        <>
+          <Controller {...{changeDirection, direction}} />
+          <SpeedUp {...{changeSpeed}} />
+        </>
+      )}
+      {contextHolder}
+      {DialogNode}
+    </Map>
   );
 };
-
-const SnackWrapper = styled.div`
-  .body-item {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    border-radius: 50%;
-    background: red;
-    transition: all 0.3s;
-    &.snack-head {
-      z-index: 10;
-      div {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background: white;
-        border-radius: 50%;
-        &::before {
-          content: '';
-          display: block;
-          width: 2px;
-          height: 2px;
-          background: black;
-          border-radius: 50%;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-        }
-        &.eye-left {
-          left: 50%;
-          margin-left: -4px;
-          bottom: -1px;
-        }
-        &.eye-right {
-          top: -1px;
-          right: 50%;
-          margin-right: -4px;
-        }
-      }
-    }
-    &.snack-tail {
-      &::before {
-        content: '';
-        display: block;
-        width: 18px;
-        height: 2px;
-        background: red;
-        position: absolute;
-        left: 50%;
-        margin-left: -9px;
-        transform: rotate(90deg);
-      }
-    }
-    &.rotate {
-      transform: rotate(90deg);
-      transition: all 0.3s ease 3ms;
-    }
-  }
-
-  .food {
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    border-radius: 50%;
-    background: red;
-  }
-`;
 
 const Map = styled.div`
   position: relative;
@@ -190,33 +120,6 @@ const Map = styled.div`
   background: #fefffe;
 `;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const userAgentString = context.req.headers['user-agent'];
-  const result = new UAParser(userAgentString).getResult();
-  const deviceType = result.device.type;
-  const osName = result.os.name;
-  const browserName = result.browser.name;
-
-  // 判断设备类型
-  const isPhone = (() => {
-    const notIsPC = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      userAgentString ?? ''
-    );
-    return (
-      deviceType === 'mobile' ||
-      notIsPC ||
-      osName === 'iOS' ||
-      (osName === 'Android' && browserName === 'Chrome Mobile')
-    );
-  })();
-
-  // 进一步根据操作系统和浏览器信息判断
-
-  return {
-    props: {
-      isPhone,
-    },
-  };
-};
+export const getServerSideProps = getDeviceByContext;
 
 export default Snack;

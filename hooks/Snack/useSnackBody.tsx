@@ -1,12 +1,11 @@
 import {useState} from 'react';
-
-type BodyItem = {
-  x: number;
-  y: number;
-};
+import styled from 'styled-components';
 
 interface Props {
-  initBody: BodyItem[];
+  initBody: {
+    x: number;
+    y: number;
+  }[];
 }
 
 const useSnackBody = (props: Props) => {
@@ -24,12 +23,21 @@ const useSnackBody = (props: Props) => {
   const snackBodyView = (
     <>
       {snackBody.map((item, index) => {
-        return <div className="body-item" key={index} style={{left: item.x, top: item.y}}></div>;
+        return <SnackBodyItem key={index} style={{left: item.x, top: item.y}}></SnackBodyItem>;
       })}
     </>
   );
 
   return {snackBodyView, changeSnackBody, snackBody, setsNackBody};
 };
+
+export const SnackBodyItem = styled.div`
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  border-radius: 50%;
+  background: red;
+  transition: all 0.3s;
+`;
 
 export default useSnackBody;
