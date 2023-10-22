@@ -13,36 +13,24 @@ type FoodItem = {
   y: number;
   background: string;
 };
-type setDirectionOptions = {
-  oldDirection: Direction;
-  newDirection: Direction;
-};
+
 interface DialogOptions {
   title: string;
   ok: () => void;
   cancel: () => void;
 }
-type Direction = 'ArrowUp' | 'ArrowDown' | 'ArrowLeft' | 'ArrowRight';
-type ButtonItem = {
-  text: string;
-  direction: Direction;
-};
+
+type Direction = 'arrowUp' | 'arrowDown' | 'arrowLeft' | 'arrowRight';
+
 interface BodyItem {
   x: number;
   y: number;
 }
-interface PlaceOptions {
-  x: number;
-  y: number;
-  background: string;
-}
+
 interface CreatePlace {
   number: number;
 }
-interface GetHeadAndBody {
-  width: number;
-  height: number;
-}
+
 type StarList = {
   id: number;
   transformOrigin: string;

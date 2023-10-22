@@ -1,11 +1,10 @@
 import {useEffect, useRef} from 'react';
 import {notification, message, Modal} from 'antd';
 import gsap from 'gsap';
-import {GetServerSideProps} from 'next';
 import {useRouter} from 'next/router';
 import styled from 'styled-components';
-import {UAParser} from 'ua-parser-js';
 import {BasicBackground} from '@components/BasicBackground';
+import {getDeviceByContext} from '@lib/getDeviceByContext';
 import {getImageFullUrl} from '@lib/index';
 import {withMobile} from '@styles/styleHelper';
 import {inputSpaceToSnack} from 'lib/game';
@@ -274,32 +273,5 @@ const GamesPage = styled.div`
     top: 0;
   `)};
 `;
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const userAgentString = context.req.headers['user-agent'];
-  const result = new UAParser(userAgentString).getResult();
-  const deviceType = result.device.type;
-  const osName = result.os.name;
-  const browserName = result.browser.name;
-
-  // 判断设备类型
-  const isPhone = (() => {
-    const notIsPC = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      userAgentString ?? ''
-    );
-    return (
-      deviceType === 'mobile' ||
-      notIsPC ||
-      osName === 'iOS' ||
-      (osName === 'Android' && browserName === 'Chrome Mobile')
-    );
-  })();
-
-  // 进一步根据操作系统和浏览器信息判断
-
-  return {
-    props: {
-      isPhone,
-    },
-  };
-};
+export const getServerSideProps = getDeviceByContext;
 export default Games;

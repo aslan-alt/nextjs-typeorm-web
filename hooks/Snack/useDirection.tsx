@@ -1,9 +1,10 @@
 import {useEffect, useState} from 'react';
 import {createRuleHash} from 'lib/game/snack';
 
+export const directionList: Direction[] = ['arrowUp', 'arrowLeft', 'arrowRight', 'arrowDown'];
 const useDirection = () => {
   const [isRun, setIsRun] = useState<boolean>(false);
-  const [direction, setDirection] = useState<Direction>('ArrowDown');
+  const [direction, setDirection] = useState<Direction>('arrowDown');
   const [speed, setSpeed] = useState<number>(200);
   const rules = createRuleHash(direction);
   const currentRule = rules[direction];
@@ -27,9 +28,9 @@ const useDirection = () => {
       if (e.code === 'Space') {
         setIsRun(!isRun);
       }
-      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
-        const newDirection = e.code as Direction;
-        changeDirection(newDirection);
+      const d = (e.code.charAt(0).toLowerCase() + e.code.slice(1)) as Direction;
+      if (directionList.includes(d)) {
+        changeDirection(d);
       }
     };
     document.body.onkeyup = (e) => {

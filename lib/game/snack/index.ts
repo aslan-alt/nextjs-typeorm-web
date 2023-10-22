@@ -1,9 +1,9 @@
 const createRuleHash = (currentDirection: Direction) => {
   return {
-    ArrowLeft: {key: 'x', value: -15, constraint: currentDirection !== 'ArrowRight'},
-    ArrowRight: {key: 'x', value: 15, constraint: currentDirection !== 'ArrowLeft'},
-    ArrowDown: {key: 'y', value: 15, constraint: currentDirection !== 'ArrowUp'},
-    ArrowUp: {key: 'y', value: -15, constraint: currentDirection !== 'ArrowDown'},
+    arrowLeft: {key: 'x', value: -15, constraint: currentDirection !== 'arrowRight'},
+    arrowRight: {key: 'x', value: 15, constraint: currentDirection !== 'arrowLeft'},
+    arrowDown: {key: 'y', value: 15, constraint: currentDirection !== 'arrowUp'},
+    arrowUp: {key: 'y', value: -15, constraint: currentDirection !== 'arrowDown'},
   };
 };
 const creatPlace = (options: CreatePlace) => {
