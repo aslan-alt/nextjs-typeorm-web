@@ -17,8 +17,6 @@ const Games = ({isPhone}: {isPhone: boolean}) => {
   const [modal, contextHolder] = Modal.useModal();
 
   const goToSnack = () => {
-    const {width, height} = getWidthAndHeight();
-
     gsap.to('#game-snack', {
       duration: 0.6,
       ease: 'none',
@@ -36,21 +34,21 @@ const Games = ({isPhone}: {isPhone: boolean}) => {
         {transform: 'translate3d(0, 0, 0)', time: 1},
       ],
     });
+
     gsap.to('#mario', {
       duration: 0.06,
       ease: 'none',
-      bottom: window.innerHeight / 2 - 114 * 2,
-      yoyo: true,
       repeat: 1,
+      yoyo: true,
+      ...(isPhone
+        ? {left: '20%'}
+        : {
+            bottom: window.innerHeight / 2 - 114 * 2,
+          }),
+      onComplete: () => {
+        router.push({pathname: '/games/snack'});
+      },
     });
-    setTimeout(() => {
-      router.push({pathname: '/games/snack', query: {width, height}});
-    }, 1000);
-  };
-  const getWidthAndHeight = () => {
-    const width = ref.current?.clientWidth;
-    const height = ref.current?.clientHeight;
-    return {width, height};
   };
 
   const goToOther = () => {
@@ -77,7 +75,7 @@ const Games = ({isPhone}: {isPhone: boolean}) => {
         ),
       });
     } else {
-      message.info('点击图标，或者输入空格选择游戏哈!', 10);
+      message.info('点击图标，或者输入空格选择游戏哈!', 3);
     }
     return inputSpaceToSnack(goToSnack);
   }, []);
