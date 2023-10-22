@@ -3,11 +3,13 @@ import styled from 'styled-components';
 
 const ControllerWrapper = styled.div`
   top: 60px;
+  left: 40px;
   position: absolute;
   width: 150px;
   height: 150px;
   display: flex;
   flex-wrap: wrap;
+
   div {
     width: 50px;
     height: 50px;

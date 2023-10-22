@@ -8,7 +8,7 @@ const useSnackFood = () => {
     setFoodList(foodList.filter((food) => food !== eatFood).concat(creatPlace({number: 1})));
   };
   useEffect(() => {
-    setFoodList(creatPlace({number: 10}));
+    setFoodList(creatPlace({number: 30}));
   }, []);
 
   const foodsView = foodList.map((food, index) => (

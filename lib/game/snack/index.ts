@@ -24,17 +24,17 @@ const creatPlace = (options: CreatePlace) => {
 const getHeadAndBody = (isPhone: boolean) => {
   return isPhone
     ? {
-        initHead: {x: 200, y: 40},
-        initBody: [
-          {x: 200, y: 25},
-          {x: 200, y: 10},
-        ],
-      }
-    : {
         initHead: {x: 50, y: 20},
         initBody: [
           {x: 35, y: 20},
           {x: 20, y: 20},
+        ],
+      }
+    : {
+        initHead: {x: 200, y: 40},
+        initBody: [
+          {x: 200, y: 25},
+          {x: 200, y: 10},
         ],
       };
 };

@@ -15,8 +15,6 @@ import {getHeadAndBody} from 'lib/game/snack';
 const Snack = ({isPhone}: {isPhone: boolean}) => {
   const {current} = useRef({count: 0});
 
-  const ref2 = useRef<HTMLDivElement>(null);
-
   const [modal, contextHolder] = Modal.useModal();
   const {DialogNode, confirm} = useDialog();
 
@@ -79,37 +77,33 @@ const Snack = ({isPhone}: {isPhone: boolean}) => {
   }, []);
 
   useEffect(() => {
-    if (current.count !== 0) {
-      const eatFood = findCurrentEatenFood(foodList);
-      if (eatFood) {
-        deleteEatenFoodAndCreateNewFood(eatFood);
-        changeSnackBody(lastHead, 'add');
+    if (isRun) {
+      if (current.count === 0) {
+        current.count += 1;
       } else {
-        changeSnackBody(lastHead);
+        const eatFood = findCurrentEatenFood(foodList);
+        if (eatFood) {
+          deleteEatenFoodAndCreateNewFood(eatFood);
+          changeSnackBody(lastHead, 'add');
+        } else {
+          changeSnackBody(lastHead);
+        }
       }
-    } else {
-      current.count += 1;
     }
-  }, [lastHead, foodList]);
+  }, [isRun, lastHead, foodList]);
 
   useEffect(() => {
     checkingStatusAndFeedback({snackBody, initHeadAndBody});
   }, [isRun, snackHead]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      ref2.current?.scrollTo(0, 1000);
-    });
-  }, []);
-
   return (
     <SnackWrapper>
-      <div className="map" ref={ref2}>
+      <Map>
         {snackHeadView}
         {snackBodyView}
         {foodsView}
 
-        {650 < 650 && (
+        {isPhone && (
           <>
             <Controller {...{changeDirection, direction}} />
             <SpeedUp {...{changeSpeed}} />
@@ -117,18 +111,12 @@ const Snack = ({isPhone}: {isPhone: boolean}) => {
         )}
         {contextHolder}
         {DialogNode}
-      </div>
+      </Map>
     </SnackWrapper>
   );
 };
 
 const SnackWrapper = styled.div`
-  .map {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #fefffe;
-  }
   .body-item {
     width: 20px;
     height: 20px;
@@ -194,6 +182,14 @@ const SnackWrapper = styled.div`
     background: red;
   }
 `;
+
+const Map = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #fefffe;
+`;
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const userAgentString = context.req.headers['user-agent'];
   const result = new UAParser(userAgentString).getResult();
