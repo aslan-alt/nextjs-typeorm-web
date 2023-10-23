@@ -16,8 +16,8 @@ type FoodItem = {
 
 interface DialogOptions {
   title: string;
-  ok: () => void;
-  cancel: () => void;
+  onOk: () => void;
+  onCancel: () => void;
 }
 
 type Direction = 'arrowUp' | 'arrowDown' | 'arrowLeft' | 'arrowRight';

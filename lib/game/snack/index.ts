@@ -13,8 +13,8 @@ const creatPlace = (options: CreatePlace) => {
   const placeList = [];
   while (placeList.length !== number) {
     placeList.push({
-      x: Math.floor(Math.random() * Math.floor((width - 20) / 100)) * 100,
-      y: Math.floor(Math.random() * Math.floor((height - 20) / 100)) * 100,
+      x: Math.floor(Math.random() * (width - 5)) + 5,
+      y: Math.floor(Math.random() * (height - 5)) + 5,
       background: '#' + Math.floor(Math.random() * (2 << 23)).toString(16),
     });
   }

@@ -2,14 +2,14 @@ import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 import {creatPlace} from 'lib/game/snack';
 
-const useSnackFood = () => {
+const useSnackFood = (isPhone: boolean) => {
   const [foodList, setFoodList] = useState<FoodItem[]>([]);
 
   const deleteEatenFoodAndCreateNewFood = (eatFood: FoodItem) => {
     setFoodList(foodList.filter((food) => food !== eatFood).concat(creatPlace({number: 1})));
   };
   useEffect(() => {
-    setFoodList(creatPlace({number: 30}));
+    setFoodList(creatPlace({number: isPhone ? 30 : 50}));
   }, []);
 
   const foodsView = foodList.map((food, index) => (

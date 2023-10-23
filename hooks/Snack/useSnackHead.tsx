@@ -12,12 +12,13 @@ interface Props {
     x: number;
     y: number;
   };
+  isPhone: boolean;
   currentRule: {
     key: string;
     value: number;
     constraint: boolean;
   };
-  confirm: (options: DialogOptions) => void;
+  mobileModal: (options: DialogOptions) => void;
 }
 interface CheckStatus {
   snackBody: BodyItem[];
@@ -26,7 +27,7 @@ interface CheckStatus {
 }
 
 const useSnackHead = (props: Props) => {
-  const {direction, isRun, speed, currentRule, initHead, confirm} = props;
+  const {direction, isRun, speed, currentRule, initHead, mobileModal, isPhone} = props;
   const [modal, contextHolder] = Modal.useModal();
 
   const [snackHead, setSnackHead] = useState(initHead);
@@ -51,7 +52,15 @@ const useSnackHead = (props: Props) => {
     });
   };
   const alertGameOver = (callBack: () => void, text: string) => {
-    if (window.innerWidth > 750) {
+    if (isPhone) {
+      mobileModal({
+        title: text + ',再来一局？',
+        onOk: callBack,
+        onCancel: () => {
+          location.href = '/';
+        },
+      });
+    } else {
       modal.confirm({
         title: text,
         content: '再来一局？',
@@ -60,15 +69,7 @@ const useSnackHead = (props: Props) => {
           location.href = '/';
         },
       });
-      return;
     }
-    confirm({
-      title: text + ',再来一局？',
-      ok: callBack,
-      cancel: () => {
-        location.href = '/';
-      },
-    });
   };
 
   const checkingStatusAndFeedback = (options: CheckStatus) => {

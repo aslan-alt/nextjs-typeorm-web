@@ -15,7 +15,7 @@ const Snack = ({isPhone}: {isPhone: boolean}) => {
   const {current} = useRef({count: 0});
 
   const [modal, contextHolder] = Modal.useModal();
-  const {DialogNode, confirm} = useDialog();
+  const {DialogNode, mobileModal} = useDialog();
 
   const {initBody, initHead} = getHeadAndBody(isPhone);
 
@@ -30,7 +30,7 @@ const Snack = ({isPhone}: {isPhone: boolean}) => {
     changeSpeed,
   } = useDirection();
 
-  const {foodList, foodsView, deleteEatenFoodAndCreateNewFood} = useSnackFood();
+  const {foodList, foodsView, deleteEatenFoodAndCreateNewFood} = useSnackFood(isPhone);
 
   const {
     snackHead,
@@ -39,17 +39,27 @@ const Snack = ({isPhone}: {isPhone: boolean}) => {
     findCurrentEatenFood,
     checkingStatusAndFeedback,
     setSnackHead,
-  } = useSnackHead({initHead, direction, isRun, speed, currentRule, confirm});
+  } = useSnackHead({initHead, direction, isRun, speed, currentRule, mobileModal, isPhone});
   const {changeSnackBody, snackBody, snackBodyView, setsNackBody} = useSnackBody({initBody});
 
   const initHeadAndBody = () => {
     setsNackBody(initBody);
     setSnackHead(initHead);
-    setDirection('ArrowDown');
+    setDirection('arrowDown');
   };
 
   useEffect(() => {
-    if (window.innerWidth >= 750) {
+    if (isPhone) {
+      mobileModal({
+        title: '开始游戏',
+        onOk: () => {
+          setIsRun(true);
+        },
+        onCancel: () => {
+          location.href = '/';
+        },
+      });
+    } else {
       modal.confirm({
         title: 'PC端按键提示',
         content: (
@@ -62,18 +72,8 @@ const Snack = ({isPhone}: {isPhone: boolean}) => {
         ),
         onOk: () => {},
       });
-    } else {
-      confirm({
-        title: '开始游戏',
-        ok: () => {
-          setIsRun(true);
-        },
-        cancel: () => {
-          location.href = '/';
-        },
-      });
     }
-  }, []);
+  }, [isPhone]);
 
   useEffect(() => {
     if (isRun) {
