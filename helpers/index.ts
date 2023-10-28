@@ -35,6 +35,13 @@ export const allPages: OptionsItem[] = [
   },
   {
     id: 3,
+    href: '/chatBot',
+    text: 'chatBot',
+    height: 30,
+    width: 48,
+  },
+  {
+    id: 3,
     href: '/esc',
     text: '退出',
     height: 30,

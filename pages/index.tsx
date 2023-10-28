@@ -38,14 +38,6 @@ const Index: NextPage<Props> = (props) => {
   };
 
   useEffect(() => {
-    axios.post('/api/test', {xxxx: '我的问题'}).then((res) => {
-      console.log('res------');
-      console.log(res.data);
-    });
-    focusTextInput();
-  }, []);
-
-  useEffect(() => {
     if (showOptions) {
       document.onkeyup = (e) => {
         if (e.code === 'Enter') {
