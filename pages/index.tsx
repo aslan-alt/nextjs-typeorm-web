@@ -1,10 +1,11 @@
 import {useEffect, useRef, useState} from 'react';
-import {allPages, keyEventHash} from '@helpers/index';
+import axios from 'axios';
 import {GetServerSideProps, NextPage} from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 import {UAParser} from 'ua-parser-js';
+import {allPages, keyEventHash} from '@helpers/index';
 import CommandInput from 'components/CommandRow';
 import Square from 'components/Square';
 import deepClone from 'lib/deepClone';
@@ -37,6 +38,10 @@ const Index: NextPage<Props> = (props) => {
   };
 
   useEffect(() => {
+    axios.post('/api/test', {xxxx: '我的问题'}).then((res) => {
+      console.log('res------');
+      console.log(res.data);
+    });
     focusTextInput();
   }, []);
 
