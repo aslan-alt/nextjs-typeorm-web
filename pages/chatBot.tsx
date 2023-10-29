@@ -1,24 +1,24 @@
-import {useChat, useCompletion} from 'ai/react';
+import {useCompletion} from 'ai/react';
 import {NextPage} from 'next';
 import {User} from '@database/entity/User';
 
 const ChatPage: NextPage<{user: User}> = () => {
-  const {messages, input, handleInputChange, handleSubmit} = useChat();
+  const {completion, input, stop, isLoading, handleInputChange, handleSubmit} = useCompletion({
+    api: '/api/chat',
+  });
+
   return (
     <div>
-      {messages.map((m) => (
-        <div key={m.id}>
-          {m.role === 'user' ? 'User: ' : 'AI: '}
-          {m.content}
-        </div>
-      ))}
-
       <form onSubmit={handleSubmit}>
-        <label>
-          Say something...
-          <input value={input} onChange={handleInputChange} />
-        </label>
-        <button type="submit">Send</button>
+        {completion}
+        <input value={input} placeholder="Enter your prompt..." onChange={handleInputChange} />
+
+        <button type="button" onClick={stop}>
+          Stop
+        </button>
+        <button disabled={isLoading} type="submit">
+          Submit
+        </button>
       </form>
     </div>
   );
