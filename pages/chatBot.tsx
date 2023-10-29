@@ -1,4 +1,4 @@
-import {useChat} from 'ai/react';
+import {useChat, useCompletion} from 'ai/react';
 import {NextPage} from 'next';
 import {User} from '@database/entity/User';
 
