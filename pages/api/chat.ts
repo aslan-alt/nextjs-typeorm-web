@@ -1,4 +1,4 @@
-import {OpenAIStream, StreamingTextResponse} from 'ai';
+import {OpenAIStream, StreamingTextResponse, StreamString} from 'ai';
 import {NextApiHandler} from 'next';
 import OpenAI from 'openai';
 
@@ -24,11 +24,12 @@ function sleep(time: number) {
 
 const encoder = new TextEncoder();
 
-async function* makeIterator(array: string[]) {
-  for (const i of array) {
-    yield encoder.encode(i);
-    await sleep(200);
-  }
+async function* makeIterator() {
+  yield encoder.encode('<p>One</p>');
+  await sleep(200);
+  yield encoder.encode('<p>Two</p>');
+  await sleep(200);
+  yield encoder.encode('<p>Three</p>');
 }
 
 const openai = new OpenAI({
@@ -36,14 +37,12 @@ const openai = new OpenAI({
   baseURL: 'https://service-016z5g6c-1321594460.sg.apigw.tencentcs.com/v1',
 });
 export const runtime = 'edge';
-const openAiChat: NextApiHandler = async (req) => {
+const f: NextApiHandler = async (req, res) => {
   const {value} = await (req.body as ReadableStream).getReader().read();
 
-  const stringBody = new TextDecoder().decode(value ?? []);
-  const stringBody2 = new TextDecoder().decode(new Uint8Array());
-  console.log('stringBody2------------');
-  console.log(stringBody2);
-  if (stringBody?.length ?? 0) {
+  const stringBody = new TextDecoder().decode(value);
+
+  if (stringBody.length) {
     const response = await openai.completions.create({
       model: 'gpt-3.5-turbo-instruct',
       prompt: JSON.parse(stringBody)?.prompt,
@@ -53,7 +52,10 @@ const openAiChat: NextApiHandler = async (req) => {
     });
     return new StreamingTextResponse(OpenAIStream(response));
   } else {
-    return new Response(iteratorToStream(makeIterator(['prompt is required'])));
+    const iterator = makeIterator();
+    const stream = iteratorToStream(iterator);
+
+    return new Response(stream);
   }
 };
-export default openAiChat;
+export default f;

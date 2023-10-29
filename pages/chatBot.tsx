@@ -1,6 +1,14 @@
+import qs from 'querystring';
+import {useEffect} from 'react';
 import {useCompletion} from 'ai/react';
-import {NextPage} from 'next';
+import {message} from 'antd';
+import axios from 'axios';
+import {withIronSessionSsr} from 'iron-session/next';
+import {GetServerSideProps, GetServerSidePropsContext, NextPage} from 'next';
 import {User} from '@database/entity/User';
+import {ironOptions} from '@lib/withSession';
+import StarsLayout from 'components/StarsLayout';
+import {useForm} from 'hooks/useForm';
 
 const ChatPage: NextPage<{user: User}> = () => {
   const {completion, input, stop, isLoading, handleInputChange, handleSubmit} = useCompletion({
@@ -10,9 +18,8 @@ const ChatPage: NextPage<{user: User}> = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        {completion}
         <input value={input} placeholder="Enter your prompt..." onChange={handleInputChange} />
-
+        <p>Completion result: {completion}</p>
         <button type="button" onClick={stop}>
           Stop
         </button>
