@@ -1,5 +1,5 @@
 import qs from 'querystring';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useCompletion} from 'ai/react';
 import {message} from 'antd';
 import axios from 'axios';
@@ -11,19 +11,30 @@ import StarsLayout from 'components/StarsLayout';
 import {useForm} from 'hooks/useForm';
 
 const ChatPage: NextPage<{user: User}> = () => {
-  const {completion, input, stop, isLoading, handleInputChange, handleSubmit} = useCompletion({
-    api: '/api/chat',
-  });
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input value={input} placeholder="Enter your prompt..." onChange={handleInputChange} />
-        <p>Completion result: {completion}</p>
-        <button type="button" onClick={stop}>
-          Stop
-        </button>
-        <button disabled={isLoading} type="submit">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.nativeEvent.preventDefault();
+          axios.post('/api/chat', {prompt: input}).then((res) => {
+            console.log(res);
+          });
+        }}
+      >
+        <input
+          value={input}
+          placeholder="Enter your prompt..."
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
+        />
+        <p>Completion result</p>
+        <button type="button">Stop</button>
+        <button disabled={false} type="submit">
           Submit
         </button>
       </form>

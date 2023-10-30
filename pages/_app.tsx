@@ -2,10 +2,10 @@ import React from 'react';
 import type {AppProps} from 'next/app';
 import Head from 'next/head';
 import 'styles/global.scss';
-
+import {SessionProvider} from 'next-auth/react';
 export default function App({Component, pageProps}: AppProps) {
   return (
-    <>
+    <SessionProvider session={pageProps.session}>
       <Head>
         <title>唯热爱可抵岁月漫长</title>
         <meta
@@ -14,6 +14,6 @@ export default function App({Component, pageProps}: AppProps) {
         />
       </Head>
       <Component {...pageProps} />
-    </>
+    </SessionProvider>
   );
 }

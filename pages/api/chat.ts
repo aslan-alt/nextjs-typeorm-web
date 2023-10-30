@@ -1,61 +1,37 @@
-import {OpenAIStream, StreamingTextResponse, StreamString} from 'ai';
-import {NextApiHandler} from 'next';
-import OpenAI from 'openai';
+import {OpenAIStream, StreamingTextResponse} from 'ai';
+import {Configuration, OpenAIApi} from 'openai-edge';
 
-function iteratorToStream(iterator: any) {
-  return new ReadableStream({
-    async pull(controller) {
-      const {value, done} = await iterator.next();
-
-      if (done) {
-        controller.close();
-      } else {
-        controller.enqueue(value);
-      }
-    },
-  });
-}
-
-function sleep(time: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-}
-
-const encoder = new TextEncoder();
-
-async function* makeIterator() {
-  yield encoder.encode('<p>One</p>');
-  await sleep(200);
-  yield encoder.encode('<p>Two</p>');
-  await sleep(200);
-  yield encoder.encode('<p>Three</p>');
-}
-
-const openai = new OpenAI({
-  apiKey: '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',
-  baseURL: 'https://service-016z5g6c-1321594460.sg.apigw.tencentcs.com/v1',
-});
 export const runtime = 'edge';
-const f: NextApiHandler = async (req, res) => {
-  const {value} = await (req.body as ReadableStream).getReader().read();
 
-  const stringBody = new TextDecoder().decode(value);
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-  if (stringBody.length) {
-    const response = await openai.completions.create({
-      model: 'gpt-3.5-turbo-instruct',
-      prompt: JSON.parse(stringBody)?.prompt,
-      max_tokens: 2000,
-      temperature: 0,
-      stream: true,
+const openai = new OpenAIApi(configuration);
+
+export async function POST(req: Request) {
+  const json = await req.json();
+  const {messages, previewToken} = json;
+  const userId = '';
+
+  if (!userId) {
+    return new Response('Unauthorized', {
+      status: 401,
     });
-    return new StreamingTextResponse(OpenAIStream(response));
-  } else {
-    const iterator = makeIterator();
-    const stream = iteratorToStream(iterator);
-
-    return new Response(stream);
   }
-};
-export default f;
+
+  if (previewToken) {
+    configuration.apiKey = previewToken;
+  }
+
+  const res = await openai.createChatCompletion({
+    model: 'gpt-3.5-turbo',
+    messages,
+    temperature: 0.7,
+    stream: true,
+  });
+
+  const stream = OpenAIStream(res);
+
+  return new StreamingTextResponse(stream);
+}

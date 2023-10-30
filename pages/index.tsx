@@ -1,11 +1,10 @@
 import {useEffect, useRef, useState} from 'react';
-import axios from 'axios';
 import {GetServerSideProps, NextPage} from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 import {UAParser} from 'ua-parser-js';
-import {allPages, keyEventHash} from '@helpers/index';
+import {allPages} from '@helpers/index';
 import CommandInput from 'components/CommandRow';
 import Square from 'components/Square';
 import deepClone from 'lib/deepClone';
@@ -21,7 +20,7 @@ const Index: NextPage<Props> = (props) => {
   const [inputValue, setInputValue] = useState('');
   const [showButton, setShowButton] = useState(false);
   const [enterTimes, setEnterTimes] = useState(0);
-
+  const lastIndex = allPages.length - 1;
   const focusRef = useRef<HTMLInputElement>(null);
   const focusTextInput = () => {
     focusRef?.current?.focus();
@@ -49,8 +48,11 @@ const Index: NextPage<Props> = (props) => {
               location.href = selectedPage.href;
             }
           }
+        } else if (e.code === 'ArrowDown') {
+          setSelectIndex(selectIndex !== lastIndex ? selectIndex + 1 : 0);
+        } else if (e.code === 'ArrowUp') {
+          setSelectIndex(selectIndex === 0 ? lastIndex : selectIndex - 1);
         }
-        keyEventHash[e.code] && setSelectIndex(keyEventHash[e.code](selectIndex));
       };
     }
     return () => {
