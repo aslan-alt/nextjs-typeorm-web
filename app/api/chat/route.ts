@@ -13,19 +13,6 @@ const openai = new OpenAIApi(configuration);
 export async function POST(req: Request) {
   const json = await req.json();
   const {messages} = json;
-  // const userId = '';
-
-  // if (!userId) {
-  //   return new Response('Unauthorized', {
-  //     status: 401,
-  //   });
-  // }
-  //
-  // if (previewToken) {
-  //   configuration.apiKey = previewToken;
-  // }
-  console.log('messages--------');
-  console.log(messages);
   const res = await openai.createChatCompletion({
     model: 'gpt-3.5-turbo',
     messages,

@@ -1,14 +1,6 @@
-import qs from 'querystring';
-import {useEffect, useState} from 'react';
-import {useChat, useCompletion} from 'ai/react';
-import {message} from 'antd';
-import axios from 'axios';
-import {withIronSessionSsr} from 'iron-session/next';
-import {GetServerSideProps, GetServerSidePropsContext, NextPage} from 'next';
+import {useChat} from 'ai/react';
+import {NextPage} from 'next';
 import {User} from '@database/entity/User';
-import {ironOptions} from '@lib/withSession';
-import StarsLayout from 'components/StarsLayout';
-import {useForm} from 'hooks/useForm';
 
 const ChatPage: NextPage<{user: User}> = () => {
   const {messages, input, handleInputChange, handleSubmit} = useChat();

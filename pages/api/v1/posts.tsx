@@ -1,9 +1,7 @@
-import {withIronSessionApiRoute} from 'iron-session/next';
 import {Post} from '@database/entity/Post';
 import {getConnection} from '@database/getConnection';
-import {ironOptions} from '@lib/withSession';
 
-export default withIronSessionApiRoute(async (req, res) => {
+const posts = async (req, res) => {
   if (req.method === 'POST') {
     const {title, content} = req.body;
     const post = new Post();
@@ -19,4 +17,5 @@ export default withIronSessionApiRoute(async (req, res) => {
     await connect.manager.save(post);
     res.status(200).json(post);
   }
-}, ironOptions);
+};
+export default posts;
