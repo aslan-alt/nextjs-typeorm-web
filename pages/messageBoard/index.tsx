@@ -3,7 +3,6 @@ import {Modal} from 'antd';
 import axios from 'axios';
 import {NextPage} from 'next';
 import Link from 'next/link';
-import {useSession} from 'next-auth/react';
 import styled from 'styled-components';
 import {UAParser} from 'ua-parser-js';
 import AddMessage from 'components/MessageBard/AddMessage';
@@ -15,10 +14,6 @@ type Data = {
 };
 
 const MessageBoard: NextPage = () => {
-  const {data} = useSession();
-  console.log('data----------1111');
-  console.log(data);
-
   const [comments, setComments] = useState<Data['comments']>([]);
 
   const [modal, contextHolder] = Modal.useModal();

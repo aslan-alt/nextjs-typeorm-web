@@ -1,5 +1,4 @@
 import {NextApiHandler} from 'next';
-import {getServerSession} from 'next-auth';
 import {UAParser} from 'ua-parser-js';
 import {Comment} from '@database/entity/Comment';
 import {getConnection} from '@database/getConnection';
@@ -13,7 +12,6 @@ const GetAllComments: NextApiHandler = async (req, res) => {
   // const found = (await connection.manager.find(Comment)).sort(function (a, b) {
   //   return a.createdAt < b.createdAt ? 1 : -1;
   // });
-  const session = await getServerSession(req, res, authOptions);
   console.log('session-------');
   console.log(session);
   if (!session) {
