@@ -1,19 +1,12 @@
-import {useSession, signIn, signOut} from 'next-auth/react';
-
 export default function Component() {
-  const {data: session} = useSession();
-  if (session) {
-    return (
-      <>
-        Signed in as {session.user.email} <br />
-        <button onClick={() => signOut()}>Sign out</button>
-      </>
-    );
-  }
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <a
+        href={`https://github.com/login/oauth/authorize?client_id=Iv1.2a1db83cc737403b&redirect_uri=http://localhost:3000/api/v1/authCallback&scope=user:email`}
+      >
+        <button>Sign in</button>
+      </a>
     </>
   );
 }

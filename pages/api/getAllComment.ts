@@ -4,7 +4,6 @@ import {UAParser} from 'ua-parser-js';
 import {Comment} from '@database/entity/Comment';
 import {getConnection} from '@database/getConnection';
 import deepClone from '@lib/deepClone';
-import {authOptions} from './auth/[...nextauth]';
 
 const GetAllComments: NextApiHandler = async (req, res) => {
   // const ua = req.headers['user-agent'];
