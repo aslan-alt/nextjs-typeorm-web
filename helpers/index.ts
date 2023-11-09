@@ -1,5 +1,5 @@
 type OptionsItem = {
-  name?: string;
+  iconName?: string;
   id: number;
 
   href: string;
@@ -11,7 +11,7 @@ type OptionsItem = {
 export const allPages: OptionsItem[] = [
   {
     id: 0,
-    name: 'game',
+    iconName: 'game',
     href: '/games',
     text: '玩游戏',
     height: 30,
@@ -19,7 +19,7 @@ export const allPages: OptionsItem[] = [
   },
   {
     id: 1,
-    name: 'curriculumVitae',
+    iconName: 'curriculumVitae',
     href: 'http://xiong-jingsong.gitee.io/cv-website',
     text: '看简历',
     height: 25,
@@ -27,7 +27,7 @@ export const allPages: OptionsItem[] = [
   },
   {
     id: 2,
-    name: 'messageBoard',
+    iconName: 'messageBoard',
     href: '/messageBoard',
     text: '留言板',
     height: 23,

@@ -1,7 +1,11 @@
 import axios from 'axios';
 import {withIronSessionApiRoute} from 'iron-session/next';
+import {ironSessionConfig} from 'ironSessionConfig';
 
 const authCallback = async (req, res) => {
+  console.log('req.query.code-------');
+  console.log(req.query.code);
+
   axios
     .post(
       'https://github.com/login/oauth/access_token',
@@ -22,19 +26,13 @@ const authCallback = async (req, res) => {
           Authorization: `token ${result.data.access_token}`,
         },
       });
-      console.log('userResponse--------');
-      console.log(userResponse.data);
-      res.json('chengg');
+
+      req.session.user = userResponse.data;
+      await req.session.save();
+      res.redirect('/chatBot');
     })
     .catch((err) => {
       console.log(err);
     });
 };
-export default withIronSessionApiRoute(authCallback, {
-  cookieName: 'myapp_cookiename',
-  password: '6f85853e-6922-432e-8022-9be8bceb521d',
-  // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
-  cookieOptions: {
-    secure: process.env.NODE_ENV === 'production',
-  },
-});
+export default withIronSessionApiRoute(authCallback, ironSessionConfig);

@@ -101,10 +101,10 @@ const Index: NextPage<Props> = (props) => {
                 <Link href={item.href} legacyBehavior>
                   <a>{item.text}</a>
                 </Link>
-                {item.name && (
+                {item.iconName && (
                   <Image
-                    src={`/${item.name}.svg`}
-                    alt={item.name}
+                    src={`/${item.iconName}.svg`}
+                    alt={item.iconName}
                     width={item?.width}
                     height={item?.height}
                   />
