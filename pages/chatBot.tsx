@@ -1,3 +1,4 @@
+import {Input} from 'antd';
 import {withIronSessionSsr} from 'iron-session/next';
 import {isEmpty} from 'lodash';
 import {NextPage} from 'next';
@@ -5,8 +6,6 @@ import styled from 'styled-components';
 import {Messages} from '@components/Chat/Messages';
 import {User} from '@database/entity/User';
 import {ironSessionConfig} from 'ironSessionConfig';
-import {useForm} from '../hooks/useForm';
-
 const ChatPage: NextPage<{user: User}> = ({user}) => {
   console.log('user------');
   console.log(user);
@@ -17,22 +16,9 @@ const ChatPage: NextPage<{user: User}> = ({user}) => {
         <Container>
           <LeftContent>left</LeftContent>
           <RightContent>
-            <div>
-              <h3>Don't have an account?</h3>
-              <a
-                href={`https://github.com/login/oauth/authorize?client_id=Iv1.2a1db83cc737403b&redirect_uri=http://localhost:3000/api/v1/authCallback&scope=user:email`}
-              >
-                <button>Sign in</button>
-              </a>
-            </div>
-            <div>
-              <h3>Log in with Email</h3>
-              <a
-                href={`https://github.com/login/oauth/authorize?client_id=Iv1.2a1db83cc737403b&redirect_uri=http://localhost:3000/api/v1/authCallback&scope=user:email`}
-              >
-                <button>Sign in</button>
-              </a>
-            </div>
+            <Input placeholder="请输入用户名" />
+            <Input placeholder="请输入用户名" />
+            <Input placeholder="请输入用户名" />
           </RightContent>
         </Container>
       ) : (
