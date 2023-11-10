@@ -15,26 +15,27 @@ import {Post} from './Post';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id!: number;
   @Column('varchar')
-  username: string;
+  username!: string;
   @Column('varchar')
-  passwordDigest: string;
+  passwordDigest!: string;
   @CreateDateColumn({type: 'timestamp', name: 'createdAt', nullable: false})
-  createdAt: Date;
+  createdAt!: Date;
   @UpdateDateColumn({type: 'timestamp', name: 'updatedAt'})
-  updatedAt: Date;
+  updatedAt!: Date;
   @OneToMany('Post', 'author')
-  posts: Post[];
+  posts!: Post[];
   @OneToMany('Comment', 'user')
-  comments: Comment[];
+  comments!: Comment[];
   errors = {
     username: [] as string[],
     password: [] as string[],
     passwordConfirmation: [] as string[],
   };
-  passwordConfirmation: string;
-  password: string;
+  passwordConfirmation!: string;
+  password!: string;
+
   async validate() {
     const useName = this.username.trim();
     if (useName === '') {

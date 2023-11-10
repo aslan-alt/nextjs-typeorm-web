@@ -17,11 +17,14 @@
       ],
       "@styles/*": [
         "styles/*"
+      ],
+      "@helpers/*": [
+        "helpers/*"
       ]
     },
     "target": "es5",
     "module": "esnext",
-    "strict": false,
+    "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -38,13 +41,20 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "database"
   ],
   "include": [
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ]
 }

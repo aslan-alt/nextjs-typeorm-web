@@ -1,11 +1,11 @@
+import md5 from 'md5';
 import {User} from '@database/entity/User';
 import {getConnection} from '@database/getConnection';
-import md5 from 'md5';
 
 export class SignIn {
-  username: string;
-  password: string;
-  user: User;
+  username!: string;
+  password!: string;
+  user: User | null | undefined;
   errors = {username: [] as string[], password: [] as string[]};
 
   async validate() {

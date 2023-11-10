@@ -1,23 +1,30 @@
-import { creatPlace } from "lib/game/snack"
-import { useState } from "react"
+import {useEffect, useState} from 'react';
+import styled from 'styled-components';
+import {creatPlace} from 'lib/game/snack';
 
-interface Props {
-    width: number;
-    height: number;
-}
+const useSnackFood = (isPhone: boolean) => {
+  const [foodList, setFoodList] = useState<FoodItem[]>([]);
 
+  const deleteEatenFoodAndCreateNewFood = (eatFood: FoodItem) => {
+    setFoodList(foodList.filter((food) => food !== eatFood).concat(creatPlace({number: 1})));
+  };
+  useEffect(() => {
+    setFoodList(creatPlace({number: isPhone ? 30 : 50}));
+  }, []);
 
-const useSnackFood = ({ width, height }: Props) => {
+  const foodsView = foodList.map((food, index) => (
+    <FoodNode key={index} style={{left: food.x, top: food.y, background: food.background}} />
+  ));
 
-    const [foodList, setFoodList] = useState<FoodItem[]>(creatPlace({ number: 10, width, height }))
+  return {foodsView, foodList, setFoodList, deleteEatenFoodAndCreateNewFood};
+};
 
-    const deleteEatenFoodAndCreateNewFood = (eatFood: FoodItem) => {
-        setFoodList(foodList.filter(food => food !== eatFood).concat(creatPlace({ number: 1, width, height })))
-    }
+const FoodNode = styled.div`
+  width: 10px;
+  height: 10px;
+  position: absolute;
+  border-radius: 50%;
+  background: red;
+`;
 
-    const foodsView = foodList.map((food, index) => <div key={index} className="food" style={{ left: food.x, top: food.y, background: food.background }}></div>)
-
-    return { foodsView, foodList, setFoodList, deleteEatenFoodAndCreateNewFood }
-}
-
-export default useSnackFood
+export default useSnackFood;

@@ -1,33 +1,35 @@
-import React, {forwardRef, MutableRefObject} from 'react';
+import React, {ForwardedRef, forwardRef} from 'react';
 import styled from 'styled-components';
+import {UAParser} from 'ua-parser-js';
 
 interface Props {
-    userInfo: UAParser.IResult;
-    showButton: boolean;
-    onCommandInputChange: (value?: string) => void;
-    inputValue?: string;
-    showOptions: boolean;
-    hideButtonShowOptions: () => void;
-    setEnterTimes: (times: number) => void;
+  userInfo: UAParser.IResult;
+
+  showButton: boolean;
+  onCommandInputChange: (value?: string) => void;
+  inputValue?: string;
+  showOptions: boolean;
+  hideButtonShowOptions: () => void;
+  setEnterTimes: (times: number) => void;
 }
 
-const CommandInput = (props: Props, ref: MutableRefObject<any>) => {
-    const {
-        userInfo: {device, browser, os},
-        showButton,
-        inputValue,
-        onCommandInputChange,
-        showOptions,
-        hideButtonShowOptions,
-        setEnterTimes,
-    } = props;
+const CommandInput = (props: Props, ref: ForwardedRef<any>) => {
+  const {
+    userInfo: {device, browser, os},
+    showButton,
+    inputValue,
+    onCommandInputChange,
+    showOptions,
+    hideButtonShowOptions,
+    setEnterTimes,
+  } = props;
 
   const isVisibleButton = device?.type === 'mobile' && showButton;
 
   const keyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.code === 'Enter') {
-        hideButtonShowOptions();
-        setEnterTimes(1);
+      hideButtonShowOptions();
+      setEnterTimes(1);
     }
   };
 
@@ -35,20 +37,20 @@ const CommandInput = (props: Props, ref: MutableRefObject<any>) => {
     <Container>
       <p>{`${browser?.name}/${browser.version}/${os.name} User$ `}</p>
       <CommanderInputAndButton>
-        {!(inputValue.length > 0) && <div className="cursor"></div>}
-          <CommandInputStyled
-              type="text"
-              placeholder="Please enter the command"
-              value={inputValue}
-              onChange={(e) => {
-                  onCommandInputChange(e.target?.value);
-              }}
-              onKeyUp={keyUp}
-              ref={ref}
-              disabled={showOptions}
-          />
+        {!inputValue && <div className="cursor"></div>}
+        <CommandInputStyled
+          type="text"
+          placeholder="Please enter the command"
+          value={inputValue}
+          onChange={(e) => {
+            onCommandInputChange(e.target?.value);
+          }}
+          onKeyUp={keyUp}
+          ref={ref}
+          disabled={showOptions}
+        />
 
-          {isVisibleButton && <button onClick={hideButtonShowOptions}>执行</button>}
+        {isVisibleButton && <button onClick={hideButtonShowOptions}>执行</button>}
       </CommanderInputAndButton>
     </Container>
   );

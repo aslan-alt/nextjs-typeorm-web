@@ -1,9 +1,9 @@
 import qs from 'querystring';
 import {NextPage, GetServerSideProps, GetServerSidePropsContext} from 'next';
 import Link from 'next/link';
+import {Post} from '@database/entity';
+import {getConnection} from '@database/getConnection';
 import usePager from 'hooks/usePager';
-import {getDatabaseConnection} from 'lib/getDatabaseConnection';
-import {Post} from 'src/entity/Post';
 
 type Props = {
   posts: string;
@@ -38,10 +38,11 @@ export default Index;
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  const connect = await getDatabaseConnection();
-  const index = context.req.url.indexOf('?');
-  const search = context.req.url.substr(index + 1);
-  const pageNumber = parseInt(qs.parse(search).page?.toString()) || 1;
+  const connect = await getConnection();
+  const index = context.req?.url?.indexOf('?') ?? 0;
+  const search = context.req?.url?.substr(index + 1);
+
+  const pageNumber = parseInt(qs.parse(search ?? '').page?.toString() ?? '1');
   const perPage = 3;
 
   const [posts, count] = await connect.manager.findAndCount(Post, {

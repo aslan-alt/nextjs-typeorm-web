@@ -29,7 +29,7 @@ export default function AddMessage(props: Props) {
       onOk: () => {
         location.href = `/sign_in?returnTo=${encodeURIComponent(window.location.pathname)}`;
       },
-      okText: '立即登陆',
+      okText: '登陆',
       cancelText: '取消',
     });
   };
@@ -44,6 +44,7 @@ export default function AddMessage(props: Props) {
       setComment('');
       message.success('提交成功');
     } catch (e) {
+      // @ts-ignore
       prompt(e?.response?.data?.message);
     }
   };

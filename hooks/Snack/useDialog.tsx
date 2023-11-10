@@ -40,12 +40,12 @@ export default function useDialog() {
   const [showDialog, setShowDialog] = useState(false);
   const [dialogOptions, setDialogOptions] = useState<DialogOptions>({
     title: '撞墙啦,再来一局？',
-    ok: () => {},
-    cancel: () => {},
+    onOk: () => {},
+    onCancel: () => {},
   });
 
-  const confirm = ({title, ok, cancel}: DialogOptions) => {
-    setDialogOptions({title, ok, cancel});
+  const mobileModal = (configs: DialogOptions) => {
+    setDialogOptions(configs);
     setShowDialog(true);
   };
 
@@ -60,7 +60,7 @@ export default function useDialog() {
                 className="cancel"
                 size="large"
                 onClick={() => {
-                  dialogOptions.cancel();
+                  dialogOptions.onCancel();
                   setShowDialog(false);
                 }}
               >
@@ -71,7 +71,7 @@ export default function useDialog() {
                 type="primary"
                 size="large"
                 onClick={() => {
-                  dialogOptions.ok();
+                  dialogOptions.onOk();
                   setShowDialog(false);
                 }}
               >
@@ -83,5 +83,5 @@ export default function useDialog() {
       )}
     </>
   );
-  return {DialogNode, confirm};
+  return {DialogNode, mobileModal};
 }

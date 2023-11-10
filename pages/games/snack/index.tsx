@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from 'react';
 import {Modal} from 'antd';
 import styled from 'styled-components';
+import {getDeviceByContext} from '@lib/getDeviceByContext';
 import Controller from 'components/Controller';
 import SpeedUp from 'components/SpeedUp';
 import useDialog from 'hooks/Snack/useDialog';
@@ -8,16 +9,16 @@ import useDirection from 'hooks/Snack/useDirection';
 import useSnackBody from 'hooks/Snack/useSnackBody';
 import useSnackFood from 'hooks/Snack/useSnackFood';
 import useSnackHead from 'hooks/Snack/useSnackHead';
-import {getHeadAndBody, useWidthAndHeightByRouter} from 'lib/game/snack';
+import {getHeadAndBody} from 'lib/game/snack';
 
-const Snack = () => {
-  let {current} = useRef({count: 0});
-  const ref2 = useRef<HTMLDivElement>(null);
+const Snack = ({isPhone}: {isPhone: boolean}) => {
+  const {current} = useRef({count: 0});
 
   const [modal, contextHolder] = Modal.useModal();
-  const {DialogNode, confirm} = useDialog();
-  const {width, height} = useWidthAndHeightByRouter();
-  const {initBody, initHead} = getHeadAndBody({width, height});
+  const {DialogNode, mobileModal} = useDialog();
+
+  const {initBody, initHead} = getHeadAndBody(isPhone);
+
   const {
     direction,
     currentRule,
@@ -29,7 +30,7 @@ const Snack = () => {
     changeSpeed,
   } = useDirection();
 
-  const {foodList, foodsView, deleteEatenFoodAndCreateNewFood} = useSnackFood({width, height});
+  const {foodList, foodsView, deleteEatenFoodAndCreateNewFood} = useSnackFood(isPhone);
 
   const {
     snackHead,
@@ -38,17 +39,27 @@ const Snack = () => {
     findCurrentEatenFood,
     checkingStatusAndFeedback,
     setSnackHead,
-  } = useSnackHead({initHead, direction, isRun, speed, currentRule, confirm});
+  } = useSnackHead({initHead, direction, isRun, speed, currentRule, mobileModal, isPhone});
   const {changeSnackBody, snackBody, snackBodyView, setsNackBody} = useSnackBody({initBody});
 
   const initHeadAndBody = () => {
     setsNackBody(initBody);
     setSnackHead(initHead);
-    setDirection('ArrowDown');
+    setDirection('arrowDown');
   };
 
   useEffect(() => {
-    if (width >= 750) {
+    if (isPhone) {
+      mobileModal({
+        title: '开始游戏',
+        onOk: () => {
+          setIsRun(true);
+        },
+        onCancel: () => {
+          location.href = '/';
+        },
+      });
+    } else {
       modal.confirm({
         title: 'PC端按键提示',
         content: (
@@ -61,133 +72,54 @@ const Snack = () => {
         ),
         onOk: () => {},
       });
-    } else {
-      confirm({
-        title: '开始游戏',
-        ok: () => {
-          setIsRun(true);
-        },
-        cancel: () => {
-          location.href = '/';
-        },
-      });
     }
-  }, []);
+  }, [isPhone]);
 
   useEffect(() => {
-    if (current.count !== 0) {
-      const eatFood = findCurrentEatenFood(foodList);
-      if (eatFood) {
-        deleteEatenFoodAndCreateNewFood(eatFood);
-        changeSnackBody(lastHead, 'add');
+    if (isRun) {
+      if (current.count === 0) {
+        current.count += 1;
       } else {
-        changeSnackBody(lastHead);
+        const eatFood = findCurrentEatenFood(foodList);
+        if (eatFood) {
+          deleteEatenFoodAndCreateNewFood(eatFood);
+          changeSnackBody(lastHead, 'add');
+        } else {
+          changeSnackBody(lastHead);
+        }
       }
-    } else {
-      current.count += 1;
     }
-  }, [lastHead, foodList]);
+  }, [isRun, lastHead, foodList]);
 
   useEffect(() => {
-    checkingStatusAndFeedback({snackBody, width, height, initHeadAndBody, setIsRun});
+    checkingStatusAndFeedback({snackBody, initHeadAndBody});
   }, [isRun, snackHead]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      ref2.current.scrollTo(0, 1000);
-    });
-  }, []);
-
   return (
-    <SnackWrapper style={{height, width}}>
-      <div className="map" ref={ref2}>
-        {snackHeadView}
-        {snackBodyView}
-        {foodsView}
+    <Map>
+      {snackHeadView}
+      {snackBodyView}
+      {foodsView}
 
-        {width < 650 && (
-          <>
-            <Controller {...{changeDirection, direction}} />
-            <SpeedUp {...{changeSpeed}} />
-          </>
-        )}
-        {contextHolder}
-        {DialogNode}
-      </div>
-    </SnackWrapper>
+      {isPhone && (
+        <>
+          <Controller {...{changeDirection, direction}} />
+          <SpeedUp {...{changeSpeed}} />
+        </>
+      )}
+      {contextHolder}
+      {DialogNode}
+    </Map>
   );
 };
 
-const SnackWrapper = styled.div`
-  .map {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: #fefffe;
-  }
-  .body-item {
-    width: 20px;
-    height: 20px;
-    position: absolute;
-    border-radius: 50%;
-    background: red;
-    transition: all 0.3s;
-    &.snack-head {
-      z-index: 10;
-      div {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background: white;
-        border-radius: 50%;
-        &::before {
-          content: '';
-          display: block;
-          width: 2px;
-          height: 2px;
-          background: black;
-          border-radius: 50%;
-          position: absolute;
-          left: 50%;
-          top: 50%;
-        }
-        &.eye-left {
-          left: 50%;
-          margin-left: -4px;
-          bottom: -1px;
-        }
-        &.eye-right {
-          top: -1px;
-          right: 50%;
-          margin-right: -4px;
-        }
-      }
-    }
-    &.snack-tail {
-      &::before {
-        content: '';
-        display: block;
-        width: 18px;
-        height: 2px;
-        background: red;
-        position: absolute;
-        left: 50%;
-        margin-left: -9px;
-        transform: rotate(90deg);
-      }
-    }
-    &.rotate {
-      transform: rotate(90deg);
-      transition: all 0.3s ease 3ms;
-    }
-  }
-  .food {
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    border-radius: 50%;
-    background: red;
-  }
+const Map = styled.div`
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #fefffe;
 `;
+
+export const getServerSideProps = getDeviceByContext;
 
 export default Snack;

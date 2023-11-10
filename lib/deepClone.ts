@@ -10,6 +10,7 @@ function deepClone(source: any) {
         dist = [];
       } else if (source instanceof Function) {
         dist = function () {
+          // @ts-ignore
           return source.apply(this, arguments);
         };
       } else if (source instanceof Date) {

@@ -13,17 +13,17 @@ import {User} from './User';
 @Entity('posts')
 export class Post {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id!: number;
   @Column('varchar')
-  title: string;
+  title!: string;
   @Column('text')
-  content: string;
+  content!: string;
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
   @ManyToOne('User', 'posts')
-  author: User;
+  author!: User;
   @OneToMany('Comment', 'post')
-  comment: Comment;
+  comment!: Comment;
 }

@@ -1,5 +1,5 @@
-export const withMobile = (style) => {
-    return `
+export const withMobile = (style: string) => {
+  return `
     @media screen and (max-width:678px ) {
       ${style}
     }

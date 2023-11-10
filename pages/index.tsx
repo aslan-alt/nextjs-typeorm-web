@@ -4,166 +4,124 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styled from 'styled-components';
 import {UAParser} from 'ua-parser-js';
+import {allPages} from '@helpers/index';
 import CommandInput from 'components/CommandRow';
 import Square from 'components/Square';
 import deepClone from 'lib/deepClone';
-import {arrowDownOrArrowUp} from 'lib/game';
 
 type Props = {
-    userInfo: UAParser.IResult;
+  userInfo: UAParser.IResult;
 };
 
-type OptionsItem = {
-    name?: string;
-    id: number;
-
-    href: string;
-    text: string;
-    height?: number;
-    width?: number;
-};
-
-const menus: OptionsItem[] = [
-    {
-        id: 0,
-        name: 'game',
-        href: '/games',
-        text: '玩游戏',
-        height: 30,
-        width: 48,
-    },
-    {
-        id: 1,
-        name: 'curriculumVitae',
-        href: 'http://xiong-jingsong.gitee.io/cv-website',
-        text: '看简历',
-    },
-    {
-        id: 2,
-        name: 'messageBoard',
-        href: '/messageBoard',
-        text: '留言板',
-    },
-    {
-        id: 3,
-        href: '/esc',
-        text: '退出',
-        height: 30,
-        width: 48,
-    },
-];
-
-const keyEventHash: KeyUpEventHash = arrowDownOrArrowUp();
 const Index: NextPage<Props> = (props) => {
-    const {userInfo} = props;
-    const [showOptions, setShowOptions] = useState(false);
-    const [selectIndex, setSelectIndex] = useState(0);
-    const [inputValue, setInputValue] = useState('');
-    const [showButton, setShowButton] = useState(false);
-    const [enterTimes, setEnterTimes] = useState(0);
+  const {userInfo} = props;
+  const [showOptions, setShowOptions] = useState(false);
+  const [selectIndex, setSelectIndex] = useState(0);
+  const [inputValue, setInputValue] = useState('');
+  const [showButton, setShowButton] = useState(false);
+  const [enterTimes, setEnterTimes] = useState(0);
+  const lastIndex = allPages.length - 1;
+  const focusRef = useRef<HTMLInputElement>(null);
+  const focusTextInput = () => {
+    focusRef?.current?.focus();
+  };
 
-    const focusRef = useRef(null);
-    const focusTextInput = () => {
-        focusRef?.current?.focus();
-    };
+  const onCommandInputChange = (value?: string) => {
+    setInputValue(value ?? '');
+    setShowButton(true);
+  };
 
-    // const Icons = createIconsList({
-    const onCommandInputChange = (value?: string) => {
-        setInputValue(value);
-        setShowButton(true);
-    };
+  const hideButtonShowOptions = () => {
+    setShowButton(false);
+    setShowOptions(true);
+  };
 
-    const hideButtonShowOptions = () => {
-        setShowButton(false);
-        setShowOptions(true);
-    };
-
-    useEffect(() => {
-        focusTextInput();
-    }, []);
-
-    useEffect(() => {
-        if (showOptions) {
-            document.onkeyup = (e) => {
-                if (e.code === 'Enter') {
-                    if (enterTimes === 1) {
-                        setEnterTimes(2);
-                    } else {
-                        const path = menus.find((item) => item.id === selectIndex);
-                        location.href = path.href;
-                    }
-                }
-                keyEventHash[e.code] && setSelectIndex(keyEventHash[e.code](selectIndex));
-            };
+  useEffect(() => {
+    if (showOptions) {
+      document.onkeyup = (e) => {
+        if (e.code === 'Enter') {
+          if (enterTimes === 1) {
+            setEnterTimes(2);
+          } else {
+            const selectedPage = allPages.find((item) => item.id === selectIndex);
+            if (selectedPage) {
+              location.href = selectedPage.href;
+            }
+          }
+        } else if (e.code === 'ArrowDown') {
+          setSelectIndex(selectIndex !== lastIndex ? selectIndex + 1 : 0);
+        } else if (e.code === 'ArrowUp') {
+          setSelectIndex(selectIndex === 0 ? lastIndex : selectIndex - 1);
         }
-        return () => {
-            document.onkeyup = null;
-        };
-    }, [showOptions, selectIndex, enterTimes]);
+      };
+    }
+    return () => {
+      document.onkeyup = null;
+    };
+  }, [showOptions, selectIndex, enterTimes]);
 
   return (
-      <>
-      <Home onClick={focusTextInput}>
-          <h5 className="home-head">
-              <span className="head-front">TERMINAL</span>
-              <span className="shell">
-            <Square/>
-            bash
-          </span>
-          </h5>
-          <Content>
-              <CommandInput
-                  ref={focusRef}
-                  inputValue={inputValue}
-                  userInfo={userInfo}
-                  showOptions={showOptions}
-                  onCommandInputChange={onCommandInputChange}
-                  hideButtonShowOptions={hideButtonShowOptions}
-                  showButton={showButton}
-                  setEnterTimes={setEnterTimes}
-              />
-              {showOptions && (
-                  <div className="select-list-mobile">
-                      <div className="welcome">
-                          Welcome to my website, thanks
-                          <img {...{src: `/grimace.svg`, alt: 'grimace', width: 48, height: 22}} />
-                      </div>
-                      {menus.map((item) => (
-                          <TabWrapper
-                              key={item.id}
-                              onClick={() => {
-                                  setSelectIndex(item.id);
-                              }}
-                          >
-                              <div className="index-icon">
-                                  {selectIndex === item.id && (
-                                      <img src="/index.svg" width={20} height={18} alt={item?.name ?? ''}/>
-                                  )}
-                              </div>
-                              <Link href={item.href} legacyBehavior>
-                                  <a className="block">{item.text}</a>
-                              </Link>
-                              {item.name && (
-                                  <Image
-                                      src={`/${item.name}.svg`}
-                                      alt={item.name}
-                                      width={item?.width ?? 0}
-                                      height={item?.height ?? 0}
-                                  />
-                              )}
-                          </TabWrapper>
-                      ))}
-                  </div>
-          )}
-        </Content>
-        <Footer>
-          <a href="https://beian.miit.gov.cn/">陕ICP备2023001571号-1</a>
-        </Footer>
-      </Home>
-      </>
+    <Home onClick={focusTextInput}>
+      <HomeHead>
+        <HeadFront>TERMINAL</HeadFront>
+        <Shell>
+          <Square />
+          bash
+        </Shell>
+      </HomeHead>
+      <Content>
+        <CommandInput
+          ref={focusRef}
+          inputValue={inputValue}
+          userInfo={userInfo}
+          showOptions={showOptions}
+          onCommandInputChange={onCommandInputChange}
+          hideButtonShowOptions={hideButtonShowOptions}
+          showButton={showButton}
+          setEnterTimes={setEnterTimes}
+        />
+        {showOptions && (
+          <SelectListMobile>
+            <Welcome>
+              Welcome to my website, thanks
+              <Image width={48} height={22} src="/grimace.svg" alt="grimace" />
+            </Welcome>
+            {allPages.map((item) => (
+              <SelectorWrapper
+                key={item.id}
+                onClick={() => {
+                  setSelectIndex(item.id);
+                }}
+              >
+                <IconContainer>
+                  {selectIndex === item.id && (
+                    <Image src="/index.svg" width={20} height={18} alt={item?.name ?? ''} />
+                  )}
+                </IconContainer>
+                <Link href={item.href} legacyBehavior>
+                  <a>{item.text}</a>
+                </Link>
+                {item.iconName && (
+                  <Image
+                    src={`/${item.iconName}.svg`}
+                    alt={item.iconName}
+                    width={item?.width}
+                    height={item?.height}
+                  />
+                )}
+              </SelectorWrapper>
+            ))}
+          </SelectListMobile>
+        )}
+      </Content>
+      <Footer>
+        <a href="https://beian.miit.gov.cn/">陕ICP备2023001571号-1</a>
+      </Footer>
+    </Home>
   );
 };
 export default Index;
+
 const Footer = styled.div`
   color: white;
   text-align: center;
@@ -174,6 +132,33 @@ const Content = styled.div`
   background: transparent;
 `;
 
+const HomeHead = styled.h5`
+  padding-bottom: 10px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #e6e7e6;
+`;
+
+const HeadFront = styled.span`
+  border-bottom: 1px solid #e6e7e6;
+`;
+
+const Shell = styled.span`
+  position: relative;
+`;
+
+const Welcome = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const SelectListMobile = styled.div`
+  color: #8bc264;
+  padding-left: 2px;
+`;
+
 const Home = styled.div`
   background: #272c33;
   padding: 16px;
@@ -181,55 +166,30 @@ const Home = styled.div`
   width: 100vw;
   display: flex;
   flex-direction: column;
-  .home-head {
-    padding-bottom: 10px;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #e6e7e6;
-    .head-front {
-      border-bottom: 1px solid #e6e7e6;
-    }
-    .shell {
-      position: relative;
-    }
-  }
-  .select-list-mobile {
-    color: #8bc264;
-    padding-left: 2px;
-    .welcome {
-      display: flex;
-      align-items: center;
-    }
-  }
 `;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const ua = context.req.headers['user-agent'];
-    const result = new UAParser(ua).getResult();
+  const ua = context.req.headers['user-agent'];
+  const result = new UAParser(ua).getResult();
 
-    return {
-        props: {
-            userInfo: deepClone(result),
-        },
-    };
+  return {
+    props: {
+      userInfo: deepClone(result),
+    },
+  };
 };
 
-const TabWrapper = styled.label`
+const SelectorWrapper = styled.label`
   display: flex;
   align-items: center;
   margin-bottom: 8px;
 
   a {
     border-bottom: 1px solid #8bc264;
-  }
-
-  .block {
     margin-left: 5px;
   }
+`;
 
-  .index-icon {
-    width: 28px;
-  }
+const IconContainer = styled.div`
+  width: 28px;
 `;

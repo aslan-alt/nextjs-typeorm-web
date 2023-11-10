@@ -12,21 +12,21 @@ import {User} from './User';
 @Entity('comments')
 export class Comment {
   @PrimaryGeneratedColumn('increment')
-  id: number;
+  id!: number;
   @Column('int')
-  userId: number;
+  userId!: number;
   @Column('varchar')
-  nickname: string;
+  nickname!: string;
   @Column('int')
-  postId: number;
+  postId!: number;
   @Column('text')
-  content: string;
+  content!: string;
   @ManyToOne('User', 'comments')
-  user: User;
+  user!: User;
   @ManyToOne('Post', 'comment')
-  post: Post;
+  post!: Post;
   @CreateDateColumn({type: 'timestamp', name: 'createdAt', nullable: false})
-  createdAt: Date;
+  createdAt!: Date;
   @UpdateDateColumn({type: 'timestamp', name: 'updatedAt'})
-  updateAt: Date;
+  updateAt!: Date;
 }

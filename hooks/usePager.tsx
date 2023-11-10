@@ -24,10 +24,11 @@ const usePager = (options: Options) => {
     .sort()
     .filter((n) => n >= 1 && n <= totalPage)
     .reduce(
-      (result, n) =>
+      (result: number[], n) =>
         n - (result[result.length] - 1 || 0) === 1 ? result.concat(n) : result.concat(-1, n),
       []
     );
+
   const pager = (
     <div className="wrapper">
       {pageNumber !== 1 && (

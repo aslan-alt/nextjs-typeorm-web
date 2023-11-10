@@ -1,15 +1,12 @@
 import {User} from '@database/entity/User';
 import {getConnection} from '@database/getConnection';
-import {ironOptions} from '@lib/withSession';
-import {withIronSessionApiRoute} from 'iron-session/next';
 
 interface SignData {
   username: string;
   password: string;
   passwordConfirmation: string;
 }
-
-export default withIronSessionApiRoute(async (req, res) => {
+const users = async (req, res) => {
   const {username, password, passwordConfirmation} = req.body as SignData;
   const connect = await getConnection();
   const user = new User();
@@ -36,4 +33,5 @@ export default withIronSessionApiRoute(async (req, res) => {
     await connect.manager.save(user);
     await res.status(200).send(user);
   }
-}, ironOptions);
+};
+export default users;
